@@ -1,0 +1,365 @@
+[12:08:58] [*] Log: C:\Users\muham\Desktop\Dev\kangalguard-dynamic\logs\run_20260301_120858_benign.log
+
+[12:08:58] [*] Mevcut CSV'ye ekleniyor: kangal_dataset.csv
+
+[12:08:58] ============================================================
+[12:08:58]   KangalGuard Batch Analyzer
+[12:08:58] ============================================================
+[12:08:58]   Klasör  : data\benign
+[12:08:58]   Label   : benign
+[12:08:58]   APK     : 1001
+[12:08:58]   Timeout : 75s / APK
+[12:08:58]   CSV     : kangal_dataset.csv
+[12:08:58]   Atlanacak (zaten işlenmiş): 157
+[12:08:58]   Atlanacak (daha önce hatalı): 28
+[12:08:58]   Log     : C:\Users\muham\Desktop\Dev\kangalguard-dynamic\logs\failed_apks.csv
+[12:08:58] ============================================================
+
+[12:08:58] [1/1001] SKIP (zaten işlenmiş): 00A01AC1AE904EC1FA4096339F3085472B7C5DB3BD7F9E11509D4D9E3F3144E0.apk
+[12:08:58] [2/1001] SKIP (zaten işlenmiş): 00A0F3910123006F3B112D540E95C69D992E88BF9F29EDEAB7A24FEA30993BD1.apk
+[12:08:58] [3/1001] SKIP (daha önce hatalı): 00A1FDA79FEC10DC107A667FD02475B7E605F20FCD2D55D4F53F784B9B09C366.apk
+
+[12:08:58] [4/1001] İşleniyor...
+[12:08:58]   [*] Snapshot yükleniyor (kangal_clean)...
+[12:08:58]   [!] Snapshot bulunamadı (KO: Device 'cache' does not have the requested snapshot 'kangal_clean'
+
+[12:08:58] KO: Snapshot load failure: snapshot doesn't exist) — atlanıyor
+
+[12:08:58] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[12:08:58] [APK] 00A2C5F0C33C6AA6054366FDEEF94E9F3E81E8CBEC7D45E4BDC3AE341D2B014E.apk
+[12:08:58] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[12:08:58]   [+] Package : io.polikum.sputnik
+[12:08:58]   [+] Label   : benign
+[12:08:58]   [*] Kuruluyor...
+[12:09:14]   [+] Kurulum OK
+[12:09:15] [*] Agent.ts derleniyor...
+[12:09:15] [+] Derleme tamam — tüm APK'larda bu bundle kullanılacak.
+[12:09:15]   [*] Uygulama başlatılıyor (monkey)...
+[12:09:16]   [*] PID aranıyor...
+[12:09:16]   [+] PID: 6998 — attach ediliyor...
+[12:09:17]   [-] Frida hata: ServerNotRunningError: unable to connect to remote frida-server: closed
+[12:09:17]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 0, toplam: 0
+[12:09:17]   [-] Sayaç verisi yok — boş satır yazılmıyor.
+[12:09:22]   [+] Kaldırıldı: io.polikum.sputnik
+
+[12:09:22]   Durum: ✅ 0  ⏭️  3  ❌ 1  | ⏱️  ~100.4 dk kaldı
+[12:09:22] [5/1001] SKIP (zaten işlenmiş): 00A2E5CBE515099673BA735297687DEE0A80D782106C89E17463A750E5F979E0.apk
+[12:09:22] [6/1001] SKIP (zaten işlenmiş): 00EB836A23FF8A351F2C4B4F0CD0848EF03A067943672317330069F1CFFF8F84.apk
+[12:09:22] [7/1001] SKIP (daha önce hatalı): 00EBBD8D068DE3CF0B077875EE4DB309D0F4DD030E1D6C4E9BDAA63BA0ADDE75.apk
+[12:09:22] [8/1001] SKIP (zaten işlenmiş): 00EBCD3387F0EAA60CF61007A84D457B103F80F45FE1A727E684315101EB180C.apk
+[12:09:22] [9/1001] SKIP (zaten işlenmiş): 00EBCE0F7E47AF62F8F2826D9E31BB02FC8DFD030684E73082844DD5B4F16740.apk
+[12:09:22] [10/1001] SKIP (daha önce hatalı): 00EBCE117F705F9C17C79D5B0D0BCB9BAA581576E368FC92B65623A3F172CBE0.apk
+[12:09:22] [11/1001] SKIP (zaten işlenmiş): 00EC393215FE7A3D1E769EB3EEAB891A13595F8D96047E93B6922C702A947A18.apk
+[12:09:22] [12/1001] SKIP (daha önce hatalı): 00EC8CBCE00E4372BD1F8AB0DABADD0E9CDB0CB0BB34F43D0C69E9F37F3E2CC6.apk
+[12:09:22] [13/1001] SKIP (zaten işlenmiş): 00EC8D8224EA859AF37C43421C37B53A6FD145A19F1D3FF4A62749827800CE17.apk
+[12:09:22] [14/1001] SKIP (zaten işlenmiş): 00ECC73E6AEECBDE670E5BB5FA92F0F3165A7C807BE07B3DCC5BD9E0E8768381.apk
+[12:09:22] [15/1001] SKIP (daha önce hatalı): 00ECCE84820E2D57FFF955413CF5F9F59FABFA6C513372E2DE8425D119C30EAB.apk
+[12:09:22] [16/1001] SKIP (zaten işlenmiş): 00ECE74B8014BFA08C1504BD4DC59D6DFD1E4A81D0878CABB989217A86C625CC.apk
+[12:09:22] [17/1001] SKIP (daha önce hatalı): 00ED01B6B27545909B6C079A80343986E94232C72E801DE138E8D73CE9570A22.apk
+[12:09:22] [18/1001] SKIP (zaten işlenmiş): 00ED1FBB6FCBB903F9AB822AF48175919803FAB026CECF7A3AEA74491ABC7C80.apk
+[12:09:22] [19/1001] SKIP (zaten işlenmiş): 00ED27F618602FBF539DDCAEF98223FF9C371043F5E326BB9E951FF0DF96BDAC.apk
+[12:09:22] [20/1001] SKIP (zaten işlenmiş): 00ED4FD7D4493337EEB63010AF7F84608B9410FD275A92616720E5F1380C425A.apk
+[12:09:22] [21/1001] SKIP (zaten işlenmiş): 00ED7D67388FE7CF18C1FCF7661D62C638D2D0A4EE2A819104C7ABAF6136F285.apk
+[12:09:22] [22/1001] SKIP (zaten işlenmiş): 00ED8AAF8472BD7E0FA13909A7BDA66EBE398A3F942EC34F713EC55054FE5342.apk
+[12:09:23] [23/1001] SKIP (zaten işlenmiş): 00ED9BE080C33819F12B27AF37DFBEF28A0D5F41B0150358B3E6AC45A1E13F0B.apk
+[12:09:23] [24/1001] SKIP (zaten işlenmiş): 00EDA8FD64D64451DA605530065E29E115E56B9D570E324A63FB518F823B959A.apk
+[12:09:23] [25/1001] SKIP (zaten işlenmiş): 00EE2D4F8B74E4998C9AB0A7ABA9344F6ACED94631970CC71EB7F826CD8B8051.apk
+[12:09:23] [26/1001] SKIP (zaten işlenmiş): 00EE7BDA14BCF219A5D4356AFF6A03F7F03FD0381ED89C2F6EF871D1D646B124.apk
+[12:09:23] [27/1001] SKIP (daha önce hatalı): 00EE82BB981E1858EECF445A4DD11DE5D1C2FBA17C8E5FC3AEF386F2E69BB72A.apk
+[12:09:23] [28/1001] SKIP (zaten işlenmiş): 00EE9E807E720FB558F6A67335A31886E6484511661D888DB090DEF53C915FD8.apk
+[12:09:23] [29/1001] SKIP (daha önce hatalı): 00EEA8DA975827673B107FD8437951889B7D43A377E4B0379879A1C3EA2C8F4B.apk
+[12:09:23] [30/1001] SKIP (daha önce hatalı): 00EEBDC76FC4B19CC65E78EFEC31EBCDB160AC4FAE90A0A640D79FEAA2CFACFE.apk
+[12:09:23] [31/1001] SKIP (zaten işlenmiş): 00EEC9AA6A80B864541733F98F7FC597219626D6CD1C2721C4542819035E652D.apk
+[12:09:23] [32/1001] SKIP (daha önce hatalı): 00EEDE3F5D60C4DC11948984ABCFEDC5F69AA7D756D6B00300385B677082D2D7.apk
+[12:09:23] [33/1001] SKIP (zaten işlenmiş): 00EF49FFE5FA283C68451A66B00C09C3F3ED6B63B533D8ECDF446CD4B408AE12.apk
+[12:09:23] [34/1001] SKIP (daha önce hatalı): 00EFD03DF3394B0FA1DF0A4ACC9FA2DF5E83DB3783FA1F1247E7A51CD8471E9D.apk
+[12:09:23] [35/1001] SKIP (daha önce hatalı): 00EFED4D5E3EFD16B228241F01317BB30D10710745B0152B29A97D4FE612BB08.apk
+[12:09:23] [36/1001] SKIP (zaten işlenmiş): 00F00FB525F75762BC003102FE42611DBF1EE60D7BD964FDDDF1FC74ED3C39D6.apk
+[12:09:23] [37/1001] SKIP (daha önce hatalı): 00F014482732DFD6AA8AA5FF3F45FA1DCE04BF674A97BD43D06B4C321ECE874E.apk
+[12:09:23] [38/1001] SKIP (daha önce hatalı): 00F031FBBA393684E916616500A1553E724C6D20FE50A9861FAD01C11D8D3581.apk
+[12:09:23] [39/1001] SKIP (daha önce hatalı): 00F03374B29D35D7E41132D73EB1C31770D2A41CC180BCD50A499F5A59EB2F3E.apk
+[12:09:23] [40/1001] SKIP (daha önce hatalı): 00F075A0452D55032E55C36D1DFFB3F9EF47C48107C194461B5BF11BDB8891EB.apk
+[12:09:23] [41/1001] SKIP (daha önce hatalı): 00F0A0B36DED08E0A36291767037D05ABB18EDEE2916AF36676BE7B3966B2C63.apk
+[12:09:23] [42/1001] SKIP (daha önce hatalı): 00F0B62D1699A1FB2194789DFA39903781F6501476E3E1730BCFB599F4514A06.apk
+[12:09:23] [43/1001] SKIP (daha önce hatalı): 00F11802061B49521EC5C65AAC2BF0D8EF62DEA114B94E308A0E5250150C248D.apk
+[12:09:23] [44/1001] SKIP (zaten işlenmiş): 00F11B253DCC341109455F183EC2E17F80E3EC7CDF0C78113AFBEBF3A1B27088.apk
+[12:09:23] [45/1001] SKIP (daha önce hatalı): 00F15C2D0FBB7DB8338A4F2F8EA9648320BA610C225B21E6973564B26A6F9036.apk
+[12:09:23] [46/1001] SKIP (zaten işlenmiş): 00F1932E6DB4AB8B73B00D22F9215160F26246B698C8EB72391BE4D10E1E3DD5.apk
+[12:09:23] [47/1001] SKIP (zaten işlenmiş): 00F194F076FB8D69D3B6EDAEBB7F3D06B259823C5CBE4E1375B79FFFD1CAC577.apk
+[12:09:23] [48/1001] SKIP (zaten işlenmiş): 00F1BB126A32D2F72BD040B262DEC07DD80743489C926295710986A69F4BAE63.apk
+[12:09:23] [49/1001] SKIP (daha önce hatalı): 00F1D4CBE13586A926581FD6D0D5E05CFFC9D3E2A8CFCE7F8B783D8C44EB1363.apk
+[12:09:23] [50/1001] SKIP (zaten işlenmiş): 00F1F3BE33136E20006C667D9949971602FB75CEEA4486A05DBCCC9686FA47A0.apk
+[12:09:23] [51/1001] SKIP (zaten işlenmiş): 00F1F95DAC7DA1BE625A441F2EB42F60AB96FB2F516CD7A13B2F3F1671CFCE38.apk
+[12:09:23] [52/1001] SKIP (daha önce hatalı): 00F23946DC7E8BB9BA8318CC0D0D9AEB5675F5581D8791695B4D5DBBC7631E62.apk
+[12:09:23] [53/1001] SKIP (zaten işlenmiş): 00F2718757E33E4A24C851F8B13E8CD41B154B8655F3B16CFA02EF70DF1A280B.apk
+[12:09:23] [54/1001] SKIP (zaten işlenmiş): 00F28A6838AB8776B3153CB186E04D3B8F7274095D5A993C16C402737739D102.apk
+[12:09:23] [55/1001] SKIP (zaten işlenmiş): 00F2DAA9B3F0C6218AD3EE67FFBB419E91BB934FE07BA1FBDA89BC0C32296899.apk
+[12:09:23] [56/1001] SKIP (zaten işlenmiş): 00F2E2453FD40EE27DA372D75A5119C2AE335DD658104412256641D832E0FB54.apk
+[12:09:23] [57/1001] SKIP (zaten işlenmiş): 00F310C624E7FADC407CFE6279BDC387587F7F8E7DADADC21B634CB04A145794.apk
+[12:09:23] [58/1001] SKIP (daha önce hatalı): 00F3447AB73983C08293C5C6228F5F4F9E43920A00F24CD1D6448C411A666C22.apk
+[12:09:23] [59/1001] SKIP (zaten işlenmiş): 00F3571DD1689D8BCC707BBF1EDAB47AADDF29A3938503EAFF97881BDDA6C269.apk
+[12:09:23] [60/1001] SKIP (daha önce hatalı): 00F362D72E2CAD9BC396F5B565127110879449433AE05EF775BD8DC15508D143.apk
+[12:09:23] [61/1001] SKIP (zaten işlenmiş): 00F363BCE53A0E3D13B413CDC481EC38FAEC587D4147859C0B2F2E8A72D3A0C2.apk
+[12:09:23] [62/1001] SKIP (daha önce hatalı): 00F3C2F8AD23B8EB41FE1FD3F270396221D23D266E863CE9882FAED85D9C69E7.apk
+[12:09:23] [63/1001] SKIP (zaten işlenmiş): 00F3DCEE3725615260D653D8D8E7C41067401797D47199CD6F835645B21F907B.apk
+[12:09:23] [64/1001] SKIP (daha önce hatalı): 00F422BF56505BE64BE544A28DF7400AF35CC35B9245BD346AEF3616BEAAF949.apk
+[12:09:23] [65/1001] SKIP (zaten işlenmiş): 00F42BCF0D4AF707845708C29BDEDB091826D6C3913330ABC9D5F53755F8C86B.apk
+[12:09:23] [66/1001] SKIP (daha önce hatalı): 00F461303358262AC2190329E6F958B3F70D3CBC0B83FF17BA5691F884D760FD.apk
+[12:09:23] [67/1001] SKIP (daha önce hatalı): 00F4F24430F134D904CDB6F2A4AEF48BB41F2D2F11DC6CEE1022F368B2332C29.apk
+
+[12:09:23] [68/1001] İşleniyor...
+[12:09:23]   [*] Snapshot yükleniyor (kangal_clean)...
+[12:09:23]   [!] Snapshot bulunamadı (KO: Device 'cache' does not have the requested snapshot 'kangal_clean'
+
+[12:09:23] KO: Snapshot load failure: snapshot doesn't exist) — atlanıyor
+
+[12:09:23] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[12:09:23] [APK] 00F4FC4C4F7214006E6063603B63F92EF3B1BACD24D49BE4B78C4C0068F437C8.apk
+[12:09:23] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[12:09:23]   [+] Package : com.karvydistributor
+[12:09:23]   [+] Label   : benign
+[12:09:23]   [*] Kuruluyor...
+[12:09:39]   [+] Kurulum OK
+[12:09:39]   [*] Uygulama başlatılıyor (monkey)...
+[12:09:39]   [*] PID aranıyor...
+[12:09:39]   [+] PID: 7334 — attach ediliyor...
+[12:09:40]   [-] Frida hata: ServerNotRunningError: unable to connect to remote frida-server: closed
+[12:09:40]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 0, toplam: 0
+[12:09:40]   [-] Sayaç verisi yok — boş satır yazılmıyor.
+[12:09:45]   [+] Kaldırıldı: com.karvydistributor
+
+[12:09:45]   Durum: ✅ 0  ⏭️  66  ❌ 2  | ⏱️  ~10.8 dk kaldı
+[12:09:45] [69/1001] SKIP (zaten işlenmiş): 00F5142DBDC9DA4DEA7A584CEA4358CCDA0CD81E3E9F069946A738B2EE535ED0.apk
+[12:09:45] [70/1001] SKIP (zaten işlenmiş): 00F5821E776F999C9A9EF10B49445E2B5A271A964826ECA97C2CEFE4B7D4B667.apk
+[12:09:45] [71/1001] SKIP (zaten işlenmiş): 00F5D88764EA6C422A5BE323C69EFD5B76BC9BD08DF319D15E467E42FF72ECD4.apk
+[12:09:45] [72/1001] SKIP (zaten işlenmiş): 00F5DE19F8BC53BAE0FCD3B48BC496F223274B8199C1F505FC3C0A7CA2ED728D.apk
+
+[12:09:45] [73/1001] İşleniyor...
+[12:09:45]   [*] Snapshot yükleniyor (kangal_clean)...
+[12:09:46]   [!] Snapshot bulunamadı (KO: Device 'cache' does not have the requested snapshot 'kangal_clean'
+
+[12:09:46] KO: Snapshot load failure: snapshot doesn't exist) — atlanıyor
+
+[12:09:46] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[12:09:46] [APK] 00F5E4FA11CF14DDDBF974511A7781586D7AA0DE01E10F10823E13DB591EA690.apk
+[12:09:46] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[12:09:46]   [+] Package : com.kofieo.potterscityv1
+[12:09:46]   [+] Label   : benign
+[12:09:46]   [*] Kuruluyor...
+[12:10:03]   [+] Kurulum OK
+[12:10:03]   [*] Uygulama başlatılıyor (monkey)...
+[12:10:03]   [*] PID aranıyor...
+[12:10:03]   [+] PID: 7510 — attach ediliyor...
+[12:10:04]   [-] Frida hata: ServerNotRunningError: unable to connect to remote frida-server: closed
+[12:10:04]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 0, toplam: 0
+[12:10:04]   [-] Sayaç verisi yok — boş satır yazılmıyor.
+[12:10:09]   [+] Kaldırıldı: com.kofieo.potterscityv1
+
+[12:10:09]   Durum: ✅ 0  ⏭️  70  ❌ 3  | ⏱️  ~15.1 dk kaldı
+[12:10:09] [74/1001] SKIP (zaten işlenmiş): 00F615D35B168A5707237FEFD10C5C1ED0368542381185ADE89D0A71BBF65767.apk
+[12:10:09] [75/1001] SKIP (zaten işlenmiş): 00F67D2679AD69366FFA92940D5C7ECA511DBABE153EFCA1409544E98DC4FF30.apk
+
+[12:10:09] [76/1001] İşleniyor...
+[12:10:09]   [*] Snapshot yükleniyor (kangal_clean)...
+[12:10:09]   [!] Snapshot bulunamadı (KO: Device 'cache' does not have the requested snapshot 'kangal_clean'
+
+[12:10:09] KO: Snapshot load failure: snapshot doesn't exist) — atlanıyor
+
+[12:10:09] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[12:10:09] [APK] 00F6B20F9623418EEB3C6707D7ACF6131035E383B21C2F9AE09FFEDF01B6483F.apk
+[12:10:09] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[12:10:09]   [+] Package : tr.gov.saglik.sina
+[12:10:09]   [+] Label   : benign
+[12:10:09]   [*] Kuruluyor...
+[12:10:26]   [+] Kurulum OK
+[12:10:26]   [*] Uygulama başlatılıyor (monkey)...
+[12:10:26]   [*] PID aranıyor...
+[12:10:26]   [+] PID: 7674 — attach ediliyor...
+[12:10:26]   [-] Frida hata: ServerNotRunningError: unable to connect to remote frida-server: closed
+[12:10:27]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 0, toplam: 0
+[12:10:27]   [-] Sayaç verisi yok — boş satır yazılmıyor.
+[12:10:32]   [+] Kaldırıldı: tr.gov.saglik.sina
+
+[12:10:32]   Durum: ✅ 0  ⏭️  72  ❌ 4  | ⏱️  ~19.0 dk kaldı
+
+[12:10:32] [77/1001] İşleniyor...
+[12:10:32]   [*] Snapshot yükleniyor (kangal_clean)...
+[12:10:32]   [!] Snapshot bulunamadı (KO: Device 'cache' does not have the requested snapshot 'kangal_clean'
+
+[12:10:32] KO: Snapshot load failure: snapshot doesn't exist) — atlanıyor
+
+[12:10:32] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[12:10:32] [APK] 00F78C89A7F8B20BB20B7D3F4ED5E88A169F03783EE0786A4FAC0E0975A8858C.apk
+[12:10:32] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[12:10:32]   [+] Package : net.bluelegend.tourfriend
+[12:10:32]   [+] Label   : benign
+[12:10:32]   [*] Kuruluyor...
+[12:10:47]   [+] Kurulum OK
+[12:10:47]   [*] Uygulama başlatılıyor (monkey)...
+[12:10:48]   [*] PID aranıyor...
+[12:10:48]   [+] PID: 7801 — attach ediliyor...
+[12:10:48]   [-] Frida hata: ServerNotRunningError: unable to connect to remote frida-server: closed
+[12:10:48]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 0, toplam: 0
+[12:10:48]   [-] Sayaç verisi yok — boş satır yazılmıyor.
+[12:10:53]   [+] Kaldırıldı: net.bluelegend.tourfriend
+
+[12:10:53]   Durum: ✅ 0  ⏭️  72  ❌ 5  | ⏱️  ~23.1 dk kaldı
+[12:10:53] [78/1001] SKIP (zaten işlenmiş): 00F79DAD86EB89CFDBB5EAAF19B89CDA95FED796B6821DC251845171F6BB5759.apk
+
+[12:10:53] [79/1001] İşleniyor...
+[12:10:53]   [*] Snapshot yükleniyor (kangal_clean)...
+[12:10:53]   [!] Snapshot bulunamadı (KO: Device 'cache' does not have the requested snapshot 'kangal_clean'
+
+[12:10:53] KO: Snapshot load failure: snapshot doesn't exist) — atlanıyor
+
+[12:10:53] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[12:10:53] [APK] 00F7ACA1859AD823FADD05D5CC511314665B8A2673E18E6B94F2AED3CBD0EDCA.apk
+[12:10:53] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[12:10:53]   [+] Package : com.threeetechnologies.digitaladdresscodegenerator
+[12:10:53]   [+] Label   : benign
+[12:10:53]   [*] Kuruluyor...
+[12:11:10]   [+] Kurulum OK
+[12:11:10]   [*] Uygulama başlatılıyor (monkey)...
+[12:11:10]   [*] PID aranıyor...
+[12:11:10]   [+] PID: 7930 — attach ediliyor...
+[12:11:10]   [-] Frida hata: ServerNotRunningError: unable to connect to remote frida-server: closed
+[12:11:10]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 0, toplam: 0
+[12:11:10]   [-] Sayaç verisi yok — boş satır yazılmıyor.
+[12:11:16]   [+] Kaldırıldı: com.threeetechnologies.digitaladdresscodegenerator
+
+[12:11:16]   Durum: ✅ 0  ⏭️  73  ❌ 6  | ⏱️  ~26.8 dk kaldı
+
+[12:11:16] [80/1001] İşleniyor...
+[12:11:16]   [*] Snapshot yükleniyor (kangal_clean)...
+[12:11:16]   [!] Snapshot bulunamadı (KO: Device 'cache' does not have the requested snapshot 'kangal_clean'
+
+[12:11:16] KO: Snapshot load failure: snapshot doesn't exist) — atlanıyor
+
+[12:11:16] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[12:11:16] [APK] 00F7B604C06371370BB5734720F2E090628E4F6A42AF2BD22552ECD76D1F7654.apk
+[12:11:16] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[12:11:16]   [+] Package : com.galaxyz.fold5wallpaperapp1
+[12:11:16]   [+] Label   : benign
+[12:11:16]   [*] Kuruluyor...
+[12:11:32]   [+] Kurulum OK
+[12:11:32]   [*] Uygulama başlatılıyor (monkey)...
+[12:11:32]   [*] PID aranıyor...
+[12:11:32]   [+] PID: 8059 — attach ediliyor...
+[12:11:33]   [-] Frida hata: ServerNotRunningError: unable to connect to remote frida-server: closed
+[12:11:33]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 0, toplam: 0
+[12:11:33]   [-] Sayaç verisi yok — boş satır yazılmıyor.
+[12:11:38]   [+] Kaldırıldı: com.galaxyz.fold5wallpaperapp1
+
+[12:11:38]   Durum: ✅ 0  ⏭️  73  ❌ 7  | ⏱️  ~30.8 dk kaldı
+
+[12:11:38] [81/1001] İşleniyor...
+[12:11:38]   [*] Snapshot yükleniyor (kangal_clean)...
+[12:11:38]   [!] Snapshot bulunamadı (KO: Device 'cache' does not have the requested snapshot 'kangal_clean'
+
+[12:11:38] KO: Snapshot load failure: snapshot doesn't exist) — atlanıyor
+
+[12:11:38] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[12:11:38] [APK] 00F7B8760F7A94C82998A89B41C58E5B8A6E33A5F4E97F298404FB7107E52230.apk
+[12:11:38] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[12:11:38]   [+] Package : com.walkingpal.app
+[12:11:38]   [+] Label   : benign
+[12:11:38]   [*] Kuruluyor...
+[12:11:54]   [+] Kurulum OK
+[12:11:54]   [*] Uygulama başlatılıyor (monkey)...
+[12:11:55]   [*] PID aranıyor...
+[12:11:55]   [+] PID: 8228 — attach ediliyor...
+[12:11:55]   [-] Frida hata: ServerNotRunningError: unable to connect to remote frida-server: closed
+[12:11:55]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 0, toplam: 0
+[12:11:55]   [-] Sayaç verisi yok — boş satır yazılmıyor.
+[12:12:00]   [+] Kaldırıldı: com.walkingpal.app
+
+[12:12:00]   Durum: ✅ 0  ⏭️  73  ❌ 8  | ⏱️  ~34.5 dk kaldı
+
+[12:12:00] [82/1001] İşleniyor...
+[12:12:00]   [*] Snapshot yükleniyor (kangal_clean)...
+[12:12:00]   [!] Snapshot bulunamadı (KO: Device 'cache' does not have the requested snapshot 'kangal_clean'
+
+[12:12:00] KO: Snapshot load failure: snapshot doesn't exist) — atlanıyor
+
+[12:12:00] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[12:12:00] [APK] 00F7C2E8B3ED04C3D6D57743E178A123F0A7A1D6450B6F3D432C56002163F44D.apk
+[12:12:00] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[12:12:00]   [+] Package : com.rubenchv.adoeovpw
+[12:12:00]   [+] Label   : benign
+[12:12:00]   [*] Kuruluyor...
+[12:12:17]   [+] Kurulum OK
+[12:12:17]   [*] Uygulama başlatılıyor (monkey)...
+[12:12:17]   [*] PID aranıyor...
+[12:12:17]   [+] PID: 8403 — attach ediliyor...
+[12:12:17]   [-] Frida hata: ServerNotRunningError: unable to connect to remote frida-server: closed
+[12:12:17]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 0, toplam: 0
+[12:12:17]   [-] Sayaç verisi yok — boş satır yazılmıyor.
+[12:12:23]   [+] Kaldırıldı: com.rubenchv.adoeovpw
+
+[12:12:23]   Durum: ✅ 0  ⏭️  73  ❌ 9  | ⏱️  ~38.2 dk kaldı
+[12:12:23] [83/1001] SKIP (zaten işlenmiş): 00F7E0BC9C906D6C071C43C08397FDCFC0DB1FDCF6A0A006B084927EE4597E98.apk
+
+[12:12:23] [84/1001] İşleniyor...
+[12:12:23]   [*] Snapshot yükleniyor (kangal_clean)...
+[12:12:23]   [!] Snapshot bulunamadı (KO: Device 'cache' does not have the requested snapshot 'kangal_clean'
+
+[12:12:23] KO: Snapshot load failure: snapshot doesn't exist) — atlanıyor
+
+[12:12:23] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[12:12:23] [APK] 00F7E553D8316F70C5BE456EA8ED31B7CB11A74736CF4F4A2A28B849976112EC.apk
+[12:12:23] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[12:12:23]   [+] Package : com.womenplusindia
+[12:12:23]   [+] Label   : benign
+[12:12:23]   [*] Kuruluyor...
+[12:12:39]   [+] Kurulum OK
+[12:12:39]   [*] Uygulama başlatılıyor (monkey)...
+[12:12:40]   [*] PID aranıyor...
+[12:12:40]   [+] PID: 8530 — attach ediliyor...
+[12:12:40]   [-] Frida hata: ServerNotRunningError: unable to connect to remote frida-server: closed
+[12:12:40]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 0, toplam: 0
+[12:12:40]   [-] Sayaç verisi yok — boş satır yazılmıyor.
+[12:12:45]   [+] Kaldırıldı: com.womenplusindia
+
+[12:12:45]   Durum: ✅ 0  ⏭️  74  ❌ 10  | ⏱️  ~41.4 dk kaldı
+
+[12:12:45] [85/1001] İşleniyor...
+[12:12:45]   [*] Snapshot yükleniyor (kangal_clean)...
+[12:12:45]   [!] Snapshot bulunamadı (KO: Device 'cache' does not have the requested snapshot 'kangal_clean'
+
+[12:12:45] KO: Snapshot load failure: snapshot doesn't exist) — atlanıyor
+
+[12:12:45] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[12:12:45] [APK] 00F7EA0E314AE8659C132DBA4336EB7A0328C25E691A74DBD06F780222F7924A.apk
+[12:12:45] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[12:12:45]   [+] Package : com.kiamis_2
+[12:12:45]   [+] Label   : benign
+[12:12:45]   [*] Kuruluyor...
+[12:13:01]   [+] Kurulum OK
+[12:13:01]   [*] Uygulama başlatılıyor (monkey)...
+[12:13:02]   [*] PID aranıyor...
+[12:13:02]   [+] PID: 8677 — attach ediliyor...
+[12:13:02]   [-] Frida hata: ServerNotRunningError: unable to connect to remote frida-server: closed
+[12:13:02]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 0, toplam: 0
+[12:13:02]   [-] Sayaç verisi yok — boş satır yazılmıyor.
+[12:13:07]   [+] Kaldırıldı: com.kiamis_2
+
+[12:13:07]   Durum: ✅ 0  ⏭️  74  ❌ 11  | ⏱️  ~44.8 dk kaldı
+
+[12:13:07] [86/1001] İşleniyor...
+[12:13:07]   [*] Snapshot yükleniyor (kangal_clean)...
+[12:13:07]   [!] Snapshot bulunamadı (KO: Device 'cache' does not have the requested snapshot 'kangal_clean'
+
+[12:13:07] KO: Snapshot load failure: snapshot doesn't exist) — atlanıyor
+
+[12:13:07] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[12:13:07] [APK] 00F7F3536F2FB84FAA76EC46D2DCD81F11ABC3C0652695DB6166D71179FD23A5.apk
+[12:13:07] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[12:13:07]   [+] Package : com.app.sauftrag
+[12:13:07]   [+] Label   : benign
+[12:13:07]   [*] Kuruluyor...
+[12:13:23]   [+] Kurulum OK
+[12:13:23]   [*] Uygulama başlatılıyor (monkey)...
+[12:13:23]   [*] PID aranıyor...
+[12:13:32]   [-] PID bulunamadı → SKIP
+[12:13:32]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 0, toplam: 0
+[12:13:32]   [-] Sayaç verisi yok — boş satır yazılmıyor.

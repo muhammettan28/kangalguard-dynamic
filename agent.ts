@@ -72,12 +72,99 @@ const counters: Record<string, number> = {
     native_method_register_count: 0,
 };
 
+// ─── Temporal Tracking ───────────────────────────────────────────────────────
+// Her kategori için ilk tetiklenme zamanını ms cinsinden saklar.
+// -1 = henüz tetiklenmedi
+
+const SESSION_START: number = Date.now();
+
+const timings: Record<string, number> = {
+    first_network_ms:       -1,   // İlk ağ çağrısı (socket/url/dns)
+    first_crypto_ms:        -1,   // İlk şifreleme çağrısı
+    first_anti_analysis_ms: -1,   // İlk anti-analysis çağrısı
+    first_file_write_ms:    -1,   // İlk dosya yazma
+    first_reflection_ms:    -1,   // İlk reflection çağrısı
+    first_exec_ms:          -1,   // İlk Runtime.exec çağrısı
+    first_sms_ms:           -1,   // İlk SMS gönderme
+    first_dynamic_load_ms:  -1,   // İlk DexClassLoader / Class.forName
+};
+
+// Burst tracking: 5 saniyelik pencerede en yüksek event sayısı
+const BURST_WINDOW_MS = 5000;
+const eventTimestamps: number[] = [];
+let burstPeakCount: number = 0;
+
+function recordTime(key: string): void {
+    if (key in timings && timings[key] === -1) {
+        timings[key] = Date.now() - SESSION_START;
+    }
+}
+
+function recordBurst(): void {
+    const now = Date.now();
+    eventTimestamps.push(now);
+    const cutoff = now - BURST_WINDOW_MS;
+    while (eventTimestamps.length > 0 && eventTimestamps[0] < cutoff) {
+        eventTimestamps.shift();
+    }
+    if (eventTimestamps.length > burstPeakCount) {
+        burstPeakCount = eventTimestamps.length;
+    }
+}
+
+// ─── Sequence Tracking ───────────────────────────────────────────────────────
+// Her önemli event'i {tag, ms} olarak sırayla kaydeder.
+// Python tarafı bu listeyi analiz ederek zincirleri tespit eder.
+// MAX_SEQ_EVENTS: bellek taşmasını önlemek için hard limit.
+
+const MAX_SEQ_EVENTS = 200;
+
+interface SeqEvent {
+    tag: string;   // kısa olay etiketi (örn: "REFLECT", "EXEC", "CRYPTO")
+    ms:  number;   // oturum başından itibaren ms
+}
+
+const seqLog: SeqEvent[] = [];
+
+// Sequence tag'leri — Python'daki analiz bu string'leri arar
+const SEQ = {
+    REFLECT:     "REFLECT",     // reflection invoke
+    DEX_LOAD:    "DEX_LOAD",    // DexClassLoader init
+    EXEC:        "EXEC",        // Runtime.exec
+    DYNAMIC_CLS: "DYNAMIC_CLS", // Class.forName
+    CRYPTO:      "CRYPTO",      // Cipher.init / KeyGenerator
+    NETWORK:     "NETWORK",     // Socket / URL / DNS
+    FILE_WRITE:  "FILE_WRITE",  // FileOutputStream
+    ROOT_CHECK:  "ROOT_CHECK",  // File.exists (root path)
+    ANTI:        "ANTI",        // system_exit / debugger / emulator
+    SMS:         "SMS",         // sendTextMessage
+    CONTACT_READ:"CONTACT_READ",// ContentResolver.query
+    NATIVE_LOAD: "NATIVE_LOAD", // System.loadLibrary
+};
+
+function seqPush(tag: string): void {
+    if (seqLog.length >= MAX_SEQ_EVENTS) return; // limit aşıldı, sessizce atla
+    seqLog.push({ tag, ms: Date.now() - SESSION_START });
+}
+
 function inc(key: string): void {
-    if (key in counters) counters[key]++;
+    if (key in counters) {
+        counters[key]++;
+        recordBurst();
+    }
 }
 
 function flushCounters(): void {
-    send({ type: "COUNTERS", payload: { ...counters } });
+    send({
+        type: "COUNTERS",
+        payload: {
+            ...counters,
+            _timings: { ...timings },
+            _burst_peak: burstPeakCount,
+            _session_duration_ms: Date.now() - SESSION_START,
+            _seq_log: seqLog.slice(), // shallow copy, orijinali koru
+        }
+    });
 }
 
 function tryHook(label: string, fn: () => void): void {
@@ -100,6 +187,8 @@ Java.perform(() => {
         const Method = Java.use("java.lang.reflect.Method");
         Method.invoke.implementation = function (obj: any, args: any) {
             inc("reflection_invoke_count");
+            recordTime("first_reflection_ms");
+            seqPush(SEQ.REFLECT);
             return this.invoke(obj, args);
         };
     });
@@ -110,6 +199,8 @@ Java.perform(() => {
             dexPath: string, optimizedDir: string, libraryPath: string, parent: any
         ) {
             inc("dex_class_loader_count");
+            recordTime("first_dynamic_load_ms");
+            seqPush(SEQ.DEX_LOAD);
             console.log(`[DEX] ${dexPath}`);
             return this.$init(dexPath, optimizedDir, libraryPath, parent);
         };
@@ -119,11 +210,15 @@ Java.perform(() => {
         const Runtime = Java.use("java.lang.Runtime");
         Runtime.exec.overload("java.lang.String").implementation = function (cmd: string) {
             inc("runtime_exec_count");
+            recordTime("first_exec_ms");
+            seqPush(SEQ.EXEC);
             console.log(`[EXEC] ${cmd}`);
             return this.exec(cmd);
         };
         Runtime.exec.overload("[Ljava.lang.String;").implementation = function (cmds: string[]) {
             inc("runtime_exec_count");
+            recordTime("first_exec_ms");
+            seqPush(SEQ.EXEC);
             console.log(`[EXEC] ${cmds}`);
             return this.exec(cmds);
         };
@@ -133,6 +228,8 @@ Java.perform(() => {
         const Class = Java.use("java.lang.Class");
         Class.forName.overload("java.lang.String").implementation = function (name: string) {
             inc("dynamic_class_load_count");
+            recordTime("first_dynamic_load_ms");
+            seqPush(SEQ.DYNAMIC_CLS);
             return this.forName(name);
         };
     });
@@ -155,6 +252,8 @@ Java.perform(() => {
             "android.app.PendingIntent", "android.app.PendingIntent"
         ).implementation = function (dest: string, src: any, text: string, sent: any, delivery: any) {
             inc("sendTextMessage_count");
+            recordTime("first_sms_ms");
+            seqPush(SEQ.SMS);
             console.log(`[SMS] ${dest}: ${text}`);
             return this.sendTextMessage(dest, src, text, sent, delivery);
         };
@@ -163,6 +262,8 @@ Java.perform(() => {
             "android.app.PendingIntent", "android.app.PendingIntent", "long"
         ).implementation = function (dest: string, src: any, text: string, sent: any, delivery: any, messageId: number) {
             inc("sendTextMessage_count");
+            recordTime("first_sms_ms");
+            seqPush(SEQ.SMS);
             console.log(`[SMS] ${dest}: ${text}`);
             return this.sendTextMessage(dest, src, text, sent, delivery, messageId);
         };
@@ -195,6 +296,8 @@ Java.perform(() => {
             const algo: string = this.getAlgorithm();
             if (algo.toUpperCase().includes("AES")) inc("cipher_aes_count");
             if (algo.toUpperCase().includes("DES")) inc("cipher_des_count");
+            recordTime("first_crypto_ms");
+            seqPush(SEQ.CRYPTO);
             console.log(`[CRYPTO] Cipher: ${algo}`);
             return this.init(opmode, key);
         };
@@ -235,6 +338,8 @@ Java.perform(() => {
         const System = Java.use("java.lang.System");
         System.exit.implementation = function (code: number) {
             inc("system_exit_attempt");
+            recordTime("first_anti_analysis_ms");
+            seqPush(SEQ.ANTI);
             console.log(`[ANTI] System.exit(${code}) engellendi`);
             // bypass — çağrılmıyor
         };
@@ -244,6 +349,8 @@ Java.perform(() => {
         const Debug = Java.use("android.os.Debug");
         Debug.isDebuggerConnected.implementation = function () {
             inc("debugger_check_count");
+            recordTime("first_anti_analysis_ms");
+            seqPush(SEQ.ANTI);
             return false;
         };
     });
@@ -268,6 +375,8 @@ Java.perform(() => {
             const path: string = this.getAbsolutePath();
             if (rootPaths.some(p => path.includes(p))) {
                 inc("root_check_count");
+                recordTime("first_anti_analysis_ms");
+                seqPush(SEQ.ROOT_CHECK);
                 console.log(`[ANTI] Root check: ${path}`);
                 return false; // bypass
             }
@@ -298,6 +407,7 @@ Java.perform(() => {
         const System = Java.use("java.lang.System");
         System.loadLibrary.implementation = function (name: string) {
             inc("native_lib_load_count");
+            seqPush(SEQ.NATIVE_LOAD);
             console.log(`[NATIVE] loadLibrary: ${name}`);
             return this.loadLibrary(name);
         };
@@ -358,6 +468,7 @@ Java.perform(() => {
             uri: any, proj: any, sel: any, selArgs: any, sort: any
         ) {
             inc("content_resolver_query_count");
+            seqPush(SEQ.CONTACT_READ);
             return this.query(uri, proj, sel, selArgs, sort);
         };
     });
@@ -382,6 +493,8 @@ Java.perform(() => {
             path: string
         ) {
             inc("file_write_count");
+            recordTime("first_file_write_ms");
+            seqPush(SEQ.FILE_WRITE);
             const sensitivePaths = ["/proc/", "/sys/", "/data/"];
             if (sensitivePaths.some(p => path.startsWith(p))) {
                 inc("file_read_sensitive_count");
@@ -434,6 +547,8 @@ Java.perform(() => {
             host: string, port: number
         ) {
             inc("socket_create_count");
+            recordTime("first_network_ms");
+            seqPush(SEQ.NETWORK);
             console.log(`[NET] Socket: ${host}:${port}`);
             return this.$init(host, port);
         };
@@ -443,6 +558,8 @@ Java.perform(() => {
         const URL = Java.use("java.net.URL");
         URL.openConnection.overload().implementation = function () {
             inc("url_connection_count");
+            recordTime("first_network_ms");
+            seqPush(SEQ.NETWORK);
             console.log(`[NET] URL: ${this.toString()}`);
             return this.openConnection();
         };
@@ -463,6 +580,8 @@ Java.perform(() => {
         const InetAddress = Java.use("java.net.InetAddress");
         InetAddress.getByName.implementation = function (host: string) {
             inc("dns_lookup_count");
+            recordTime("first_network_ms");
+            seqPush(SEQ.NETWORK);
             console.log(`[NET] DNS: ${host}`);
             return this.getByName(host);
         };
@@ -583,42 +702,28 @@ Java.perform(() => {
     // burada ClassLoader üzerinden .so yüklemesini proxy olarak kullanıyoruz
     // (native_lib_load_count ile örtüşüyor, ayrı sinyal olarak korunuyor)
 
-    // ── Uygulama-Spesifik ────────────────────────────────────────────────────
-
-    tryHook("MainActivity.verify", () => {
-        const mainActivity = Java.use("sg.vantagepoint.uncrackable1.MainActivity");
-        mainActivity.verify.implementation = function (view: any) {
-            inc("verify_attempt_count");
-            return this.verify(view);
-        };
-    });
-
-    tryHook("a.a (string decrypt / password check)", () => {
-        const checker = Java.use("sg.vantagepoint.uncrackable1.a");
-        checker.a.implementation = function (str: string) {
-            const result = this.a(str);
-            inc("string_decrypt_count");
-            console.log(`[CRYPTO] Şifre: "${str}" -> ${result}`);
-            send({
-                type: "PASSWORD_ATTEMPT",
-                payload: { input: str, result: result }
-            });
-            return result;
-        };
-    });
-
-    // ── Otomatik Flush ───────────────────────────────────────────────────────
-
-    // Her 30 saniyede snapshot gönder
-    setInterval(flushCounters, 30000);
-
-    // Uygulama açılınca ilk snapshot (2sn sonra)
-    setTimeout(flushCounters, 2000);
-
     console.log("=== 50 Feature Hook Hazır ===");
 });
+
+// ── Otomatik Flush — Java.perform DIŞINDA ────────────────────────────────────
+// setInterval Frida'nın kendi event loop'unda çalışır; Java.perform içinde
+// kayıt edilirse ART thread'e bağlı kalır ve güvenilir şekilde tetiklenmez.
+setInterval(flushCounters, 20000);
 
 // Python'dan "flush" mesajı gelince anlık snapshot
 recv("flush", () => {
     flushCounters();
 });
+
+// ─── RPC Export — send/recv'e alternatif, doğrudan veri okuma ────────────────
+// script.post("flush") + on_message yetersiz kaldığında Python
+// script.exports.get_counters() ile anlık veriyi güvenilir şekilde alır.
+rpc.exports = {
+    getCounters: (): object => ({
+        ...counters,
+        _timings: { ...timings },
+        _burst_peak: burstPeakCount,
+        _session_duration_ms: Date.now() - SESSION_START,
+        _seq_log: seqLog.slice(),
+    }),
+};

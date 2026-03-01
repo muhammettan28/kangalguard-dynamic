@@ -3,3 +3,4 @@ _agent.js
 *.xz
 *.apk
 frida-server
+*.pyc

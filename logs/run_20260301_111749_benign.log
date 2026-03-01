@@ -1,0 +1,541 @@
+[11:17:49] [*] Log: C:\Users\muham\Desktop\Dev\kangalguard-dynamic\logs\run_20260301_111749_benign.log
+
+[11:17:49] [*] Mevcut CSV'ye ekleniyor: kangal_dataset.csv
+
+[11:17:49] ============================================================
+[11:17:49]   KangalGuard Batch Analyzer
+[11:17:49] ============================================================
+[11:17:49]   Klasör  : data\benign
+[11:17:49]   Label   : benign
+[11:17:49]   APK     : 1001
+[11:17:49]   Timeout : 75s / APK
+[11:17:49]   CSV     : kangal_dataset.csv
+[11:17:49]   Atlanacak (zaten işlenmiş): 157
+[11:17:49]   Atlanacak (daha önce hatalı): 0
+[11:17:49]   Log     : C:\Users\muham\Desktop\Dev\kangalguard-dynamic\logs\failed_apks.csv
+[11:17:49] ============================================================
+
+[11:17:49] [1/1001] SKIP (zaten işlenmiş): 00A01AC1AE904EC1FA4096339F3085472B7C5DB3BD7F9E11509D4D9E3F3144E0.apk
+[11:17:49] [2/1001] SKIP (zaten işlenmiş): 00A0F3910123006F3B112D540E95C69D992E88BF9F29EDEAB7A24FEA30993BD1.apk
+
+[11:17:49] [3/1001] İşleniyor...
+[11:17:49]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:17:56]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:18:05]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:18:05]   [+] Temiz state hazır
+
+[11:18:05] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:18:05] [APK] 00A1FDA79FEC10DC107A667FD02475B7E605F20FCD2D55D4F53F784B9B09C366.apk
+[11:18:05] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:18:05]   [+] Package : com.golddata.app
+[11:18:05]   [+] Label   : benign
+[11:18:05]   [*] Kuruluyor...
+[11:18:35]   [-] adb install başarısız: Performing Streamed Install adb.exe: failed to install data\benign\00A1FDA79FEC10DC107A667FD02475B7E605F20FCD2D55D4F53F784B9B09C366.apk:
+
+[11:18:35]   Durum: ✅ 0  ⏭️  3  ❌ 0  | ⏱️  ~255.1 dk kaldı
+
+[11:18:35] [4/1001] İşleniyor...
+[11:18:35]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:18:53]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:19:02]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:19:02]   [+] Temiz state hazır
+
+[11:19:02] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:19:02] [APK] 00A2C5F0C33C6AA6054366FDEEF94E9F3E81E8CBEC7D45E4BDC3AE341D2B014E.apk
+[11:19:02] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:19:02]   [+] Package : io.polikum.sputnik
+[11:19:02]   [+] Label   : benign
+[11:19:02]   [*] Kuruluyor...
+[11:19:22]   [+] Kurulum OK
+[11:19:23] [*] Agent.ts derleniyor...
+[11:19:23] [+] Derleme tamam — tüm APK'larda bu bundle kullanılacak.
+[11:19:23]   [*] Uygulama başlatılıyor (monkey)...
+[11:19:24]   [*] PID aranıyor...
+[11:19:26]   [+] PID: 2307 — attach ediliyor...
+[11:19:27]   [!] Process ölmüş — mevcut verilerle devam ediliyor
+[11:19:27]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 0, toplam: 0
+[11:19:27]   [-] Sayaç verisi yok — boş satır yazılmıyor.
+[11:19:33]   [+] Kaldırıldı: io.polikum.sputnik
+
+[11:19:33]   Durum: ✅ 1  ⏭️  3  ❌ 0  | ⏱️  ~434.2 dk kaldı
+[11:19:33] [5/1001] SKIP (zaten işlenmiş): 00A2E5CBE515099673BA735297687DEE0A80D782106C89E17463A750E5F979E0.apk
+[11:19:33] [6/1001] SKIP (zaten işlenmiş): 00EB836A23FF8A351F2C4B4F0CD0848EF03A067943672317330069F1CFFF8F84.apk
+
+[11:19:33] [7/1001] İşleniyor...
+[11:19:33]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:19:40]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:19:48]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:19:48]   [+] Temiz state hazır
+
+[11:19:48] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:19:48] [APK] 00EBBD8D068DE3CF0B077875EE4DB309D0F4DD030E1D6C4E9BDAA63BA0ADDE75.apk
+[11:19:48] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:19:48]   [+] Package : com.iwanamaker.ihsa
+[11:19:48]   [+] Label   : benign
+[11:19:48]   [*] Kuruluyor...
+[11:20:19]   [-] adb install başarısız: Performing Streamed Install adb.exe: failed to install data\benign\00EBBD8D068DE3CF0B077875EE4DB309D0F4DD030E1D6C4E9BDAA63BA0ADDE75.apk:
+
+[11:20:19]   Durum: ✅ 1  ⏭️  6  ❌ 0  | ⏱️  ~354.7 dk kaldı
+[11:20:19] [8/1001] SKIP (zaten işlenmiş): 00EBCD3387F0EAA60CF61007A84D457B103F80F45FE1A727E684315101EB180C.apk
+[11:20:19] [9/1001] SKIP (zaten işlenmiş): 00EBCE0F7E47AF62F8F2826D9E31BB02FC8DFD030684E73082844DD5B4F16740.apk
+
+[11:20:19] [10/1001] İşleniyor...
+[11:20:19]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:20:25]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:20:34]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:20:34]   [+] Temiz state hazır
+
+[11:20:34] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:20:34] [APK] 00EBCE117F705F9C17C79D5B0D0BCB9BAA581576E368FC92B65623A3F172CBE0.apk
+[11:20:34] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:20:34]   [+] Package : com.cerbotech.neurom
+[11:20:34]   [+] Label   : benign
+[11:20:34]   [*] Kuruluyor...
+[11:21:34]   [-] adb install hata: Command '['adb', 'install', '-r', '-t', 'data\\benign\\00EBCE117F705F9C17C79D5B0D0BCB9BAA581576E368FC92B65623A3F172CBE0.apk']' timed out after 60 seconds
+
+[11:21:34]   Durum: ✅ 1  ⏭️  9  ❌ 0  | ⏱️  ~371.4 dk kaldı
+[11:21:34] [11/1001] SKIP (zaten işlenmiş): 00EC393215FE7A3D1E769EB3EEAB891A13595F8D96047E93B6922C702A947A18.apk
+
+[11:21:34] [12/1001] İşleniyor...
+[11:21:34]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:21:41]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:21:49]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:21:49]   [+] Temiz state hazır
+
+[11:21:49] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:21:49] [APK] 00EC8CBCE00E4372BD1F8AB0DABADD0E9CDB0CB0BB34F43D0C69E9F37F3E2CC6.apk
+[11:21:49] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:21:49]   [+] Package : com.app.p7644EI
+[11:21:49]   [+] Label   : benign
+[11:21:49]   [*] Kuruluyor...
+[11:22:49]   [-] adb install hata: Command '['adb', 'install', '-r', '-t', 'data\\benign\\00EC8CBCE00E4372BD1F8AB0DABADD0E9CDB0CB0BB34F43D0C69E9F37F3E2CC6.apk']' timed out after 60 seconds
+
+[11:22:49]   Durum: ✅ 1  ⏭️  11  ❌ 0  | ⏱️  ~412.6 dk kaldı
+[11:22:49] [13/1001] SKIP (zaten işlenmiş): 00EC8D8224EA859AF37C43421C37B53A6FD145A19F1D3FF4A62749827800CE17.apk
+[11:22:49] [14/1001] SKIP (zaten işlenmiş): 00ECC73E6AEECBDE670E5BB5FA92F0F3165A7C807BE07B3DCC5BD9E0E8768381.apk
+
+[11:22:49] [15/1001] İşleniyor...
+[11:22:49]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:22:55]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:23:03]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:23:03]   [+] Temiz state hazır
+
+[11:23:03] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:23:03] [APK] 00ECCE84820E2D57FFF955413CF5F9F59FABFA6C513372E2DE8425D119C30EAB.apk
+[11:23:03] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:23:03]   [+] Package : com.phorest.brownsugarhairdressers
+[11:23:03]   [+] Label   : benign
+[11:23:03]   [*] Kuruluyor...
+[11:24:03]   [-] adb install hata: Command '['adb', 'install', '-r', '-t', 'data\\benign\\00ECCE84820E2D57FFF955413CF5F9F59FABFA6C513372E2DE8425D119C30EAB.apk']' timed out after 60 seconds
+
+[11:24:03]   Durum: ✅ 1  ⏭️  14  ❌ 0  | ⏱️  ~410.3 dk kaldı
+[11:24:03] [16/1001] SKIP (zaten işlenmiş): 00ECE74B8014BFA08C1504BD4DC59D6DFD1E4A81D0878CABB989217A86C625CC.apk
+
+[11:24:03] [17/1001] İşleniyor...
+[11:24:03]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:24:09]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:24:17]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:24:17]   [+] Temiz state hazır
+
+[11:24:17] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:24:17] [APK] 00ED01B6B27545909B6C079A80343986E94232C72E801DE138E8D73CE9570A22.apk
+[11:24:17] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:24:17]   [+] Package : com.gof.global
+[11:24:17]   [+] Label   : benign
+[11:24:17]   [*] Kuruluyor...
+[11:24:47]   [-] adb install başarısız: Performing Streamed Install adb.exe: failed to install data\benign\00ED01B6B27545909B6C079A80343986E94232C72E801DE138E8D73CE9570A22.apk:
+
+[11:24:47]   Durum: ✅ 1  ⏭️  16  ❌ 0  | ⏱️  ~404.0 dk kaldı
+[11:24:47] [18/1001] SKIP (zaten işlenmiş): 00ED1FBB6FCBB903F9AB822AF48175919803FAB026CECF7A3AEA74491ABC7C80.apk
+[11:24:47] [19/1001] SKIP (zaten işlenmiş): 00ED27F618602FBF539DDCAEF98223FF9C371043F5E326BB9E951FF0DF96BDAC.apk
+[11:24:47] [20/1001] SKIP (zaten işlenmiş): 00ED4FD7D4493337EEB63010AF7F84608B9410FD275A92616720E5F1380C425A.apk
+[11:24:48] [21/1001] SKIP (zaten işlenmiş): 00ED7D67388FE7CF18C1FCF7661D62C638D2D0A4EE2A819104C7ABAF6136F285.apk
+[11:24:48] [22/1001] SKIP (zaten işlenmiş): 00ED8AAF8472BD7E0FA13909A7BDA66EBE398A3F942EC34F713EC55054FE5342.apk
+[11:24:48] [23/1001] SKIP (zaten işlenmiş): 00ED9BE080C33819F12B27AF37DFBEF28A0D5F41B0150358B3E6AC45A1E13F0B.apk
+[11:24:48] [24/1001] SKIP (zaten işlenmiş): 00EDA8FD64D64451DA605530065E29E115E56B9D570E324A63FB518F823B959A.apk
+[11:24:48] [25/1001] SKIP (zaten işlenmiş): 00EE2D4F8B74E4998C9AB0A7ABA9344F6ACED94631970CC71EB7F826CD8B8051.apk
+[11:24:48] [26/1001] SKIP (zaten işlenmiş): 00EE7BDA14BCF219A5D4356AFF6A03F7F03FD0381ED89C2F6EF871D1D646B124.apk
+
+[11:24:48] [27/1001] İşleniyor...
+[11:24:48]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:24:54]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:25:02]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:25:02]   [+] Temiz state hazır
+
+[11:25:02] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:25:02] [APK] 00EE82BB981E1858EECF445A4DD11DE5D1C2FBA17C8E5FC3AEF386F2E69BB72A.apk
+[11:25:02] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:25:02]   [+] Package : com.snooze.app
+[11:25:02]   [+] Label   : benign
+[11:25:02]   [*] Kuruluyor...
+[11:25:32]   [-] adb install başarısız: Performing Streamed Install adb.exe: failed to install data\benign\00EE82BB981E1858EECF445A4DD11DE5D1C2FBA17C8E5FC3AEF386F2E69BB72A.apk:
+
+[11:25:32]   Durum: ✅ 1  ⏭️  26  ❌ 0  | ⏱️  ~278.6 dk kaldı
+[11:25:32] [28/1001] SKIP (zaten işlenmiş): 00EE9E807E720FB558F6A67335A31886E6484511661D888DB090DEF53C915FD8.apk
+
+[11:25:32] [29/1001] İşleniyor...
+[11:25:32]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:25:38]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:25:46]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:25:46]   [+] Temiz state hazır
+
+[11:25:46] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:25:46] [APK] 00EEA8DA975827673B107FD8437951889B7D43A377E4B0379879A1C3EA2C8F4B.apk
+[11:25:46] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:25:46]   [+] Package : com.mobeasyapp.app694467752084
+[11:25:46]   [+] Label   : benign
+[11:25:46]   [*] Kuruluyor...
+[11:26:16]   [-] adb install başarısız: Performing Streamed Install adb.exe: failed to install data\benign\00EEA8DA975827673B107FD8437951889B7D43A377E4B0379879A1C3EA2C8F4B.apk:
+
+[11:26:16]   Durum: ✅ 1  ⏭️  28  ❌ 0  | ⏱️  ~283.5 dk kaldı
+
+[11:26:16] [30/1001] İşleniyor...
+[11:26:16]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:26:22]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:26:30]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:26:30]   [+] Temiz state hazır
+
+[11:26:30] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:26:30] [APK] 00EEBDC76FC4B19CC65E78EFEC31EBCDB160AC4FAE90A0A640D79FEAA2CFACFE.apk
+[11:26:30] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:26:30]   [+] Package : com.measurement.tools
+[11:26:30]   [+] Label   : benign
+[11:26:30]   [*] Kuruluyor...
+[11:27:00]   [-] adb install başarısız: Performing Streamed Install adb.exe: failed to install data\benign\00EEBDC76FC4B19CC65E78EFEC31EBCDB160AC4FAE90A0A640D79FEAA2CFACFE.apk:
+
+[11:27:00]   Durum: ✅ 1  ⏭️  29  ❌ 0  | ⏱️  ~297.5 dk kaldı
+[11:27:00] [31/1001] SKIP (zaten işlenmiş): 00EEC9AA6A80B864541733F98F7FC597219626D6CD1C2721C4542819035E652D.apk
+
+[11:27:00] [32/1001] İşleniyor...
+[11:27:00]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:27:06]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:27:14]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:27:14]   [+] Temiz state hazır
+
+[11:27:14] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:27:14] [APK] 00EEDE3F5D60C4DC11948984ABCFEDC5F69AA7D756D6B00300385B677082D2D7.apk
+[11:27:14] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:27:14]   [+] Package : com.abdulqaderqawza.songs
+[11:27:14]   [+] Label   : benign
+[11:27:14]   [*] Kuruluyor...
+[11:27:44]   [-] adb install başarısız: Performing Streamed Install adb.exe: failed to install data\benign\00EEDE3F5D60C4DC11948984ABCFEDC5F69AA7D756D6B00300385B677082D2D7.apk:
+
+[11:27:44]   Durum: ✅ 1  ⏭️  31  ❌ 0  | ⏱️  ~300.6 dk kaldı
+[11:27:44] [33/1001] SKIP (zaten işlenmiş): 00EF49FFE5FA283C68451A66B00C09C3F3ED6B63B533D8ECDF446CD4B408AE12.apk
+
+[11:27:44] [34/1001] İşleniyor...
+[11:27:44]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:27:50]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:27:59]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:27:59]   [+] Temiz state hazır
+
+[11:27:59] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:27:59] [APK] 00EFD03DF3394B0FA1DF0A4ACC9FA2DF5E83DB3783FA1F1247E7A51CD8471E9D.apk
+[11:27:59] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:27:59]   [+] Package : app.schooldismissalmanager.com
+[11:27:59]   [+] Label   : benign
+[11:27:59]   [*] Kuruluyor...
+[11:28:29]   [-] adb install başarısız: Performing Streamed Install adb.exe: failed to install data\benign\00EFD03DF3394B0FA1DF0A4ACC9FA2DF5E83DB3783FA1F1247E7A51CD8471E9D.apk:
+
+[11:28:29]   Durum: ✅ 1  ⏭️  33  ❌ 0  | ⏱️  ~303.4 dk kaldı
+
+[11:28:29] [35/1001] İşleniyor...
+[11:28:29]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:28:35]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:28:43]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:28:43]   [+] Temiz state hazır
+
+[11:28:43] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:28:43] [APK] 00EFED4D5E3EFD16B228241F01317BB30D10710745B0152B29A97D4FE612BB08.apk
+[11:28:43] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:28:43]   [+] Package : r.stereobendicion
+[11:28:43]   [+] Label   : benign
+[11:28:43]   [*] Kuruluyor...
+[11:29:13]   [-] adb install başarısız: Performing Streamed Install adb.exe: failed to install data\benign\00EFED4D5E3EFD16B228241F01317BB30D10710745B0152B29A97D4FE612BB08.apk:
+
+[11:29:13]   Durum: ✅ 1  ⏭️  34  ❌ 0  | ⏱️  ~314.7 dk kaldı
+[11:29:13] [36/1001] SKIP (zaten işlenmiş): 00F00FB525F75762BC003102FE42611DBF1EE60D7BD964FDDDF1FC74ED3C39D6.apk
+
+[11:29:13] [37/1001] İşleniyor...
+[11:29:13]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:29:19]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:29:27]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:29:27]   [+] Temiz state hazır
+
+[11:29:27] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:29:27] [APK] 00F014482732DFD6AA8AA5FF3F45FA1DCE04BF674A97BD43D06B4C321ECE874E.apk
+[11:29:27] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:29:27]   [+] Package : com.publish.craft
+[11:29:27]   [+] Label   : benign
+[11:29:27]   [*] Kuruluyor...
+[11:29:57]   [-] adb install başarısız: Performing Streamed Install adb.exe: failed to install data\benign\00F014482732DFD6AA8AA5FF3F45FA1DCE04BF674A97BD43D06B4C321ECE874E.apk:
+
+[11:29:57]   Durum: ✅ 1  ⏭️  36  ❌ 0  | ⏱️  ~316.3 dk kaldı
+
+[11:29:57] [38/1001] İşleniyor...
+[11:29:57]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:30:03]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:30:11]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:30:11]   [+] Temiz state hazır
+
+[11:30:11] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:30:11] [APK] 00F031FBBA393684E916616500A1553E724C6D20FE50A9861FAD01C11D8D3581.apk
+[11:30:11] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:30:11]   [+] Package : org.cocos2d.dragon1
+[11:30:11]   [+] Label   : benign
+[11:30:11]   [*] Kuruluyor...
+[11:31:11]   [-] adb install hata: Command '['adb', 'install', '-r', '-t', 'data\\benign\\00F031FBBA393684E916616500A1553E724C6D20FE50A9861FAD01C11D8D3581.apk']' timed out after 60 seconds
+
+[11:31:11]   Durum: ✅ 1  ⏭️  37  ❌ 0  | ⏱️  ~339.0 dk kaldı
+
+[11:31:11] [39/1001] İşleniyor...
+[11:31:11]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:31:17]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:31:26]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:31:26]   [+] Temiz state hazır
+
+[11:31:26] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:31:26] [APK] 00F03374B29D35D7E41132D73EB1C31770D2A41CC180BCD50A499F5A59EB2F3E.apk
+[11:31:26] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:31:26]   [+] Package : com.psicopedia.dsm
+[11:31:26]   [+] Label   : benign
+[11:31:26]   [*] Kuruluyor...
+[11:32:26]   [-] adb install hata: Command '['adb', 'install', '-r', '-t', 'data\\benign\\00F03374B29D35D7E41132D73EB1C31770D2A41CC180BCD50A499F5A59EB2F3E.apk']' timed out after 60 seconds
+
+[11:32:26]   Durum: ✅ 1  ⏭️  38  ❌ 0  | ⏱️  ~360.5 dk kaldı
+
+[11:32:26] [40/1001] İşleniyor...
+[11:32:26]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:32:32]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:32:40]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:32:40]   [+] Temiz state hazır
+
+[11:32:40] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:32:40] [APK] 00F075A0452D55032E55C36D1DFFB3F9EF47C48107C194461B5BF11BDB8891EB.apk
+[11:32:40] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:32:40]   [+] Package : nice.net.ye
+[11:32:40]   [+] Label   : benign
+[11:32:40]   [*] Kuruluyor...
+[11:33:40]   [-] adb install hata: Command '['adb', 'install', '-r', '-t', 'data\\benign\\00F075A0452D55032E55C36D1DFFB3F9EF47C48107C194461B5BF11BDB8891EB.apk']' timed out after 60 seconds
+
+[11:33:40]   Durum: ✅ 1  ⏭️  39  ❌ 0  | ⏱️  ~380.9 dk kaldı
+
+[11:33:40] [41/1001] İşleniyor...
+[11:33:40]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:33:46]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:33:54]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:33:54]   [+] Temiz state hazır
+
+[11:33:54] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:33:54] [APK] 00F0A0B36DED08E0A36291767037D05ABB18EDEE2916AF36676BE7B3966B2C63.apk
+[11:33:54] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:33:54]   [+] Package : com.moimob.drinkable
+[11:33:54]   [+] Label   : benign
+[11:33:54]   [*] Kuruluyor...
+[11:34:24]   [-] adb install başarısız: Performing Streamed Install adb.exe: failed to install data\benign\00F0A0B36DED08E0A36291767037D05ABB18EDEE2916AF36676BE7B3966B2C63.apk:
+
+[11:34:24]   Durum: ✅ 1  ⏭️  40  ❌ 0  | ⏱️  ~388.4 dk kaldı
+
+[11:34:24] [42/1001] İşleniyor...
+[11:34:24]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:34:30]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:34:38]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:34:38]   [+] Temiz state hazır
+
+[11:34:38] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:34:38] [APK] 00F0B62D1699A1FB2194789DFA39903781F6501476E3E1730BCFB599F4514A06.apk
+[11:34:38] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:34:38]   [+] Package : br.com.w12.kmchacaramestrekobi
+[11:34:38]   [+] Label   : benign
+[11:34:38]   [*] Kuruluyor...
+[11:35:08]   [-] adb install başarısız: Performing Streamed Install adb.exe: failed to install data\benign\00F0B62D1699A1FB2194789DFA39903781F6501476E3E1730BCFB599F4514A06.apk:
+
+[11:35:08]   Durum: ✅ 1  ⏭️  41  ❌ 0  | ⏱️  ~395.6 dk kaldı
+
+[11:35:08] [43/1001] İşleniyor...
+[11:35:08]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:35:14]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:35:22]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:35:22]   [+] Temiz state hazır
+
+[11:35:22] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:35:22] [APK] 00F11802061B49521EC5C65AAC2BF0D8EF62DEA114B94E308A0E5250150C248D.apk
+[11:35:22] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:35:22]   [+] Package : il.org.osm.israelhiking
+[11:35:22]   [+] Label   : benign
+[11:35:22]   [*] Kuruluyor...
+[11:35:52]   [-] adb install başarısız: Performing Streamed Install adb.exe: failed to install data\benign\00F11802061B49521EC5C65AAC2BF0D8EF62DEA114B94E308A0E5250150C248D.apk:
+
+[11:35:52]   Durum: ✅ 1  ⏭️  42  ❌ 0  | ⏱️  ~402.4 dk kaldı
+[11:35:52] [44/1001] SKIP (zaten işlenmiş): 00F11B253DCC341109455F183EC2E17F80E3EC7CDF0C78113AFBEBF3A1B27088.apk
+
+[11:35:52] [45/1001] İşleniyor...
+[11:35:52]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:35:58]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:36:06]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:36:06]   [+] Temiz state hazır
+
+[11:36:06] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:36:06] [APK] 00F15C2D0FBB7DB8338A4F2F8EA9648320BA610C225B21E6973564B26A6F9036.apk
+[11:36:06] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:36:06]   [+] Package : com.datacubeinfo.ocea
+[11:36:06]   [+] Label   : benign
+[11:36:06]   [*] Kuruluyor...
+[11:36:37]   [-] adb install başarısız: Performing Streamed Install adb.exe: failed to install data\benign\00F15C2D0FBB7DB8338A4F2F8EA9648320BA610C225B21E6973564B26A6F9036.apk:
+
+[11:36:37]   Durum: ✅ 1  ⏭️  44  ❌ 0  | ⏱️  ~399.3 dk kaldı
+[11:36:37] [46/1001] SKIP (zaten işlenmiş): 00F1932E6DB4AB8B73B00D22F9215160F26246B698C8EB72391BE4D10E1E3DD5.apk
+[11:36:37] [47/1001] SKIP (zaten işlenmiş): 00F194F076FB8D69D3B6EDAEBB7F3D06B259823C5CBE4E1375B79FFFD1CAC577.apk
+[11:36:37] [48/1001] SKIP (zaten işlenmiş): 00F1BB126A32D2F72BD040B262DEC07DD80743489C926295710986A69F4BAE63.apk
+
+[11:36:37] [49/1001] İşleniyor...
+[11:36:37]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:36:43]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:36:51]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:36:51]   [+] Temiz state hazır
+
+[11:36:51] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:36:51] [APK] 00F1D4CBE13586A926581FD6D0D5E05CFFC9D3E2A8CFCE7F8B783D8C44EB1363.apk
+[11:36:51] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:36:51]   [+] Package : com.jassby.mobile.app
+[11:36:51]   [+] Label   : benign
+[11:36:51]   [*] Kuruluyor...
+[11:37:21]   [-] adb install başarısız: Performing Streamed Install adb.exe: failed to install data\benign\00F1D4CBE13586A926581FD6D0D5E05CFFC9D3E2A8CFCE7F8B783D8C44EB1363.apk:
+
+[11:37:21]   Durum: ✅ 1  ⏭️  48  ❌ 0  | ⏱️  ~379.5 dk kaldı
+[11:37:21] [50/1001] SKIP (zaten işlenmiş): 00F1F3BE33136E20006C667D9949971602FB75CEEA4486A05DBCCC9686FA47A0.apk
+[11:37:21] [51/1001] SKIP (zaten işlenmiş): 00F1F95DAC7DA1BE625A441F2EB42F60AB96FB2F516CD7A13B2F3F1671CFCE38.apk
+
+[11:37:21] [52/1001] İşleniyor...
+[11:37:21]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:37:27]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:37:35]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:37:35]   [+] Temiz state hazır
+
+[11:37:35] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:37:35] [APK] 00F23946DC7E8BB9BA8318CC0D0D9AEB5675F5581D8791695B4D5DBBC7631E62.apk
+[11:37:35] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:37:35]   [+] Package : com.coastsoccer.csl
+[11:37:35]   [+] Label   : benign
+[11:37:35]   [*] Kuruluyor...
+[11:38:05]   [-] adb install başarısız: Performing Streamed Install adb.exe: failed to install data\benign\00F23946DC7E8BB9BA8318CC0D0D9AEB5675F5581D8791695B4D5DBBC7631E62.apk:
+
+[11:38:05]   Durum: ✅ 1  ⏭️  51  ❌ 0  | ⏱️  ~369.9 dk kaldı
+[11:38:05] [53/1001] SKIP (zaten işlenmiş): 00F2718757E33E4A24C851F8B13E8CD41B154B8655F3B16CFA02EF70DF1A280B.apk
+[11:38:05] [54/1001] SKIP (zaten işlenmiş): 00F28A6838AB8776B3153CB186E04D3B8F7274095D5A993C16C402737739D102.apk
+[11:38:05] [55/1001] SKIP (zaten işlenmiş): 00F2DAA9B3F0C6218AD3EE67FFBB419E91BB934FE07BA1FBDA89BC0C32296899.apk
+[11:38:05] [56/1001] SKIP (zaten işlenmiş): 00F2E2453FD40EE27DA372D75A5119C2AE335DD658104412256641D832E0FB54.apk
+[11:38:05] [57/1001] SKIP (zaten işlenmiş): 00F310C624E7FADC407CFE6279BDC387587F7F8E7DADADC21B634CB04A145794.apk
+
+[11:38:05] [58/1001] İşleniyor...
+[11:38:05]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:38:11]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:38:19]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:38:19]   [+] Temiz state hazır
+
+[11:38:19] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:38:19] [APK] 00F3447AB73983C08293C5C6228F5F4F9E43920A00F24CD1D6448C411A666C22.apk
+[11:38:19] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:38:19]   [+] Package : com.treefortsystems.app.relearn
+[11:38:19]   [+] Label   : benign
+[11:38:19]   [*] Kuruluyor...
+[11:38:49]   [-] adb install başarısız: Performing Streamed Install adb.exe: failed to install data\benign\00F3447AB73983C08293C5C6228F5F4F9E43920A00F24CD1D6448C411A666C22.apk:
+
+[11:38:49]   Durum: ✅ 1  ⏭️  57  ❌ 0  | ⏱️  ~341.6 dk kaldı
+[11:38:49] [59/1001] SKIP (zaten işlenmiş): 00F3571DD1689D8BCC707BBF1EDAB47AADDF29A3938503EAFF97881BDDA6C269.apk
+
+[11:38:49] [60/1001] İşleniyor...
+[11:38:49]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:38:55]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:39:03]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:39:04]   [+] Temiz state hazır
+
+[11:39:04] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:39:04] [APK] 00F362D72E2CAD9BC396F5B565127110879449433AE05EF775BD8DC15508D143.apk
+[11:39:04] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:39:04]   [+] Package : com.meme.coin.play.to.earn.pepe.dogecoin.floki.bome.tothemoon
+[11:39:04]   [+] Label   : benign
+[11:39:04]   [*] Kuruluyor...
+[11:39:34]   [-] adb install başarısız: Performing Streamed Install adb.exe: failed to install data\benign\00F362D72E2CAD9BC396F5B565127110879449433AE05EF775BD8DC15508D143.apk:
+
+[11:39:34]   Durum: ✅ 1  ⏭️  59  ❌ 0  | ⏱️  ~341.1 dk kaldı
+[11:39:34] [61/1001] SKIP (zaten işlenmiş): 00F363BCE53A0E3D13B413CDC481EC38FAEC587D4147859C0B2F2E8A72D3A0C2.apk
+
+[11:39:34] [62/1001] İşleniyor...
+[11:39:34]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:39:40]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:39:48]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:39:48]   [+] Temiz state hazır
+
+[11:39:48] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:39:48] [APK] 00F3C2F8AD23B8EB41FE1FD3F270396221D23D266E863CE9882FAED85D9C69E7.apk
+[11:39:48] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:39:48]   [+] Package : com.quest.kacecloud.connect
+[11:39:48]   [+] Label   : benign
+[11:39:48]   [*] Kuruluyor...
+[11:40:18]   [-] adb install başarısız: Performing Streamed Install adb.exe: failed to install data\benign\00F3C2F8AD23B8EB41FE1FD3F270396221D23D266E863CE9882FAED85D9C69E7.apk:
+
+[11:40:18]   Durum: ✅ 1  ⏭️  61  ❌ 0  | ⏱️  ~340.6 dk kaldı
+[11:40:18] [63/1001] SKIP (zaten işlenmiş): 00F3DCEE3725615260D653D8D8E7C41067401797D47199CD6F835645B21F907B.apk
+
+[11:40:18] [64/1001] İşleniyor...
+[11:40:18]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:40:24]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:40:32]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:40:32]   [+] Temiz state hazır
+
+[11:40:32] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:40:32] [APK] 00F422BF56505BE64BE544A28DF7400AF35CC35B9245BD346AEF3616BEAAF949.apk
+[11:40:32] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:40:32]   [+] Package : com.mindstretcher.app
+[11:40:32]   [+] Label   : benign
+[11:40:32]   [*] Kuruluyor...
+[11:41:02]   [-] adb install başarısız: Performing Streamed Install adb.exe: failed to install data\benign\00F422BF56505BE64BE544A28DF7400AF35CC35B9245BD346AEF3616BEAAF949.apk:
+
+[11:41:02]   Durum: ✅ 1  ⏭️  63  ❌ 0  | ⏱️  ~340.0 dk kaldı
+[11:41:02] [65/1001] SKIP (zaten işlenmiş): 00F42BCF0D4AF707845708C29BDEDB091826D6C3913330ABC9D5F53755F8C86B.apk
+
+[11:41:02] [66/1001] İşleniyor...
+[11:41:02]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:41:08]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:41:16]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:41:16]   [+] Temiz state hazır
+
+[11:41:16] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:41:16] [APK] 00F461303358262AC2190329E6F958B3F70D3CBC0B83FF17BA5691F884D760FD.apk
+[11:41:16] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:41:16]   [+] Package : com.mapbit.cashteller
+[11:41:16]   [+] Label   : benign
+[11:41:16]   [*] Kuruluyor...
+[11:41:46]   [-] adb install başarısız: Performing Streamed Install adb.exe: failed to install data\benign\00F461303358262AC2190329E6F958B3F70D3CBC0B83FF17BA5691F884D760FD.apk:
+
+[11:41:46]   Durum: ✅ 1  ⏭️  65  ❌ 0  | ⏱️  ~339.5 dk kaldı
+
+[11:41:46] [67/1001] İşleniyor...
+[11:41:46]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:41:53]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:42:01]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:42:01]   [+] Temiz state hazır
+
+[11:42:01] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:42:01] [APK] 00F4F24430F134D904CDB6F2A4AEF48BB41F2D2F11DC6CEE1022F368B2332C29.apk
+[11:42:01] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:42:01]   [+] Package : com.passio3.colby
+[11:42:01]   [+] Label   : benign
+[11:42:01]   [*] Kuruluyor...
+[11:42:31]   [-] adb install başarısız: Performing Streamed Install adb.exe: failed to install data\benign\00F4F24430F134D904CDB6F2A4AEF48BB41F2D2F11DC6CEE1022F368B2332C29.apk:
+
+[11:42:31]   Durum: ✅ 1  ⏭️  66  ❌ 0  | ⏱️  ~344.5 dk kaldı
+
+[11:42:31] [68/1001] İşleniyor...
+[11:42:31]   [*] Snapshot yükleniyor (kangal_clean)...
+[11:42:37]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[11:42:45]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[11:42:45]   [+] Temiz state hazır
+
+[11:42:45] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:42:45] [APK] 00F4FC4C4F7214006E6063603B63F92EF3B1BACD24D49BE4B78C4C0068F437C8.apk
+[11:42:45] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[11:42:45]   [+] Package : com.karvydistributor
+[11:42:45]   [+] Label   : benign
+[11:42:45]   [*] Kuruluyor...

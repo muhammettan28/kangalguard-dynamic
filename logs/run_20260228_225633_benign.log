@@ -1,0 +1,2929 @@
+[22:56:33] [*] Log: C:\Users\muham\Desktop\Dev\kangalguard-dynamic\logs\run_20260228_225633_benign.log
+
+[22:56:33] [*] Mevcut CSV'ye ekleniyor: kangal_dataset.csv
+
+[22:56:33] ============================================================
+[22:56:33]   KangalGuard Batch Analyzer
+[22:56:33] ============================================================
+[22:56:33]   Klasör  : data\benign
+[22:56:33]   Label   : benign
+[22:56:33]   APK     : 1001
+[22:56:33]   Timeout : 75s / APK
+[22:56:33]   CSV     : kangal_dataset.csv
+[22:56:33]   Atlanacak (zaten işlenmiş): 5
+[22:56:33]   Atlanacak (daha önce hatalı): 5
+[22:56:33]   Log     : C:\Users\muham\Desktop\Dev\kangalguard-dynamic\logs\failed_apks.csv
+[22:56:33] ============================================================
+
+[22:56:33] [1/1001] SKIP (zaten işlenmiş): 00A01AC1AE904EC1FA4096339F3085472B7C5DB3BD7F9E11509D4D9E3F3144E0.apk
+[22:56:33] [2/1001] SKIP (zaten işlenmiş): 00A0F3910123006F3B112D540E95C69D992E88BF9F29EDEAB7A24FEA30993BD1.apk
+[22:56:33] [3/1001] SKIP (daha önce hatalı): 00A1FDA79FEC10DC107A667FD02475B7E605F20FCD2D55D4F53F784B9B09C366.apk
+[22:56:33] [4/1001] SKIP (daha önce hatalı): 00A2C5F0C33C6AA6054366FDEEF94E9F3E81E8CBEC7D45E4BDC3AE341D2B014E.apk
+
+[22:56:33] [5/1001] İşleniyor...
+
+[22:56:33] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[22:56:33] [APK] 00A2E5CBE515099673BA735297687DEE0A80D782106C89E17463A750E5F979E0.apk
+[22:56:33] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[22:56:33]   [+] Package : satexam.com
+[22:56:33]   [+] Label   : benign
+[22:56:33]   [*] Kuruluyor...
+[22:56:49]   [+] Kurulum OK
+[22:56:50] [*] Agent.ts derleniyor...
+[22:56:50] [+] Derleme tamam — tüm APK'larda bu bundle kullanılacak.
+[22:56:50]   [*] Uygulama başlatılıyor (monkey)...
+[22:56:50]   [*] PID aranıyor...
+[22:56:50]   [+] PID: 7067 — attach ediliyor...
+[22:56:51] === KangalGuard Agent Başladı ===
+[22:56:51] [+] Method.invoke (reflection)
+[22:56:51] [+] DexClassLoader.$init
+[22:56:51] [+] Runtime.exec
+[22:56:51] [+] Class.forName
+[22:56:51] [+] PackageManager.getPackageInfo
+[22:56:51] [+] SmsManager.sendTextMessage
+[22:56:51] [+] TelephonyManager.getDeviceId
+[22:56:51] [+] TelephonyManager.getSubscriberId
+[22:56:51] [+] Cipher.init
+[22:56:51] [+] KeyGenerator.generateKey
+[22:56:51] [+] Base64.encode/encodeToString
+[22:56:51] [+] SecureRandom.$init
+[22:56:51] [+] System.exit (bypass)
+[22:56:51] [+] Debug.isDebuggerConnected (bypass)
+[22:56:51] [+] SystemProperties.get (emulator check)
+[22:56:51] [+] File.exists (root path check)
+[22:56:51] [+] Thread.sleep (timing attack)
+[22:56:51] [+] Thread.getStackTrace
+[22:56:51] [+] System.loadLibrary
+[22:56:51] [+] Intent.setAction (implicit)
+[22:56:51] [+] Activity.startActivity
+[22:56:51] [+] ContextWrapper.sendBroadcast
+[22:56:51] [+] ContextWrapper.bindService
+[22:56:51] [+] ContentResolver.query
+[22:56:51] [+] ContentResolver.insert
+[22:56:51] [+] FileOutputStream.$init (write)
+[22:56:51] [+] SharedPreferences.putString
+[22:56:51] [+] ContextWrapper.openFileOutput
+[22:56:51] [+] File.delete
+[22:56:51] [+] Environment.getExternalStorageDirectory
+[22:56:51] [+] Socket.$init (raw socket)
+[22:56:51] [+] URL.openConnection
+[22:56:51] [+] SSLContext.init (TrustManager bypass)
+[22:56:51] [+] InetAddress.getByName (DNS)
+[22:56:51] [+] URLConnection.setRequestProperty
+[22:56:51] [+] AlarmManager.set
+[22:56:51] [+] JobScheduler.schedule
+[22:56:51] [+] ContextWrapper.registerReceiver
+[22:56:51] [+] Activity.requestPermissions
+[22:56:51] [+] PackageManager.setComponentEnabledSetting
+[22:56:51] [+] Thread.$init (thread create)
+[22:56:51] [+] ActivityManager.getRunningAppProcesses
+[22:56:51] [+] ByteBuffer.allocate (>5MB)
+[22:56:51] [+] ClassLoader.getParent
+[22:56:51] === 50 Feature Hook Hazır ===
+[22:56:51]   [!] Analiz başladı — 75s
+[22:56:52] [ANTI] Thread.sleep(10000ms)
+[22:56:52]   [~] RPC poll @1s — 2 event
+[22:56:57]   [!] Process öldü (~6s) — son snapshot kullanılıyor
+[22:56:57]   [*] Süre doldu, final RPC...
+[22:56:57]   [!] Final RPC başarısız — son poll snapshot: 2 event
+[22:56:58]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 50, toplam: 2
+
+[22:56:58] ============================================================
+[22:56:58] [+] CSV YAZILDI — 22:56:58
+[22:56:58]     satexam.com  |  BENIGN
+[22:56:58] ────────────────────────────────────────────────────────────
+[22:56:58]   Ham Feature'lar (aktif):
+[22:56:58]     sleep_call_count                             1
+[22:56:58]     implicit_intent_count                        1
+[22:56:58] ────────────────────────────────────────────────────────────
+[22:56:58]   Türetilmiş Skorlar:
+[22:56:58]     anti_analysis_score                          1
+[22:56:58]     anti_to_total_ratio                          0.5
+[22:56:58] ────────────────────────────────────────────────────────────
+[22:56:58]   Temporal Bilgiler:
+[22:56:58]     burst_peak_count                             2
+[22:56:58] ────────────────────────────────────────────────────────────
+[22:56:58]   Sequence Log: 0 event kayıt edildi
+[22:56:58]   (Tehlikeli sequence tespit edilmedi)
+[22:56:58] ============================================================
+
+
+[22:56:58] ==========================================================
+[22:56:58] [+] CSV YAZILDI — 22:56:58
+[22:56:58]     satexam.com  |  BENIGN
+[22:56:58] ──────────────────────────────────────────────────────────
+[22:56:58]   Ham Feature'lar (aktif):
+[22:56:58]     sleep_call_count                           1
+[22:56:58]     implicit_intent_count                      1
+[22:56:58] ──────────────────────────────────────────────────────────
+[22:56:58]   Türetilmiş Skorlar:
+[22:56:58]     anti_analysis_score                        1
+[22:56:58]     anti_to_total_ratio                        0.5
+[22:56:58]   Aktif Boolean Patternler:
+[22:56:58]     (Tehlikeli pattern tespit edilmedi)
+[22:56:58] ──────────────────────────────────────────────────────────
+[22:56:58]   Temporal Bilgiler:
+[22:56:58]     burst_peak_count                           2
+[22:56:58]     session_duration_ms                        1280 ms
+[22:56:58] ==========================================================
+
+[22:56:58]   [+] CSV satırı yazıldı.
+[22:57:04]   [+] Kaldırıldı: satexam.com
+
+[22:57:04]   Durum: ✅ 1  ⏭️  4  ❌ 0  | ⏱️  ~102.7 dk kaldı
+[22:57:04] [6/1001] SKIP (zaten işlenmiş): 00EB836A23FF8A351F2C4B4F0CD0848EF03A067943672317330069F1CFFF8F84.apk
+[22:57:04] [7/1001] SKIP (daha önce hatalı): 00EBBD8D068DE3CF0B077875EE4DB309D0F4DD030E1D6C4E9BDAA63BA0ADDE75.apk
+[22:57:04] [8/1001] SKIP (zaten işlenmiş): 00EBCD3387F0EAA60CF61007A84D457B103F80F45FE1A727E684315101EB180C.apk
+
+[22:57:04] [9/1001] İşleniyor...
+
+[22:57:04] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[22:57:04] [APK] 00EBCE0F7E47AF62F8F2826D9E31BB02FC8DFD030684E73082844DD5B4F16740.apk
+[22:57:04] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[22:57:04]   [+] Package : com.meyer.finder
+[22:57:04]   [+] Label   : benign
+[22:57:04]   [*] Kuruluyor...
+[22:57:21]   [+] Kurulum OK
+[22:57:21]   [*] Uygulama başlatılıyor (monkey)...
+[22:57:22]   [*] PID aranıyor...
+[22:57:23]   [+] PID: 7398 — attach ediliyor...
+[22:57:24] === KangalGuard Agent Başladı ===
+[22:57:24] [+] Method.invoke (reflection)
+[22:57:24] [+] DexClassLoader.$init
+[22:57:24] [+] Runtime.exec
+[22:57:24] [+] Class.forName
+[22:57:24] [+] PackageManager.getPackageInfo
+[22:57:24] [+] SmsManager.sendTextMessage
+[22:57:24] [+] TelephonyManager.getDeviceId
+[22:57:24] [+] TelephonyManager.getSubscriberId
+[22:57:24] [+] Cipher.init
+[22:57:24] [+] KeyGenerator.generateKey
+[22:57:24] [+] Base64.encode/encodeToString
+[22:57:24] [+] SecureRandom.$init
+[22:57:24] [+] System.exit (bypass)
+[22:57:24] [+] Debug.isDebuggerConnected (bypass)
+[22:57:24] [+] SystemProperties.get (emulator check)
+[22:57:24] [+] File.exists (root path check)
+[22:57:24] [+] Thread.sleep (timing attack)
+[22:57:24] [+] Thread.getStackTrace
+[22:57:24] [+] System.loadLibrary
+[22:57:24] [+] Intent.setAction (implicit)
+[22:57:24] [+] Activity.startActivity
+[22:57:24] [+] ContextWrapper.sendBroadcast
+[22:57:24] [+] ContextWrapper.bindService
+[22:57:24] [+] ContentResolver.query
+[22:57:24] [+] ContentResolver.insert
+[22:57:24] [+] FileOutputStream.$init (write)
+[22:57:24] [+] SharedPreferences.putString
+[22:57:24] [+] ContextWrapper.openFileOutput
+[22:57:24] [+] File.delete
+[22:57:24] [+] Environment.getExternalStorageDirectory
+[22:57:24] [+] Socket.$init (raw socket)
+[22:57:24] [+] URL.openConnection
+[22:57:24] [+] SSLContext.init (TrustManager bypass)
+[22:57:24] [+] InetAddress.getByName (DNS)
+[22:57:24] [+] URLConnection.setRequestProperty
+[22:57:24] [+] AlarmManager.set
+[22:57:24] [+] JobScheduler.schedule
+[22:57:24] [+] ContextWrapper.registerReceiver
+[22:57:24] [+] Activity.requestPermissions
+[22:57:24] [+] PackageManager.setComponentEnabledSetting
+[22:57:24] [+] Thread.$init (thread create)
+[22:57:24] [+] ActivityManager.getRunningAppProcesses
+[22:57:24] [+] ByteBuffer.allocate (>5MB)
+[22:57:24] [+] ClassLoader.getParent
+[22:57:24] === 50 Feature Hook Hazır ===
+[22:57:24]   [!] Analiz başladı — 75s
+[22:57:25]   [!] Process öldü (~1s) — son snapshot kullanılıyor
+[22:57:25]   [*] Süre doldu, final RPC...
+[22:57:25]   [!] RPC başarısız (script has been destroyed) — snapshot da yok
+[22:57:25]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 0, toplam: 0
+[22:57:25]   [-] Sayaç verisi yok — boş satır yazılmıyor.
+[22:57:31]   [+] Kaldırıldı: com.meyer.finder
+
+[22:57:31]   Durum: ✅ 2  ⏭️  7  ❌ 0  | ⏱️  ~105.8 dk kaldı
+[22:57:31] [10/1001] SKIP (daha önce hatalı): 00EBCE117F705F9C17C79D5B0D0BCB9BAA581576E368FC92B65623A3F172CBE0.apk
+
+[22:57:31] [11/1001] İşleniyor...
+
+[22:57:31] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[22:57:31] [APK] 00EC393215FE7A3D1E769EB3EEAB891A13595F8D96047E93B6922C702A947A18.apk
+[22:57:31] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[22:57:31]   [+] Package : com.mahalo.androidmobile.ccufl
+[22:57:31]   [+] Label   : benign
+[22:57:31]   [*] Kuruluyor...
+[22:57:46]   [+] Kurulum OK
+[22:57:46]   [*] Uygulama başlatılıyor (monkey)...
+[22:57:46]   [*] PID aranıyor...
+[22:57:47]   [+] PID: 7641 — attach ediliyor...
+[22:57:47] === KangalGuard Agent Başladı ===
+[22:57:48] [+] Method.invoke (reflection)
+[22:57:48] [+] DexClassLoader.$init
+[22:57:48] [+] Runtime.exec
+[22:57:48] [+] Class.forName
+[22:57:48] [+] PackageManager.getPackageInfo
+[22:57:48] [+] SmsManager.sendTextMessage
+[22:57:48] [+] TelephonyManager.getDeviceId
+[22:57:48] [+] TelephonyManager.getSubscriberId
+[22:57:48] [+] Cipher.init
+[22:57:48] [+] KeyGenerator.generateKey
+[22:57:48] [+] Base64.encode/encodeToString
+[22:57:48] [+] SecureRandom.$init
+[22:57:48] [+] System.exit (bypass)
+[22:57:48] [+] Debug.isDebuggerConnected (bypass)
+[22:57:48] [+] SystemProperties.get (emulator check)
+[22:57:48] [+] File.exists (root path check)
+[22:57:48] [+] Thread.sleep (timing attack)
+[22:57:48] [+] Thread.getStackTrace
+[22:57:48] [+] System.loadLibrary
+[22:57:48] [+] Intent.setAction (implicit)
+[22:57:48] [+] Activity.startActivity
+[22:57:48] [+] ContextWrapper.sendBroadcast
+[22:57:48] [+] ContextWrapper.bindService
+[22:57:48] [+] ContentResolver.query
+[22:57:48] [+] ContentResolver.insert
+[22:57:48] [+] FileOutputStream.$init (write)
+[22:57:48] [+] SharedPreferences.putString
+[22:57:48] [+] ContextWrapper.openFileOutput
+[22:57:48] [+] File.delete
+[22:57:48] [+] Environment.getExternalStorageDirectory
+[22:57:48] [+] Socket.$init (raw socket)
+[22:57:48] [+] URL.openConnection
+[22:57:48] [+] SSLContext.init (TrustManager bypass)
+[22:57:48] [+] InetAddress.getByName (DNS)
+[22:57:48] [+] URLConnection.setRequestProperty
+[22:57:48] [+] AlarmManager.set
+[22:57:48] [+] JobScheduler.schedule
+[22:57:48] [+] ContextWrapper.registerReceiver
+[22:57:48] [+] Activity.requestPermissions
+[22:57:48] [+] PackageManager.setComponentEnabledSetting
+[22:57:48] [+] Thread.$init (thread create)
+[22:57:48] [+] ActivityManager.getRunningAppProcesses
+[22:57:48] [+] ByteBuffer.allocate (>5MB)
+[22:57:48] [+] ClassLoader.getParent
+[22:57:48] === 50 Feature Hook Hazır ===
+[22:57:48]   [!] Analiz başladı — 75s
+[22:57:51] [FILE] openFileOutput: firebase_inter_process_mutex-lock_write_report_to_sqlite.lock
+[22:57:51] [FILE] openFileOutput: firebase_inter_process_mutex-lock_write_report_to_sqlite.lock
+[22:57:51] [FILE] openFileOutput: firebase_inter_process_mutex-lock_write_report_to_sqlite.lock
+[22:57:51] [FILE] openFileOutput: firebase_inter_process_mutex-lock_write_report_to_sqlite.lock
+[22:57:51] [FILE] openFileOutput: firebase_inter_process_mutex-lock_write_report_to_sqlite.lock
+[22:57:51] [FILE] openFileOutput: firebase_inter_process_mutex-lock_write_report_to_sqlite.lock
+[22:57:51] [FILE] openFileOutput: firebase_inter_process_mutex-lock_write_report_to_sqlite.lock
+[22:57:51] [FILE] openFileOutput: firebase_inter_process_mutex-lock_write_report_to_sqlite.lock
+[22:57:51] [FILE] openFileOutput: firebase_inter_process_mutex-lock_send_report_to_server.lock
+[22:57:51] [FILE] openFileOutput: firebase_inter_process_mutex-lock_write_report_to_sqlite.lock
+[22:57:51] [NET] URL: https://mobilecrashreporting.googleapis.com/v1/crashes:batchCreate?key=AIzaSyCzZSwItIaVffK6N5AgK-mWJqEl4yD8oNg&alt=json
+[22:57:54]   [!] Process öldü (~6s) — son snapshot kullanılıyor
+[22:57:54]   [*] Süre doldu, final RPC...
+[22:57:54]   [!] Final RPC başarısız — son poll snapshot: 0 event
+[22:57:54]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 50, toplam: 0
+
+[22:57:54] ============================================================
+[22:57:54] [+] CSV YAZILDI — 22:57:54
+[22:57:54]     com.mahalo.androidmobile.ccufl  |  BENIGN
+[22:57:54] ────────────────────────────────────────────────────────────
+[22:57:54]   (Ham feature tetiklenmedi)
+[22:57:54] ────────────────────────────────────────────────────────────
+[22:57:54]   Türetilmiş Skorlar:
+[22:57:54] ────────────────────────────────────────────────────────────
+[22:57:54]   Temporal Bilgiler:
+[22:57:54]     burst_peak_count                             0
+[22:57:54] ────────────────────────────────────────────────────────────
+[22:57:54]   Sequence Log: 0 event kayıt edildi
+[22:57:54]   (Tehlikeli sequence tespit edilmedi)
+[22:57:54] ============================================================
+
+
+[22:57:54] ==========================================================
+[22:57:54] [+] CSV YAZILDI — 22:57:54
+[22:57:54]     com.mahalo.androidmobile.ccufl  |  BENIGN
+[22:57:54] ──────────────────────────────────────────────────────────
+[22:57:54]   (Ham feature tetiklenmedi)
+[22:57:54] ──────────────────────────────────────────────────────────
+[22:57:54]   Türetilmiş Skorlar:
+[22:57:54]   Aktif Boolean Patternler:
+[22:57:54]     (Tehlikeli pattern tespit edilmedi)
+[22:57:54] ──────────────────────────────────────────────────────────
+[22:57:54]   Temporal Bilgiler:
+[22:57:54]     burst_peak_count                           0
+[22:57:54]     session_duration_ms                        1384 ms
+[22:57:54] ==========================================================
+
+[22:57:54]   [+] CSV satırı yazıldı.
+[22:57:59]   [+] Kaldırıldı: com.mahalo.androidmobile.ccufl
+
+[22:57:59]   Durum: ✅ 3  ⏭️  8  ❌ 0  | ⏱️  ~128.7 dk kaldı
+[22:57:59] [12/1001] SKIP (daha önce hatalı): 00EC8CBCE00E4372BD1F8AB0DABADD0E9CDB0CB0BB34F43D0C69E9F37F3E2CC6.apk
+[22:57:59] [13/1001] SKIP (zaten işlenmiş): 00EC8D8224EA859AF37C43421C37B53A6FD145A19F1D3FF4A62749827800CE17.apk
+
+[22:57:59] [14/1001] İşleniyor...
+
+[22:57:59] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[22:57:59] [APK] 00ECC73E6AEECBDE670E5BB5FA92F0F3165A7C807BE07B3DCC5BD9E0E8768381.apk
+[22:57:59] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[22:57:59]   [+] Package : com.jmsoft.chungju.estate
+[22:57:59]   [+] Label   : benign
+[22:57:59]   [*] Kuruluyor...
+[22:58:14]   [+] Kurulum OK
+[22:58:14]   [*] Uygulama başlatılıyor (monkey)...
+[22:58:15]   [*] PID aranıyor...
+[22:58:15]   [+] PID: 7831 — attach ediliyor...
+[22:58:15] === KangalGuard Agent Başladı ===
+[22:58:16] [+] Method.invoke (reflection)
+[22:58:16] [+] DexClassLoader.$init
+[22:58:16] [+] Runtime.exec
+[22:58:16] [+] Class.forName
+[22:58:16] [+] PackageManager.getPackageInfo
+[22:58:16] [+] SmsManager.sendTextMessage
+[22:58:16] [+] TelephonyManager.getDeviceId
+[22:58:16] [+] TelephonyManager.getSubscriberId
+[22:58:16] [+] Cipher.init
+[22:58:16] [+] KeyGenerator.generateKey
+[22:58:16] [+] Base64.encode/encodeToString
+[22:58:16] [+] SecureRandom.$init
+[22:58:16] [+] System.exit (bypass)
+[22:58:16] [+] Debug.isDebuggerConnected (bypass)
+[22:58:16] [+] SystemProperties.get (emulator check)
+[22:58:16] [+] File.exists (root path check)
+[22:58:16] [+] Thread.sleep (timing attack)
+[22:58:16] [+] Thread.getStackTrace
+[22:58:16] [+] System.loadLibrary
+[22:58:16] [+] Intent.setAction (implicit)
+[22:58:16] [+] Activity.startActivity
+[22:58:16] [+] ContextWrapper.sendBroadcast
+[22:58:16] [+] ContextWrapper.bindService
+[22:58:16] [+] ContentResolver.query
+[22:58:16] [+] ContentResolver.insert
+[22:58:16] [+] FileOutputStream.$init (write)
+[22:58:16] [+] SharedPreferences.putString
+[22:58:16] [+] ContextWrapper.openFileOutput
+[22:58:16] [+] File.delete
+[22:58:16] [+] Environment.getExternalStorageDirectory
+[22:58:16] [+] Socket.$init (raw socket)
+[22:58:16] [+] URL.openConnection
+[22:58:16] [+] SSLContext.init (TrustManager bypass)
+[22:58:16] [+] InetAddress.getByName (DNS)
+[22:58:16] [+] URLConnection.setRequestProperty
+[22:58:16] [+] AlarmManager.set
+[22:58:16] [+] JobScheduler.schedule
+[22:58:16] [+] ContextWrapper.registerReceiver
+[22:58:16] [+] Activity.requestPermissions
+[22:58:16] [+] PackageManager.setComponentEnabledSetting
+[22:58:16] [+] Thread.$init (thread create)
+[22:58:16] [+] ActivityManager.getRunningAppProcesses
+[22:58:16] [+] ByteBuffer.allocate (>5MB)
+[22:58:16] [+] ClassLoader.getParent
+[22:58:16] === 50 Feature Hook Hazır ===
+[22:58:16]   [!] Analiz başladı — 75s
+[22:58:17] [ANTI] Thread.sleep(10000ms)
+[22:58:17]   [~] RPC poll @1s — 18 event
+[22:58:17] [NATIVE] loadLibrary: monochrome_64
+[22:58:22]   [!] Process öldü (~6s) — son snapshot kullanılıyor
+[22:58:22]   [*] Süre doldu, final RPC...
+[22:58:22]   [!] Final RPC başarısız — son poll snapshot: 18 event
+[22:58:22]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 50, toplam: 18
+
+[22:58:22] ============================================================
+[22:58:22] [+] CSV YAZILDI — 22:58:22
+[22:58:22]     com.jmsoft.chungju.estate  |  BENIGN
+[22:58:22] ────────────────────────────────────────────────────────────
+[22:58:22]   Ham Feature'lar (aktif):
+[22:58:22]     reflection_invoke_count                      2
+[22:58:22]     dynamic_class_load_count                     1
+[22:58:22]     getPackageInfo_count                         1
+[22:58:22]     sleep_call_count                             1
+[22:58:22]     implicit_intent_count                        2
+[22:58:22]     startActivity_count                          1
+[22:58:22]     bindService_count                            1
+[22:58:22]     shared_prefs_write_count                     1
+[22:58:22]     deleteFile_count                             2
+[22:58:22]     class_loader_parent_count                    6
+[22:58:22] ────────────────────────────────────────────────────────────
+[22:58:22]   Türetilmiş Skorlar:
+[22:58:22]     anti_analysis_score                          1
+[22:58:22]     stealth_score                                3
+[22:58:22]     surveillance_score                           1
+[22:58:22]     dynamic_exec_score                           2
+[22:58:22]     anti_to_total_ratio                          0.0556
+[22:58:22]     reflection_to_exec_ratio                     2.0
+[22:58:22]   ⚠️  Aktif Boolean Patternler:
+[22:58:22]     has_evasion_pattern
+[22:58:22] ────────────────────────────────────────────────────────────
+[22:58:22]   Temporal Bilgiler:
+[22:58:22]     first_reflection_ms                          1241 ms
+[22:58:22]     first_dynamic_load_ms                        325 ms
+[22:58:22]     burst_peak_count                             18
+[22:58:22] ────────────────────────────────────────────────────────────
+[22:58:22]   Sequence Log: 3 event kayıt edildi
+[22:58:22]   🔗 Aktif Sequence Patternler:
+[22:58:22]     seq_max_chain_length                         3
+[22:58:22] ============================================================
+
+
+[22:58:22] ==========================================================
+[22:58:22] [+] CSV YAZILDI — 22:58:22
+[22:58:22]     com.jmsoft.chungju.estate  |  BENIGN
+[22:58:22] ──────────────────────────────────────────────────────────
+[22:58:22]   Ham Feature'lar (aktif):
+[22:58:22]     reflection_invoke_count                    2
+[22:58:22]     dynamic_class_load_count                   1
+[22:58:22]     getPackageInfo_count                       1
+[22:58:22]     sleep_call_count                           1
+[22:58:22]     implicit_intent_count                      2
+[22:58:22]     startActivity_count                        1
+[22:58:22]     bindService_count                          1
+[22:58:22]     shared_prefs_write_count                   1
+[22:58:22]     deleteFile_count                           2
+[22:58:22]     class_loader_parent_count                  6
+[22:58:22] ──────────────────────────────────────────────────────────
+[22:58:22]   Türetilmiş Skorlar:
+[22:58:22]     anti_analysis_score                        1
+[22:58:22]     stealth_score                              3
+[22:58:22]     surveillance_score                         1
+[22:58:22]     dynamic_exec_score                         2
+[22:58:22]     anti_to_total_ratio                        0.0556
+[22:58:22]     reflection_to_exec_ratio                   2.0
+[22:58:22]   Aktif Boolean Patternler:
+[22:58:22]     ⚠️  has_evasion_pattern
+[22:58:22] ──────────────────────────────────────────────────────────
+[22:58:22]   Temporal Bilgiler:
+[22:58:22]     first_reflection_ms                        1241 ms
+[22:58:22]     first_dynamic_load_ms                      325 ms
+[22:58:22]     burst_peak_count                           18
+[22:58:22]     session_duration_ms                        1366 ms
+[22:58:22] ==========================================================
+
+[22:58:22]   [+] CSV satırı yazıldı.
+[22:58:27]   [+] Kaldırıldı: com.jmsoft.chungju.estate
+
+[22:58:27]   Durum: ✅ 4  ⏭️  10  ❌ 0  | ⏱️  ~133.6 dk kaldı
+
+[22:58:27] [15/1001] İşleniyor...
+
+[22:58:27] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[22:58:27] [APK] 00ECCE84820E2D57FFF955413CF5F9F59FABFA6C513372E2DE8425D119C30EAB.apk
+[22:58:27] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[22:58:27]   [+] Package : com.phorest.brownsugarhairdressers
+[22:58:27]   [+] Label   : benign
+[22:58:27]   [*] Kuruluyor...
+[22:58:44]   [+] Kurulum OK
+[22:58:44]   [*] Uygulama başlatılıyor (monkey)...
+[22:58:45]   [*] PID aranıyor...
+[22:58:53]   [-] PID bulunamadı → SKIP
+[22:58:53]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 0, toplam: 0
+[22:58:53]   [-] Sayaç verisi yok — boş satır yazılmıyor.
+[22:58:58]   [+] Kaldırıldı: com.phorest.brownsugarhairdressers
+
+[22:58:58]   Durum: ✅ 4  ⏭️  11  ❌ 0  | ⏱️  ~159.0 dk kaldı
+
+[22:58:58] [16/1001] İşleniyor...
+
+[22:58:58] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[22:58:58] [APK] 00ECE74B8014BFA08C1504BD4DC59D6DFD1E4A81D0878CABB989217A86C625CC.apk
+[22:58:58] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[22:58:58]   [+] Package : com.ft.news
+[22:58:58]   [+] Label   : benign
+[22:58:58]   [*] Kuruluyor...
+[22:59:15]   [+] Kurulum OK
+[22:59:15]   [*] Uygulama başlatılıyor (monkey)...
+[22:59:15]   [*] PID aranıyor...
+[22:59:15]   [+] PID: 8183 — attach ediliyor...
+[22:59:16] === KangalGuard Agent Başladı ===
+[22:59:16] [+] Method.invoke (reflection)
+[22:59:16] [+] DexClassLoader.$init
+[22:59:16] [+] Runtime.exec
+[22:59:16] [+] Class.forName
+[22:59:16] [+] PackageManager.getPackageInfo
+[22:59:16] [+] SmsManager.sendTextMessage
+[22:59:16] [+] TelephonyManager.getDeviceId
+[22:59:16] [+] TelephonyManager.getSubscriberId
+[22:59:16] [+] Cipher.init
+[22:59:16] [+] KeyGenerator.generateKey
+[22:59:16] [+] Base64.encode/encodeToString
+[22:59:16] [+] SecureRandom.$init
+[22:59:16] [+] System.exit (bypass)
+[22:59:16] [+] Debug.isDebuggerConnected (bypass)
+[22:59:16] [+] SystemProperties.get (emulator check)
+[22:59:16] [+] File.exists (root path check)
+[22:59:16] [+] Thread.sleep (timing attack)
+[22:59:16] [+] Thread.getStackTrace
+[22:59:16] [+] System.loadLibrary
+[22:59:16] [+] Intent.setAction (implicit)
+[22:59:16] [+] Activity.startActivity
+[22:59:16] [+] ContextWrapper.sendBroadcast
+[22:59:16] [+] ContextWrapper.bindService
+[22:59:16] [+] ContentResolver.query
+[22:59:16] [+] ContentResolver.insert
+[22:59:16] [+] FileOutputStream.$init (write)
+[22:59:16] [+] SharedPreferences.putString
+[22:59:16] [+] ContextWrapper.openFileOutput
+[22:59:16] [+] File.delete
+[22:59:16] [+] Environment.getExternalStorageDirectory
+[22:59:16] [+] Socket.$init (raw socket)
+[22:59:16] [+] URL.openConnection
+[22:59:16] [+] SSLContext.init (TrustManager bypass)
+[22:59:16] [+] InetAddress.getByName (DNS)
+[22:59:16] [+] URLConnection.setRequestProperty
+[22:59:16] [+] AlarmManager.set
+[22:59:16] [+] JobScheduler.schedule
+[22:59:16] [+] ContextWrapper.registerReceiver
+[22:59:16] [+] Activity.requestPermissions
+[22:59:16] [+] PackageManager.setComponentEnabledSetting
+[22:59:16] [+] Thread.$init (thread create)
+[22:59:16] [+] ActivityManager.getRunningAppProcesses
+[22:59:16] [+] ByteBuffer.allocate (>5MB)
+[22:59:16] [+] ClassLoader.getParent
+[22:59:16] === 50 Feature Hook Hazır ===
+[22:59:16]   [!] Analiz başladı — 75s
+[22:59:17] [ANTI] Thread.sleep(10000ms)
+[22:59:17]   [~] RPC poll @1s — 146 event
+[22:59:18] [NET] URL: https://spoor-api.ft.com/ingest?type=web-app-url:get-from-shared-preferences
+[22:59:19] [NET] URL: https://spoor-api.ft.com/ingest?type=android-lifecycle:start
+[22:59:19] [FILE] openFileOutput: PREFS_KEY_STRUCTURE_PARAMTERS.data
+[22:59:19] [NET] URL: https://app-api.ft.com/structure/v14?icb=1772308759057
+[22:59:19] [NET] URL: https://spoor-api.ft.com/ingest?type=web-app-url:set-api-end
+[22:59:22]   [~] RPC poll @6s — 763 event
+[22:59:22] [FILE] openFileOutput: ._tmpfruit-structure.json
+[22:59:23] [NET] URL: https://spoor-api.ft.com/ingest?type=fetch-structure-when-disk-and-cache-null:fetch-structure
+[22:59:23] [FILE] openFileOutput: PREFS_KEY_STRUCTURE_PARAMTERS.data
+[22:59:23] [FILE] openFileOutput: demographicData.json
+[22:59:24] [NET] URL: https://spoor-api.ft.com/ingest?type=android-signing-banner:view
+[22:59:24] [NET] URL: https://ljedck-gcdsdk.appsflyersdk.com/install_data/v5.0/com.ft.news?device_id=1772308755392-4052652746469453579
+[22:59:27]   [~] RPC poll @11s — 1099 event
+[22:59:32]   [~] RPC poll @16s — 1110 event
+[22:59:36] [~] Snapshot — 1112 event | 15 aktif feature | burst: 675 | seq: 200 event
+[22:59:37]   [~] RPC poll @21s — 1112 event
+[22:59:42]   [~] RPC poll @26s — 1119 event
+[22:59:47]   [~] RPC poll @31s — 1120 event
+[22:59:52]   [~] RPC poll @36s — 1121 event
+[22:59:56] [~] Snapshot — 1122 event | 15 aktif feature | burst: 675 | seq: 200 event
+[22:59:57]   [~] RPC poll @41s — 1122 event
+[23:00:02]   [~] RPC poll @46s — 1123 event
+[23:00:07]   [~] RPC poll @51s — 1124 event
+[23:00:12]   [~] RPC poll @56s — 1125 event
+[23:00:16] [~] Snapshot — 1126 event | 15 aktif feature | burst: 675 | seq: 200 event
+[23:00:17]   [~] RPC poll @61s — 1126 event
+[23:00:22]   [~] RPC poll @66s — 1127 event
+[23:00:27]   [~] RPC poll @71s — 1130 event
+[23:00:31]   [*] Süre doldu, final RPC...
+[23:00:31]   [+] RPC OK — 1131 event alındı
+[23:00:31]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 50, toplam: 1131
+
+[23:00:31] ============================================================
+[23:00:31] [+] CSV YAZILDI — 23:00:31
+[23:00:31]     com.ft.news  |  BENIGN
+[23:00:31] ────────────────────────────────────────────────────────────
+[23:00:31]   Ham Feature'lar (aktif):
+[23:00:31]     reflection_invoke_count                      645
+[23:00:31]     dynamic_class_load_count                     230
+[23:00:31]     getPackageInfo_count                         27
+[23:00:31]     base64_encode_count                          38
+[23:00:31]     sleep_call_count                             1
+[23:00:31]     implicit_intent_count                        34
+[23:00:31]     bindService_count                            23
+[23:00:31]     content_resolver_insert_count                10
+[23:00:31]     shared_prefs_write_count                     59
+[23:00:31]     openFileOutput_count                         4
+[23:00:31]     deleteFile_count                             22
+[23:00:31]     url_connection_count                         7
+[23:00:31]     register_receiver_count                      24
+[23:00:31]     thread_create_count                          3
+[23:00:31]     process_list_query_count                     4
+[23:00:31] ────────────────────────────────────────────────────────────
+[23:00:31]   Türetilmiş Skorlar:
+[23:00:31]     network_score                                7
+[23:00:31]     anti_analysis_score                          1
+[23:00:31]     persistence_score                            24
+[23:00:31]     stealth_score                                875
+[23:00:31]     exfil_score                                  45
+[23:00:31]     privilege_score                              14
+[23:00:31]     surveillance_score                           27
+[23:00:31]     dynamic_exec_score                           645
+[23:00:31]     anti_to_total_ratio                          0.0009
+[23:00:31]     reflection_to_exec_ratio                     645.0
+[23:00:31]     network_to_activity_ratio                    7.0
+[23:00:31]   ⚠️  Aktif Boolean Patternler:
+[23:00:31]     has_exfil_pattern
+[23:00:31]     has_evasion_pattern
+[23:00:31] ────────────────────────────────────────────────────────────
+[23:00:31]   Temporal Bilgiler:
+[23:00:31]     first_network_ms                             2423 ms
+[23:00:31]     first_reflection_ms                          308 ms
+[23:00:31]     first_dynamic_load_ms                        565 ms
+[23:00:31]     burst_peak_count                             675
+[23:00:31]     🕐 early_network_flag
+[23:00:31]     🕐 rapid_burst_flag
+[23:00:31] ────────────────────────────────────────────────────────────
+[23:00:31]   Sequence Log: 200 event kayıt edildi
+[23:00:31]   🔗 Aktif Sequence Patternler:
+[23:00:31]     seq_max_chain_length                         200
+[23:00:31] ============================================================
+
+
+[23:00:31] ==========================================================
+[23:00:31] [+] CSV YAZILDI — 23:00:31
+[23:00:31]     com.ft.news  |  BENIGN
+[23:00:31] ──────────────────────────────────────────────────────────
+[23:00:31]   Ham Feature'lar (aktif):
+[23:00:31]     reflection_invoke_count                    645
+[23:00:31]     dynamic_class_load_count                   230
+[23:00:31]     getPackageInfo_count                       27
+[23:00:31]     base64_encode_count                        38
+[23:00:31]     sleep_call_count                           1
+[23:00:31]     implicit_intent_count                      34
+[23:00:31]     bindService_count                          23
+[23:00:31]     content_resolver_insert_count              10
+[23:00:31]     shared_prefs_write_count                   59
+[23:00:31]     openFileOutput_count                       4
+[23:00:31]     deleteFile_count                           22
+[23:00:31]     url_connection_count                       7
+[23:00:31]     register_receiver_count                    24
+[23:00:31]     thread_create_count                        3
+[23:00:31]     process_list_query_count                   4
+[23:00:31] ──────────────────────────────────────────────────────────
+[23:00:31]   Türetilmiş Skorlar:
+[23:00:31]     network_score                              7
+[23:00:31]     anti_analysis_score                        1
+[23:00:31]     persistence_score                          24
+[23:00:31]     stealth_score                              875
+[23:00:31]     exfil_score                                45
+[23:00:31]     privilege_score                            14
+[23:00:31]     surveillance_score                         27
+[23:00:31]     dynamic_exec_score                         645
+[23:00:31]     anti_to_total_ratio                        0.0009
+[23:00:31]     reflection_to_exec_ratio                   645.0
+[23:00:31]     network_to_activity_ratio                  7.0
+[23:00:31]   Aktif Boolean Patternler:
+[23:00:31]     ⚠️  has_exfil_pattern
+[23:00:31]     ⚠️  has_evasion_pattern
+[23:00:31] ──────────────────────────────────────────────────────────
+[23:00:31]   Temporal Bilgiler:
+[23:00:31]     first_network_ms                           2423 ms
+[23:00:31]     first_reflection_ms                        308 ms
+[23:00:31]     first_dynamic_load_ms                      565 ms
+[23:00:31]     burst_peak_count                           675
+[23:00:31]     session_duration_ms                        75528 ms
+[23:00:31]   Aktif Temporal Flagler:
+[23:00:31]     🕐 early_network_flag
+[23:00:31]     🕐 rapid_burst_flag
+[23:00:31] ==========================================================
+
+[23:00:31]   [+] CSV satırı yazıldı.
+[23:00:37]   [+] Kaldırıldı: com.ft.news
+
+[23:00:37]   Durum: ✅ 5  ⏭️  11  ❌ 0  | ⏱️  ~250.0 dk kaldı
+
+[23:00:37] [17/1001] İşleniyor...
+
+[23:00:37] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:00:37] [APK] 00ED01B6B27545909B6C079A80343986E94232C72E801DE138E8D73CE9570A22.apk
+[23:00:37] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:00:37]   [+] Package : com.gof.global
+[23:00:37]   [+] Label   : benign
+[23:00:37]   [*] Kuruluyor...
+[23:00:52]   [+] Kurulum OK
+[23:00:52]   [*] Uygulama başlatılıyor (monkey)...
+[23:00:53]   [*] PID aranıyor...
+[23:00:53]   [+] PID: 8659 — attach ediliyor...
+[23:00:53]   [!] Transport hatası (InvalidArgumentError): invalid session ID
+[23:00:53]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[23:01:02]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[23:01:02]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 0, toplam: 0
+[23:01:02]   [-] Sayaç verisi yok — boş satır yazılmıyor.
+[23:01:07]   [+] Kaldırıldı: com.gof.global
+
+[23:01:07]   Durum: ✅ 5  ⏭️  12  ❌ 0  | ⏱️  ~264.2 dk kaldı
+
+[23:01:07] [18/1001] İşleniyor...
+
+[23:01:07] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:01:07] [APK] 00ED1FBB6FCBB903F9AB822AF48175919803FAB026CECF7A3AEA74491ABC7C80.apk
+[23:01:07] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:01:07]   [+] Package : com.globalpayments.atom
+[23:01:07]   [+] Label   : benign
+[23:01:07]   [*] Kuruluyor...
+[23:01:24]   [+] Kurulum OK
+[23:01:24]   [*] Uygulama başlatılıyor (monkey)...
+[23:01:24]   [*] PID aranıyor...
+[23:01:24]   [+] PID: 8822 — attach ediliyor...
+[23:01:25] === KangalGuard Agent Başladı ===
+[23:01:26] [+] Method.invoke (reflection)
+[23:01:26] [+] DexClassLoader.$init
+[23:01:26] [+] Runtime.exec
+[23:01:26] [+] Class.forName
+[23:01:26] [+] PackageManager.getPackageInfo
+[23:01:26] [+] SmsManager.sendTextMessage
+[23:01:26] [+] TelephonyManager.getDeviceId
+[23:01:26] [+] TelephonyManager.getSubscriberId
+[23:01:26] [+] Cipher.init
+[23:01:26] [+] KeyGenerator.generateKey
+[23:01:26] [+] Base64.encode/encodeToString
+[23:01:26] [+] SecureRandom.$init
+[23:01:26] [+] System.exit (bypass)
+[23:01:26] [+] Debug.isDebuggerConnected (bypass)
+[23:01:26] [+] SystemProperties.get (emulator check)
+[23:01:26] [+] File.exists (root path check)
+[23:01:26] [+] Thread.sleep (timing attack)
+[23:01:26] [+] Thread.getStackTrace
+[23:01:26] [+] System.loadLibrary
+[23:01:26] [+] Intent.setAction (implicit)
+[23:01:26] [+] Activity.startActivity
+[23:01:26] [+] ContextWrapper.sendBroadcast
+[23:01:26] [+] ContextWrapper.bindService
+[23:01:26] [+] ContentResolver.query
+[23:01:26] [+] ContentResolver.insert
+[23:01:26] [+] FileOutputStream.$init (write)
+[23:01:26] [+] SharedPreferences.putString
+[23:01:26] [+] ContextWrapper.openFileOutput
+[23:01:26] [+] File.delete
+[23:01:26] [+] Environment.getExternalStorageDirectory
+[23:01:26] [+] Socket.$init (raw socket)
+[23:01:26] [+] URL.openConnection
+[23:01:26] [+] SSLContext.init (TrustManager bypass)
+[23:01:26] [+] InetAddress.getByName (DNS)
+[23:01:26] [+] URLConnection.setRequestProperty
+[23:01:26] [+] AlarmManager.set
+[23:01:26] [+] JobScheduler.schedule
+[23:01:26] [+] ContextWrapper.registerReceiver
+[23:01:26] [+] Activity.requestPermissions
+[23:01:26] [+] PackageManager.setComponentEnabledSetting
+[23:01:26] [+] Thread.$init (thread create)
+[23:01:26] [+] ActivityManager.getRunningAppProcesses
+[23:01:26] [+] ByteBuffer.allocate (>5MB)
+[23:01:26] [+] ClassLoader.getParent
+[23:01:26] === 50 Feature Hook Hazır ===
+[23:01:26]   [!] Analiz başladı — 75s
+[23:01:26] [ANTI] Thread.sleep(10000ms)
+[23:01:27]   [~] RPC poll @1s — 477 event
+[23:01:29] [NET] URL: https://firebase-settings.crashlytics.com/spi/v2/platforms/android/gmp/1:1064900931298:android:c88f7920fedade4f1138bb/settings?instance=37c8e0904044cb0b2f9093539dfc66f7a68eb3cf&build_version=78&display_version=1.34.28&source=1
+[23:01:29] [PRIV] setComponentEnabled: ComponentInfo{com.globalpayments.atom/androidx.work.impl.background.systemalarm.RescheduleReceiver} -> 1
+[23:01:32]   [~] RPC poll @6s — 1602 event
+[23:01:37]   [~] RPC poll @11s — 1602 event
+[23:01:42]   [~] RPC poll @16s — 1602 event
+[23:01:46] [~] Snapshot — 1602 event | 12 aktif feature | burst: 1600 | seq: 36 event
+[23:01:47]   [~] RPC poll @21s — 1602 event
+[23:01:52]   [~] RPC poll @26s — 1602 event
+[23:01:57]   [~] RPC poll @31s — 1602 event
+[23:02:02]   [~] RPC poll @36s — 1602 event
+[23:02:06] [~] Snapshot — 1602 event | 12 aktif feature | burst: 1600 | seq: 36 event
+[23:02:07]   [~] RPC poll @41s — 1602 event
+[23:02:12]   [~] RPC poll @46s — 1602 event
+[23:02:17]   [~] RPC poll @51s — 1602 event
+[23:02:22]   [~] RPC poll @56s — 1602 event
+[23:02:26] [~] Snapshot — 1609 event | 12 aktif feature | burst: 1600 | seq: 41 event
+[23:02:27]   [~] RPC poll @61s — 1609 event
+[23:02:32]   [~] RPC poll @66s — 1609 event
+[23:02:37]   [~] RPC poll @71s — 1609 event
+[23:02:41]   [*] Süre doldu, final RPC...
+[23:02:41]   [+] RPC OK — 1609 event alındı
+[23:02:41]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 50, toplam: 1609
+
+[23:02:41] ============================================================
+[23:02:41] [+] CSV YAZILDI — 23:02:41
+[23:02:41]     com.globalpayments.atom  |  BENIGN
+[23:02:41] ────────────────────────────────────────────────────────────
+[23:02:41]   Ham Feature'lar (aktif):
+[23:02:41]     reflection_invoke_count                      27
+[23:02:41]     dynamic_class_load_count                     13
+[23:02:41]     getPackageInfo_count                         9
+[23:02:41]     sleep_call_count                             1
+[23:02:41]     implicit_intent_count                        9
+[23:02:41]     bindService_count                            1
+[23:02:41]     shared_prefs_write_count                     925
+[23:02:41]     deleteFile_count                             617
+[23:02:41]     url_connection_count                         1
+[23:02:41]     register_receiver_count                      2
+[23:02:41]     setComponentEnabled_count                    1
+[23:02:41]     thread_create_count                          3
+[23:02:41] ────────────────────────────────────────────────────────────
+[23:02:41]   Türetilmiş Skorlar:
+[23:02:41]     network_score                                1
+[23:02:41]     anti_analysis_score                          1
+[23:02:41]     persistence_score                            3
+[23:02:41]     stealth_score                                40
+[23:02:41]     exfil_score                                  1
+[23:02:41]     privilege_score                              1
+[23:02:41]     surveillance_score                           9
+[23:02:41]     dynamic_exec_score                           27
+[23:02:41]     anti_to_total_ratio                          0.0006
+[23:02:41]     reflection_to_exec_ratio                     27.0
+[23:02:41]     network_to_activity_ratio                    1.0
+[23:02:41]   ⚠️  Aktif Boolean Patternler:
+[23:02:41]     has_evasion_pattern
+[23:02:41]     has_persistence_pattern
+[23:02:41] ────────────────────────────────────────────────────────────
+[23:02:41]   Temporal Bilgiler:
+[23:02:41]     first_network_ms                             3759 ms
+[23:02:41]     first_reflection_ms                          3732 ms
+[23:02:41]     first_dynamic_load_ms                        3727 ms
+[23:02:41]     burst_peak_count                             1600
+[23:02:41]     🕐 early_network_flag
+[23:02:41]     🕐 rapid_burst_flag
+[23:02:41] ────────────────────────────────────────────────────────────
+[23:02:41]   Sequence Log: 41 event kayıt edildi
+[23:02:41]   🔗 Aktif Sequence Patternler:
+[23:02:41]     seq_max_chain_length                         41
+[23:02:41] ============================================================
+
+
+[23:02:41] ==========================================================
+[23:02:41] [+] CSV YAZILDI — 23:02:41
+[23:02:41]     com.globalpayments.atom  |  BENIGN
+[23:02:41] ──────────────────────────────────────────────────────────
+[23:02:41]   Ham Feature'lar (aktif):
+[23:02:41]     reflection_invoke_count                    27
+[23:02:41]     dynamic_class_load_count                   13
+[23:02:41]     getPackageInfo_count                       9
+[23:02:41]     sleep_call_count                           1
+[23:02:41]     implicit_intent_count                      9
+[23:02:41]     bindService_count                          1
+[23:02:41]     shared_prefs_write_count                   925
+[23:02:41]     deleteFile_count                           617
+[23:02:41]     url_connection_count                       1
+[23:02:41]     register_receiver_count                    2
+[23:02:41]     setComponentEnabled_count                  1
+[23:02:41]     thread_create_count                        3
+[23:02:41] ──────────────────────────────────────────────────────────
+[23:02:41]   Türetilmiş Skorlar:
+[23:02:41]     network_score                              1
+[23:02:41]     anti_analysis_score                        1
+[23:02:41]     persistence_score                          3
+[23:02:41]     stealth_score                              40
+[23:02:41]     exfil_score                                1
+[23:02:41]     privilege_score                            1
+[23:02:41]     surveillance_score                         9
+[23:02:41]     dynamic_exec_score                         27
+[23:02:41]     anti_to_total_ratio                        0.0006
+[23:02:41]     reflection_to_exec_ratio                   27.0
+[23:02:41]     network_to_activity_ratio                  1.0
+[23:02:41]   Aktif Boolean Patternler:
+[23:02:41]     ⚠️  has_evasion_pattern
+[23:02:41]     ⚠️  has_persistence_pattern
+[23:02:41] ──────────────────────────────────────────────────────────
+[23:02:41]   Temporal Bilgiler:
+[23:02:41]     first_network_ms                           3759 ms
+[23:02:41]     first_reflection_ms                        3732 ms
+[23:02:41]     first_dynamic_load_ms                      3727 ms
+[23:02:41]     burst_peak_count                           1600
+[23:02:41]     session_duration_ms                        75682 ms
+[23:02:41]   Aktif Temporal Flagler:
+[23:02:41]     🕐 early_network_flag
+[23:02:41]     🕐 rapid_burst_flag
+[23:02:41] ==========================================================
+
+[23:02:41]   [+] CSV satırı yazıldı.
+[23:02:46]   [+] Kaldırıldı: com.globalpayments.atom
+
+[23:02:46]   Durum: ✅ 6  ⏭️  12  ❌ 0  | ⏱️  ~339.7 dk kaldı
+
+[23:02:46] [19/1001] İşleniyor...
+
+[23:02:46] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:02:46] [APK] 00ED27F618602FBF539DDCAEF98223FF9C371043F5E326BB9E951FF0DF96BDAC.apk
+[23:02:46] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:02:46]   [+] Package : com.car_wallpapers_collection.KTM_RC_200_Wallpapers
+[23:02:46]   [+] Label   : benign
+[23:02:46]   [*] Kuruluyor...
+[23:03:02]   [+] Kurulum OK
+[23:03:02]   [*] Uygulama başlatılıyor (monkey)...
+[23:03:02]   [*] PID aranıyor...
+[23:03:02]   [+] PID: 9914 — attach ediliyor...
+[23:03:03] === KangalGuard Agent Başladı ===
+[23:03:03] [+] Method.invoke (reflection)
+[23:03:03] [+] DexClassLoader.$init
+[23:03:03] [+] Runtime.exec
+[23:03:03] [+] Class.forName
+[23:03:03] [+] PackageManager.getPackageInfo
+[23:03:03] [+] SmsManager.sendTextMessage
+[23:03:03] [+] TelephonyManager.getDeviceId
+[23:03:03] [+] TelephonyManager.getSubscriberId
+[23:03:03] [+] Cipher.init
+[23:03:03] [+] KeyGenerator.generateKey
+[23:03:03] [+] Base64.encode/encodeToString
+[23:03:03] [+] SecureRandom.$init
+[23:03:03] [+] System.exit (bypass)
+[23:03:03] [+] Debug.isDebuggerConnected (bypass)
+[23:03:03] [+] SystemProperties.get (emulator check)
+[23:03:03] [+] File.exists (root path check)
+[23:03:03] [+] Thread.sleep (timing attack)
+[23:03:03] [+] Thread.getStackTrace
+[23:03:03] [+] System.loadLibrary
+[23:03:03] [+] Intent.setAction (implicit)
+[23:03:03] [+] Activity.startActivity
+[23:03:03] [+] ContextWrapper.sendBroadcast
+[23:03:03] [+] ContextWrapper.bindService
+[23:03:03] [+] ContentResolver.query
+[23:03:03] [+] ContentResolver.insert
+[23:03:03] [+] FileOutputStream.$init (write)
+[23:03:03] [+] SharedPreferences.putString
+[23:03:03] [+] ContextWrapper.openFileOutput
+[23:03:03] [+] File.delete
+[23:03:03] [+] Environment.getExternalStorageDirectory
+[23:03:03] [+] Socket.$init (raw socket)
+[23:03:03] [+] URL.openConnection
+[23:03:03] [+] SSLContext.init (TrustManager bypass)
+[23:03:03] [+] InetAddress.getByName (DNS)
+[23:03:03] [+] URLConnection.setRequestProperty
+[23:03:03] [+] AlarmManager.set
+[23:03:03] [+] JobScheduler.schedule
+[23:03:03] [+] ContextWrapper.registerReceiver
+[23:03:03] [+] Activity.requestPermissions
+[23:03:03] [+] PackageManager.setComponentEnabledSetting
+[23:03:03] [+] Thread.$init (thread create)
+[23:03:03] [+] ActivityManager.getRunningAppProcesses
+[23:03:03] [+] ByteBuffer.allocate (>5MB)
+[23:03:03] [+] ClassLoader.getParent
+[23:03:03] === 50 Feature Hook Hazır ===
+[23:03:03]   [!] Analiz başladı — 75s
+[23:03:04] [ANTI] Thread.sleep(10000ms)
+[23:03:04]   [~] RPC poll @1s — 8 event
+[23:03:04] [ANTI] Root check: /data/local/su
+[23:03:04] [ANTI] Root check: /data/local/bin/su
+[23:03:04] [ANTI] Root check: /data/local/xbin/su
+[23:03:04] [ANTI] Root check: /sbin/su
+[23:03:04] [ANTI] Root check: /system/bin/su
+[23:03:04] [ANTI] Root check: /system/bin/failsafe/su
+[23:03:04] [ANTI] Root check: /system/sd/xbin/su
+[23:03:04] [ANTI] Root check: /system/xbin/su
+[23:03:04] [EXEC] getprop
+[23:03:05] [NET] URL: https://adsmetadata.startappservice.com/adsmetadata/api/v1.0/getadsmetadata?productId=209577895&os=android&sdkVersion=5.1.0&flavor=1023&packageId=com.car_wallpapers_collection.KTM_RC_200_Wallpapers&userAdvertisingId=0&advertisingIdSource=&duid=d1998bda-b56c-45ce-b9ce-f62a006e1edc&model=sdk_gphone64_x86_64&manufacturer=Google&deviceVersion=31&locale=en_US&roaming=false&grid=WIFI&transport=3&silev=e106&cellSignalLevel=e106&outsource=true&width=1440&height=2952&density=3.5&fgApp=true&sdkId=3&clientSessionId=89d8c338-e52a-4bc6-958d-e924ee5eaaac&appVersion=20.0.0&appCode=20&timeSinceBoot=1067043&udbg=true&smltr=true&isddbg=false&prm=000&free=67158016&chr=false&blp=100&hs=false&lpm=false&dm=false&ts=1772308983350&totalSessions=0&daysSinceFirstSession=0&reason=LAUNCH&token=
+[23:03:06] [NET] URL: jar:file:/apex/com.android.art/javalib/core-oj.jar!/sun/util/logging/resources/logging.properties
+[23:03:06] [NET] URL: https://info.startappservice.com/InApp/resources/info_s.png
+[23:03:06] [NET] URL: https://info.startappservice.com/InApp/resources/info_l.png
+[23:03:06] [NET] URL: https://info.startappservice.com/InApp/resources/info_ex_s.png
+[23:03:06] [NET] URL: https://info.startappservice.com/InApp/resources/info_ex_l.png
+[23:03:06] [NET] URL: https://info.startappservice.com/InApp/resources/close_button.png
+[23:03:06] [NET] URL: https://info.startappservice.com/InApp/resources/back_.png
+[23:03:06] [NET] URL: https://info.startappservice.com/InApp/resources/browser_icon_dark.png
+[23:03:06] [NET] URL: https://info.startappservice.com/InApp/resources/back_dark.png
+[23:03:06] [NET] URL: https://info.startappservice.com/InApp/resources/forward_.png
+[23:03:06] [NET] URL: https://info.startappservice.com/InApp/resources/filled_star.png
+[23:03:06] [NET] URL: https://info.startappservice.com/InApp/resources/forward_dark.png
+[23:03:06] [NET] URL: https://info.startappservice.com/InApp/resources/empty_star.png
+[23:03:06] [NET] URL: https://info.startappservice.com/InApp/resources/x_dark.png
+[23:03:06] [NET] URL: https://info.startappservice.com/InApp/resources/half_star.png
+[23:03:06] [NET] URL: https://info.startappservice.com/InApp/resources/logo.png
+[23:03:06] [NET] URL: https://infoevent.startappservice.com/tracking/infoEvent
+[23:03:06] [ANTI] Root check: /data/local/su
+[23:03:07] [ANTI] Root check: /data/local/bin/su
+[23:03:07] [ANTI] Root check: /data/local/xbin/su
+[23:03:07] [ANTI] Root check: /sbin/su
+[23:03:07] [ANTI] Root check: /system/bin/su
+[23:03:07] [ANTI] Root check: /system/bin/failsafe/su
+[23:03:07] [ANTI] Root check: /system/sd/xbin/su
+[23:03:07] [ANTI] Root check: /system/xbin/su
+[23:03:07] [EXEC] getprop
+[23:03:08] [ANTI] Root check: /data/local/su
+[23:03:08] [ANTI] Root check: /data/local/bin/su
+[23:03:08] [ANTI] Root check: /data/local/xbin/su
+[23:03:08] [ANTI] Root check: /sbin/su
+[23:03:08] [ANTI] Root check: /system/bin/su
+[23:03:08] [ANTI] Root check: /system/bin/failsafe/su
+[23:03:08] [ANTI] Root check: /system/sd/xbin/su
+[23:03:08] [ANTI] Root check: /system/xbin/su
+[23:03:08] [EXEC] getprop
+[23:03:09] [NET] URL: https://trackdownload.startappservice.com/trackdownload/api/1.0/trackdownload?productId=209577895&os=android&sdkVersion=5.1.0&flavor=1023&packageId=com.car_wallpapers_collection.KTM_RC_200_Wallpapers&userAdvertisingId=0&advertisingIdSource=&duid=d1998bda-b56c-45ce-b9ce-f62a006e1edc&model=sdk_gphone64_x86_64&manufacturer=Google&deviceVersion=31&locale=en_US&roaming=false&grid=WIFI&transport=3&silev=e106&cellSignalLevel=e106&outsource=true&width=1440&height=2952&density=3.5&fgApp=true&sdkId=3&clientSessionId=89d8c338-e52a-4bc6-958d-e924ee5eaaac&appVersion=20.0.0&appCode=20&timeSinceBoot=1070981&udbg=true&root=true&smltr=true&isddbg=false&free=67158016&chr=false&blp=100&hs=false&lpm=false&dm=false&appSessionDuration=5&placement=INAPP_DOWNLOAD&apkSig=3082058930820371a003020102021500830e9ad16586d31bfec23a309c1522685a2c40eb300d06092a864886f70d01010b05003074310b3009060355040613025553311330110603550408130a43616c69666f726e6961311630140603550407130d4d6f756e7461696e205669657731143012060355040a130b476f6f676c6520496e632e3110300e060355040b1307416e64726f69643110300e06035504031307416e64726f69643020170d3231303932383036303834355a180f32303531303932383036303834355a3074310b3009060355040613025553311330110603550408130a43616c69666f726e6961311630140603550407130d4d6f756e7461696e205669657731143012060355040a130b476f6f676c6520496e632e3110300e060355040b1307416e64726f69643110300e06035504031307416e64726f696430820222300d06092a864886f70d01010105000382020f003082020a0282020100b9ff8a9fa2b854e1284b7770f647a6a537c044ae56474839c681c013bc355a6c1740ecb63323c29ad20ed490e5747797a8fb883e4d48223d42776cd009533a91850f8b574861ef049203ec396ce0bec3f8dfe0a228aeaee8ce85d0854b84bb94ab38599dea6601d1bc4ec32c18d7aeeeb89dff2dc7c65c4e72f041bef39d24af8f8eeefac0c594369f114a99b973a3b8653e943b1e6c510b9ad4b21eb785a2ef288405c0bf3f960da48380495709beade19b63cb224e7c648a7c2fa61fa576dd6afae9b75a19abc012e2c83d503ee8812c9a25543ba06377e8edb7dfded9219174cc4e9238a65f84253d6b0999ddb6c49d441b729604b8eb34d4fe305752239f6807f528d7788f9b3a26bb426caa15a1a251ecf96343c8fe37f9c9c9c88cc46df11bf3eab5f84a7b44f831a7c049f34cb73c1b6ce911517c3e8ae894d0f96ef1877659acd2f7ebefb26a400a019e674699060acbc760aac5f879e83738359d4f360135d21d11d2f8cf857454c33a80b56e7857c7dc021cfd895d58df9ac9e038425809ef65b620ea0114b970fe743300353cb1674dd85ea53cfc13e2d34cf48851fceb5dc622b5a000f53be1e1fe990d0c2269d806352c2758f4b1225d613eb5b306e264cca695660ce554d94f3edd338fc6087ca468e44a9bede9fdb41fae0c16321066683610e7018dea03db3b34d31fff507253d48e4730612ddd778df8eb0203010001a310300e300c0603551d13040530030101ff300d06092a864886f70d01010b050003820201009c81842c71a5c185d8a0d2e9ccd8665b3fca60fca7abdb2ac22f372db8375122fe7e0133ecaf6c67f27d0a82121ca08021995610d026a3efe1c4775d483d527c152591c1bdd8d9030e3d4e4eff538917fdfa72c3fab09e2a71e8f3e82d7cbf52e2a553698acb893fd35182c42d346d63fb4e6d6143d7e05462e7ae6a22edfad09d24473f2dc248ceaf920fa15069ee7ae985cdbffcb8822a78761d099369026bca5eb732389c84d2ad11d2b87b10de1cfea961abe6757667f139f5accd436d9d766fa41619da1afa88a7e6961aa9c973a63f8ceec3d0222601510780823217c47fed39e91dca633229b01f210e026da9ec2b5836b900bc0e5c071338c8c12a5430b5500a94e6452e317101896a6ecc9ff9f39c84448f7f1cd0823a58734bbe3d4e298a1c8ee82d5c5558a212220cdec71b0147a995a42e003329202ec8ae167ade27a09d3b9c9cfc979c999b96fb4ac7ef1b1b9e296dbe4859cad5532e0536c7700dca7e54b09cec15b9dbe5b2732116ae18d21fd43a4353b9dd6dc830467d95e9df36dc133e6acf29c702fe9140f468edd781b41c4c88fd0ad865d4292c353dc3117aef5aab4929bfe356a2f009d6ef9f5e6b36632356498a3a87b3b56fb01c07d8d13e883e6633d8f3ee94653ecc777ad74953e8339ff4a05cac0bcc352cce199c106d4e0138c757c6ecb09362bcc7ced69657ae7f066fb924c11774fed934
+[23:03:09]   [~] RPC poll @6s — 325 event
+[23:03:10] [NET] URL: https://infoevent.startappservice.com/infoevent/api/v1.0/info
+[23:03:10] [ANTI] Root check: /data/local/su
+[23:03:10] [ANTI] Root check: /data/local/bin/su
+[23:03:10] [ANTI] Root check: /data/local/xbin/su
+[23:03:10] [ANTI] Root check: /sbin/su
+[23:03:10] [ANTI] Root check: /system/bin/su
+[23:03:10] [ANTI] Root check: /system/bin/failsafe/su
+[23:03:10] [ANTI] Root check: /system/sd/xbin/su
+[23:03:10] [ANTI] Root check: /system/xbin/su
+[23:03:10] [EXEC] getprop
+[23:03:12] [NET] URL: https://infoevent.startappservice.com/infoevent/api/v1.0/info
+[23:03:14]   [~] RPC poll @11s — 375 event
+[23:03:15] [ANTI] Thread.sleep(10000ms)
+[23:03:17] [NET] URL: https://api.onesignal.com/apps/9c58a708-1394-4701-8eac-c70f78445fe6/android_params.js
+[23:03:17] [NET] URL: https://adscontroller.com/KTM_RC_200_Wallpapers/config.php
+[23:03:17] [ANTI] Root check: /sbin/su
+[23:03:17] [ANTI] Root check: /system/bin/su
+[23:03:17] [ANTI] Root check: /system/xbin/su
+[23:03:17] [ANTI] Root check: /data/local/xbin/su
+[23:03:17] [ANTI] Root check: /data/local/bin/su
+[23:03:17] [ANTI] Root check: /system/sd/xbin/su
+[23:03:17] [ANTI] Root check: /system/bin/failsafe/su
+[23:03:17] [ANTI] Root check: /data/local/su
+[23:03:17] [NET] URL: https://api.onesignal.com/apps/9c58a708-1394-4701-8eac-c70f78445fe6/users
+[23:03:18] [NATIVE] loadLibrary: monochrome_64
+[23:03:18] [FILE] Sensitive write: /data/user/0/com.car_wallpapers_collection.KTM_RC_200_Wallpapers/files/back_.png
+[23:03:18] [FILE] Sensitive write: /data/user/0/com.car_wallpapers_collection.KTM_RC_200_Wallpapers/files/empty_star.png
+[23:03:18] [FILE] Sensitive write: /data/user/0/com.car_wallpapers_collection.KTM_RC_200_Wallpapers/files/forward_.png
+[23:03:18] [FILE] Sensitive write: /data/user/0/com.car_wallpapers_collection.KTM_RC_200_Wallpapers/files/back_dark.png
+[23:03:18] [FILE] Sensitive write: /data/user/0/com.car_wallpapers_collection.KTM_RC_200_Wallpapers/files/half_star.png
+[23:03:18] [FILE] Sensitive write: /data/user/0/com.car_wallpapers_collection.KTM_RC_200_Wallpapers/files/logo.png
+[23:03:18] [FILE] Sensitive write: /data/user/0/com.car_wallpapers_collection.KTM_RC_200_Wallpapers/files/close_button.png
+[23:03:18] [FILE] Sensitive write: /data/user/0/com.car_wallpapers_collection.KTM_RC_200_Wallpapers/files/browser_icon_dark.png
+[23:03:18] [FILE] Sensitive write: /data/user/0/com.car_wallpapers_collection.KTM_RC_200_Wallpapers/files/filled_star.png
+[23:03:18] [FILE] Sensitive write: /data/user/0/com.car_wallpapers_collection.KTM_RC_200_Wallpapers/files/x_dark.png
+[23:03:18] [FILE] Sensitive write: /data/user/0/com.car_wallpapers_collection.KTM_RC_200_Wallpapers/files/forward_dark.png
+[23:03:19]   [~] RPC poll @16s — 533 event
+[23:03:23] [NATIVE] loadLibrary: monochrome_64
+[23:03:23] [NET] URL: https://api.onesignal.com/apps/9c58a708-1394-4701-8eac-c70f78445fe6/users/by/onesignal_id/3a5ac32d-2773-4970-af55-692024d9aa04
+[23:03:23] [~] Snapshot — 556 event | 20 aktif feature | burst: 330 | seq: 200 event
+[23:03:24]   [~] RPC poll @21s — 558 event
+[23:03:29]   [!] Process öldü (~26s) — son snapshot kullanılıyor
+[23:03:29]   [*] Süre doldu, final RPC...
+[23:03:29]   [!] Final RPC başarısız — son poll snapshot: 558 event
+[23:03:29]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 50, toplam: 558
+
+[23:03:29] ============================================================
+[23:03:29] [+] CSV YAZILDI — 23:03:29
+[23:03:29]     com.car_wallpapers_collection.KTM_RC_200_Wallpapers  |  BENIGN
+[23:03:29] ────────────────────────────────────────────────────────────
+[23:03:29]   Ham Feature'lar (aktif):
+[23:03:29]     reflection_invoke_count                      222
+[23:03:29]     runtime_exec_count                           4
+[23:03:29]     dynamic_class_load_count                     25
+[23:03:29]     getPackageInfo_count                         105
+[23:03:29]     base64_encode_count                          10
+[23:03:29]     root_check_count                             40
+[23:03:29]     sleep_call_count                             2
+[23:03:29]     stack_trace_inspect_count                    1
+[23:03:29]     native_lib_load_count                        2
+[23:03:29]     implicit_intent_count                        9
+[23:03:29]     bindService_count                            2
+[23:03:29]     file_write_count                             11
+[23:03:29]     file_read_sensitive_count                    11
+[23:03:29]     shared_prefs_write_count                     48
+[23:03:29]     deleteFile_count                             22
+[23:03:29]     url_connection_count                         25
+[23:03:29]     register_receiver_count                      2
+[23:03:29]     thread_create_count                          4
+[23:03:29]     process_list_query_count                     5
+[23:03:29]     class_loader_parent_count                    8
+[23:03:29] ────────────────────────────────────────────────────────────
+[23:03:29]   Türetilmiş Skorlar:
+[23:03:29]     network_score                                25
+[23:03:29]     anti_analysis_score                          43
+[23:03:29]     persistence_score                            2
+[23:03:29]     stealth_score                                249
+[23:03:29]     exfil_score                                  46
+[23:03:29]     privilege_score                              5
+[23:03:29]     surveillance_score                           105
+[23:03:29]     dynamic_exec_score                           228
+[23:03:29]     write_to_read_ratio                          1.0
+[23:03:29]     anti_to_total_ratio                          0.0771
+[23:03:29]     reflection_to_exec_ratio                     55.5
+[23:03:29]     network_to_activity_ratio                    25.0
+[23:03:29]   ⚠️  Aktif Boolean Patternler:
+[23:03:29]     has_exfil_pattern
+[23:03:29]     has_evasion_pattern
+[23:03:29]     has_privilege_escalation
+[23:03:29] ────────────────────────────────────────────────────────────
+[23:03:29]   Temporal Bilgiler:
+[23:03:29]     first_network_ms                             1630 ms
+[23:03:29]     first_anti_analysis_ms                       1386 ms
+[23:03:29]     first_file_write_ms                          15071 ms
+[23:03:29]     first_reflection_ms                          2624 ms
+[23:03:29]     first_exec_ms                                1396 ms
+[23:03:29]     first_dynamic_load_ms                        3454 ms
+[23:03:29]     burst_peak_count                             330
+[23:03:29]     🕐 early_network_flag
+[23:03:29]     🕐 early_anti_analysis_flag
+[23:03:29]     🕐 rapid_burst_flag
+[23:03:29] ────────────────────────────────────────────────────────────
+[23:03:29]   Sequence Log: 200 event kayıt edildi
+[23:03:29]   🔗 Aktif Sequence Patternler:
+[23:03:29]     seq_reflect_before_exec                      1
+[23:03:29]     seq_max_chain_length                         200
+[23:03:29] ============================================================
+
+
+[23:03:29] ==========================================================
+[23:03:29] [+] CSV YAZILDI — 23:03:29
+[23:03:29]     com.car_wallpapers_collection.KTM_RC_200_Wallpapers  |  BENIGN
+[23:03:29] ──────────────────────────────────────────────────────────
+[23:03:29]   Ham Feature'lar (aktif):
+[23:03:29]     reflection_invoke_count                    222
+[23:03:29]     runtime_exec_count                         4
+[23:03:29]     dynamic_class_load_count                   25
+[23:03:29]     getPackageInfo_count                       105
+[23:03:29]     base64_encode_count                        10
+[23:03:29]     root_check_count                           40
+[23:03:29]     sleep_call_count                           2
+[23:03:29]     stack_trace_inspect_count                  1
+[23:03:29]     native_lib_load_count                      2
+[23:03:29]     implicit_intent_count                      9
+[23:03:29]     bindService_count                          2
+[23:03:29]     file_write_count                           11
+[23:03:29]     file_read_sensitive_count                  11
+[23:03:29]     shared_prefs_write_count                   48
+[23:03:29]     deleteFile_count                           22
+[23:03:29]     url_connection_count                       25
+[23:03:29]     register_receiver_count                    2
+[23:03:29]     thread_create_count                        4
+[23:03:29]     process_list_query_count                   5
+[23:03:29]     class_loader_parent_count                  8
+[23:03:29] ──────────────────────────────────────────────────────────
+[23:03:29]   Türetilmiş Skorlar:
+[23:03:29]     network_score                              25
+[23:03:29]     anti_analysis_score                        43
+[23:03:29]     persistence_score                          2
+[23:03:29]     stealth_score                              249
+[23:03:29]     exfil_score                                46
+[23:03:29]     privilege_score                            5
+[23:03:29]     surveillance_score                         105
+[23:03:29]     dynamic_exec_score                         228
+[23:03:29]     write_to_read_ratio                        1.0
+[23:03:29]     anti_to_total_ratio                        0.0771
+[23:03:29]     reflection_to_exec_ratio                   55.5
+[23:03:29]     network_to_activity_ratio                  25.0
+[23:03:29]   Aktif Boolean Patternler:
+[23:03:29]     ⚠️  has_exfil_pattern
+[23:03:29]     ⚠️  has_evasion_pattern
+[23:03:29]     ⚠️  has_privilege_escalation
+[23:03:29] ──────────────────────────────────────────────────────────
+[23:03:29]   Temporal Bilgiler:
+[23:03:29]     first_network_ms                           1630 ms
+[23:03:29]     first_anti_analysis_ms                     1386 ms
+[23:03:29]     first_file_write_ms                        15071 ms
+[23:03:29]     first_reflection_ms                        2624 ms
+[23:03:29]     first_exec_ms                              1396 ms
+[23:03:29]     first_dynamic_load_ms                      3454 ms
+[23:03:29]     burst_peak_count                           330
+[23:03:29]     session_duration_ms                        21360 ms
+[23:03:29]   Aktif Temporal Flagler:
+[23:03:29]     🕐 early_network_flag
+[23:03:29]     🕐 early_anti_analysis_flag
+[23:03:29]     🕐 rapid_burst_flag
+[23:03:29] ==========================================================
+
+[23:03:29]   [+] CSV satırı yazıldı.
+[23:03:35]   [+] Kaldırıldı: com.car_wallpapers_collection.KTM_RC_200_Wallpapers
+
+[23:03:35]   Durum: ✅ 7  ⏭️  12  ❌ 0  | ⏱️  ~363.0 dk kaldı
+
+[23:03:35] [20/1001] İşleniyor...
+
+[23:03:35] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:03:35] [APK] 00ED4FD7D4493337EEB63010AF7F84608B9410FD275A92616720E5F1380C425A.apk
+[23:03:35] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:03:35]   [+] Package : de.immowelt.android.immobiliensuche
+[23:03:35]   [+] Label   : benign
+[23:03:35]   [*] Kuruluyor...
+[23:03:51]   [+] Kurulum OK
+[23:03:51]   [*] Uygulama başlatılıyor (monkey)...
+[23:03:51]   [*] PID aranıyor...
+[23:03:52]   [+] PID: 10266 — attach ediliyor...
+[23:03:53] === KangalGuard Agent Başladı ===
+[23:03:53] [+] Method.invoke (reflection)
+[23:03:53] [+] DexClassLoader.$init
+[23:03:53] [+] Runtime.exec
+[23:03:53] [+] Class.forName
+[23:03:53] [+] PackageManager.getPackageInfo
+[23:03:53] [+] SmsManager.sendTextMessage
+[23:03:53] [+] TelephonyManager.getDeviceId
+[23:03:53] [+] TelephonyManager.getSubscriberId
+[23:03:53] [+] Cipher.init
+[23:03:53] [+] KeyGenerator.generateKey
+[23:03:53] [+] Base64.encode/encodeToString
+[23:03:53] [+] SecureRandom.$init
+[23:03:53] [+] System.exit (bypass)
+[23:03:53] [+] Debug.isDebuggerConnected (bypass)
+[23:03:53] [+] SystemProperties.get (emulator check)
+[23:03:53] [+] File.exists (root path check)
+[23:03:53] [+] Thread.sleep (timing attack)
+[23:03:53] [+] Thread.getStackTrace
+[23:03:53] [+] System.loadLibrary
+[23:03:53] [+] Intent.setAction (implicit)
+[23:03:53] [+] Activity.startActivity
+[23:03:53] [+] ContextWrapper.sendBroadcast
+[23:03:53] [+] ContextWrapper.bindService
+[23:03:53] [+] ContentResolver.query
+[23:03:53] [+] ContentResolver.insert
+[23:03:53] [+] FileOutputStream.$init (write)
+[23:03:53] [+] SharedPreferences.putString
+[23:03:53] [+] ContextWrapper.openFileOutput
+[23:03:53] [+] File.delete
+[23:03:53] [+] Environment.getExternalStorageDirectory
+[23:03:53] [+] Socket.$init (raw socket)
+[23:03:53] [+] URL.openConnection
+[23:03:53] [+] SSLContext.init (TrustManager bypass)
+[23:03:53] [+] InetAddress.getByName (DNS)
+[23:03:53] [+] URLConnection.setRequestProperty
+[23:03:53] [+] AlarmManager.set
+[23:03:53] [+] JobScheduler.schedule
+[23:03:53] [+] ContextWrapper.registerReceiver
+[23:03:53] [+] Activity.requestPermissions
+[23:03:53] [+] PackageManager.setComponentEnabledSetting
+[23:03:53] [+] Thread.$init (thread create)
+[23:03:53] [+] ActivityManager.getRunningAppProcesses
+[23:03:53] [+] ByteBuffer.allocate (>5MB)
+[23:03:53] [+] ClassLoader.getParent
+[23:03:53] === 50 Feature Hook Hazır ===
+[23:03:53]   [!] Analiz başladı — 75s
+[23:03:53] [NET] URL: https://consent-api.service.consent.usercentrics.eu/consent/ua/3
+[23:03:53] [PRIV] setComponentEnabled: ComponentInfo{de.immowelt.android.immobiliensuche/androidx.work.impl.background.systemalarm.RescheduleReceiver} -> 1
+[23:03:53] [PRIV] setComponentEnabled: ComponentInfo{de.immowelt.android.immobiliensuche/androidx.work.impl.background.systemalarm.RescheduleReceiver} -> 2
+[23:03:53] [ANTI] Thread.sleep(10000ms)
+[23:03:54] [NET] URL: https://uct.service.usercentrics.eu/uct?v=1&sid=tsZ3BABEG&t=1&r=de.immowelt.android.immobiliensuche&abv=&cb=17723090333137620
+[23:03:54]   [~] RPC poll @1s — 88 event
+[23:03:55] [NET] Custom TrustManager!
+[23:03:59]   [~] RPC poll @6s — 128 event
+[23:04:04]   [~] RPC poll @11s — 128 event
+[23:04:09]   [~] RPC poll @16s — 128 event
+[23:04:13] [~] Snapshot — 128 event | 12 aktif feature | burst: 128 | seq: 56 event
+[23:04:14]   [~] RPC poll @21s — 128 event
+[23:04:19]   [~] RPC poll @26s — 128 event
+[23:04:24]   [~] RPC poll @31s — 128 event
+[23:04:29]   [~] RPC poll @36s — 128 event
+[23:04:33] [~] Snapshot — 128 event | 12 aktif feature | burst: 128 | seq: 56 event
+[23:04:34]   [~] RPC poll @41s — 128 event
+[23:04:39]   [~] RPC poll @46s — 128 event
+[23:04:42] [NET] URL: https://firebaselogging.googleapis.com/v0cc/log/batch?format=json_proto3
+[23:04:44]   [~] RPC poll @51s — 155 event
+[23:04:49]   [~] RPC poll @56s — 155 event
+[23:04:53] [~] Snapshot — 155 event | 12 aktif feature | burst: 128 | seq: 66 event
+[23:04:54]   [~] RPC poll @61s — 155 event
+[23:04:59]   [~] RPC poll @66s — 155 event
+[23:05:04]   [~] RPC poll @71s — 155 event
+[23:05:08]   [*] Süre doldu, final RPC...
+[23:05:08]   [+] RPC OK — 155 event alındı
+[23:05:08]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 50, toplam: 155
+
+[23:05:08] ============================================================
+[23:05:08] [+] CSV YAZILDI — 23:05:08
+[23:05:08]     de.immowelt.android.immobiliensuche  |  BENIGN
+[23:05:08] ────────────────────────────────────────────────────────────
+[23:05:08]   Ham Feature'lar (aktif):
+[23:05:08]     reflection_invoke_count                      39
+[23:05:08]     dynamic_class_load_count                     24
+[23:05:08]     getPackageInfo_count                         13
+[23:05:08]     base64_encode_count                          16
+[23:05:08]     sleep_call_count                             1
+[23:05:08]     implicit_intent_count                        9
+[23:05:08]     bindService_count                            2
+[23:05:08]     shared_prefs_write_count                     30
+[23:05:08]     deleteFile_count                             15
+[23:05:08]     url_connection_count                         3
+[23:05:08]     ssl_bypass_attempt                           1
+[23:05:08]     setComponentEnabled_count                    2
+[23:05:08] ────────────────────────────────────────────────────────────
+[23:05:08]   Türetilmiş Skorlar:
+[23:05:08]     network_score                                3
+[23:05:08]     anti_analysis_score                          1
+[23:05:08]     persistence_score                            2
+[23:05:08]     stealth_score                                63
+[23:05:08]     exfil_score                                  19
+[23:05:08]     privilege_score                              2
+[23:05:08]     surveillance_score                           13
+[23:05:08]     dynamic_exec_score                           39
+[23:05:08]     anti_to_total_ratio                          0.0065
+[23:05:08]     reflection_to_exec_ratio                     39.0
+[23:05:08]     network_to_activity_ratio                    3.0
+[23:05:08]   ⚠️  Aktif Boolean Patternler:
+[23:05:08]     has_exfil_pattern
+[23:05:08]     has_evasion_pattern
+[23:05:08] ────────────────────────────────────────────────────────────
+[23:05:08]   Temporal Bilgiler:
+[23:05:08]     first_network_ms                             343 ms
+[23:05:08]     first_reflection_ms                          403 ms
+[23:05:08]     first_dynamic_load_ms                        324 ms
+[23:05:08]     burst_peak_count                             128
+[23:05:08]     🕐 early_network_flag
+[23:05:08]     🕐 rapid_burst_flag
+[23:05:08] ────────────────────────────────────────────────────────────
+[23:05:08]   Sequence Log: 66 event kayıt edildi
+[23:05:08]   🔗 Aktif Sequence Patternler:
+[23:05:08]     seq_max_chain_length                         66
+[23:05:08] ============================================================
+
+
+[23:05:08] ==========================================================
+[23:05:08] [+] CSV YAZILDI — 23:05:08
+[23:05:08]     de.immowelt.android.immobiliensuche  |  BENIGN
+[23:05:08] ──────────────────────────────────────────────────────────
+[23:05:08]   Ham Feature'lar (aktif):
+[23:05:08]     reflection_invoke_count                    39
+[23:05:08]     dynamic_class_load_count                   24
+[23:05:08]     getPackageInfo_count                       13
+[23:05:08]     base64_encode_count                        16
+[23:05:08]     sleep_call_count                           1
+[23:05:08]     implicit_intent_count                      9
+[23:05:08]     bindService_count                          2
+[23:05:08]     shared_prefs_write_count                   30
+[23:05:08]     deleteFile_count                           15
+[23:05:08]     url_connection_count                       3
+[23:05:08]     ssl_bypass_attempt                         1
+[23:05:08]     setComponentEnabled_count                  2
+[23:05:08] ──────────────────────────────────────────────────────────
+[23:05:08]   Türetilmiş Skorlar:
+[23:05:08]     network_score                              3
+[23:05:08]     anti_analysis_score                        1
+[23:05:08]     persistence_score                          2
+[23:05:08]     stealth_score                              63
+[23:05:08]     exfil_score                                19
+[23:05:08]     privilege_score                            2
+[23:05:08]     surveillance_score                         13
+[23:05:08]     dynamic_exec_score                         39
+[23:05:08]     anti_to_total_ratio                        0.0065
+[23:05:08]     reflection_to_exec_ratio                   39.0
+[23:05:08]     network_to_activity_ratio                  3.0
+[23:05:08]   Aktif Boolean Patternler:
+[23:05:08]     ⚠️  has_exfil_pattern
+[23:05:08]     ⚠️  has_evasion_pattern
+[23:05:08] ──────────────────────────────────────────────────────────
+[23:05:08]   Temporal Bilgiler:
+[23:05:08]     first_network_ms                           343 ms
+[23:05:08]     first_reflection_ms                        403 ms
+[23:05:08]     first_dynamic_load_ms                      324 ms
+[23:05:08]     burst_peak_count                           128
+[23:05:08]     session_duration_ms                        75342 ms
+[23:05:08]   Aktif Temporal Flagler:
+[23:05:08]     🕐 early_network_flag
+[23:05:08]     🕐 rapid_burst_flag
+[23:05:08] ==========================================================
+
+[23:05:08]   [+] CSV satırı yazıldı.
+[23:05:14]   [+] Kaldırıldı: de.immowelt.android.immobiliensuche
+
+[23:05:14]   Durum: ✅ 8  ⏭️  12  ❌ 0  | ⏱️  ~425.8 dk kaldı
+
+[23:05:14] [21/1001] İşleniyor...
+
+[23:05:14] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:05:14] [APK] 00ED7D67388FE7CF18C1FCF7661D62C638D2D0A4EE2A819104C7ABAF6136F285.apk
+[23:05:14] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:05:14]   [+] Package : com.pick6fan.stormpick6
+[23:05:14]   [+] Label   : benign
+[23:05:14]   [*] Kuruluyor...
+[23:05:30]   [+] Kurulum OK
+[23:05:30]   [*] Uygulama başlatılıyor (monkey)...
+[23:05:30]   [*] PID aranıyor...
+[23:05:30]   [+] PID: 10596 — attach ediliyor...
+[23:05:31] === KangalGuard Agent Başladı ===
+[23:05:31] [+] Method.invoke (reflection)
+[23:05:31] [+] DexClassLoader.$init
+[23:05:31] [+] Runtime.exec
+[23:05:31] [+] Class.forName
+[23:05:31] [+] PackageManager.getPackageInfo
+[23:05:31] [+] SmsManager.sendTextMessage
+[23:05:31] [+] TelephonyManager.getDeviceId
+[23:05:31] [+] TelephonyManager.getSubscriberId
+[23:05:31] [+] Cipher.init
+[23:05:31] [+] KeyGenerator.generateKey
+[23:05:31] [+] Base64.encode/encodeToString
+[23:05:31] [+] SecureRandom.$init
+[23:05:31] [+] System.exit (bypass)
+[23:05:31] [+] Debug.isDebuggerConnected (bypass)
+[23:05:31] [+] SystemProperties.get (emulator check)
+[23:05:31] [+] File.exists (root path check)
+[23:05:31] [+] Thread.sleep (timing attack)
+[23:05:31] [+] Thread.getStackTrace
+[23:05:31] [+] System.loadLibrary
+[23:05:31] [+] Intent.setAction (implicit)
+[23:05:31] [+] Activity.startActivity
+[23:05:31] [+] ContextWrapper.sendBroadcast
+[23:05:31] [+] ContextWrapper.bindService
+[23:05:31] [+] ContentResolver.query
+[23:05:31] [+] ContentResolver.insert
+[23:05:31] [+] FileOutputStream.$init (write)
+[23:05:31] [+] SharedPreferences.putString
+[23:05:31] [+] ContextWrapper.openFileOutput
+[23:05:31] [+] File.delete
+[23:05:31] [+] Environment.getExternalStorageDirectory
+[23:05:31] [+] Socket.$init (raw socket)
+[23:05:31] [+] URL.openConnection
+[23:05:31] [+] SSLContext.init (TrustManager bypass)
+[23:05:31] [+] InetAddress.getByName (DNS)
+[23:05:31] [+] URLConnection.setRequestProperty
+[23:05:31] [+] AlarmManager.set
+[23:05:31] [+] JobScheduler.schedule
+[23:05:31] [+] ContextWrapper.registerReceiver
+[23:05:31] [+] Activity.requestPermissions
+[23:05:31] [+] PackageManager.setComponentEnabledSetting
+[23:05:31] [+] Thread.$init (thread create)
+[23:05:31] [+] ActivityManager.getRunningAppProcesses
+[23:05:31] [+] ByteBuffer.allocate (>5MB)
+[23:05:31] [+] ClassLoader.getParent
+[23:05:31] === 50 Feature Hook Hazır ===
+[23:05:31]   [!] Analiz başladı — 75s
+[23:05:32] [ANTI] Thread.sleep(10000ms)
+[23:05:32]   [~] RPC poll @1s — 25 event
+[23:05:37]   [!] Process öldü (~6s) — son snapshot kullanılıyor
+[23:05:37]   [*] Süre doldu, final RPC...
+[23:05:37]   [!] Final RPC başarısız — son poll snapshot: 25 event
+[23:05:37]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 50, toplam: 25
+
+[23:05:37] ============================================================
+[23:05:37] [+] CSV YAZILDI — 23:05:37
+[23:05:37]     com.pick6fan.stormpick6  |  BENIGN
+[23:05:37] ────────────────────────────────────────────────────────────
+[23:05:37]   Ham Feature'lar (aktif):
+[23:05:37]     reflection_invoke_count                      19
+[23:05:37]     dynamic_class_load_count                     3
+[23:05:37]     sleep_call_count                             1
+[23:05:37]     shared_prefs_write_count                     1
+[23:05:37]     deleteFile_count                             1
+[23:05:37] ────────────────────────────────────────────────────────────
+[23:05:37]   Türetilmiş Skorlar:
+[23:05:37]     anti_analysis_score                          1
+[23:05:37]     stealth_score                                22
+[23:05:37]     dynamic_exec_score                           19
+[23:05:37]     anti_to_total_ratio                          0.04
+[23:05:37]     reflection_to_exec_ratio                     19.0
+[23:05:37]   ⚠️  Aktif Boolean Patternler:
+[23:05:37]     has_evasion_pattern
+[23:05:37] ────────────────────────────────────────────────────────────
+[23:05:37]   Temporal Bilgiler:
+[23:05:37]     first_reflection_ms                          186 ms
+[23:05:37]     first_dynamic_load_ms                        193 ms
+[23:05:37]     burst_peak_count                             25
+[23:05:37]     🕐 rapid_burst_flag
+[23:05:37] ────────────────────────────────────────────────────────────
+[23:05:37]   Sequence Log: 22 event kayıt edildi
+[23:05:37]   🔗 Aktif Sequence Patternler:
+[23:05:37]     seq_max_chain_length                         22
+[23:05:37] ============================================================
+
+
+[23:05:37] ==========================================================
+[23:05:37] [+] CSV YAZILDI — 23:05:37
+[23:05:37]     com.pick6fan.stormpick6  |  BENIGN
+[23:05:37] ──────────────────────────────────────────────────────────
+[23:05:37]   Ham Feature'lar (aktif):
+[23:05:37]     reflection_invoke_count                    19
+[23:05:37]     dynamic_class_load_count                   3
+[23:05:37]     sleep_call_count                           1
+[23:05:37]     shared_prefs_write_count                   1
+[23:05:37]     deleteFile_count                           1
+[23:05:37] ──────────────────────────────────────────────────────────
+[23:05:37]   Türetilmiş Skorlar:
+[23:05:37]     anti_analysis_score                        1
+[23:05:37]     stealth_score                              22
+[23:05:37]     dynamic_exec_score                         19
+[23:05:37]     anti_to_total_ratio                        0.04
+[23:05:37]     reflection_to_exec_ratio                   19.0
+[23:05:37]   Aktif Boolean Patternler:
+[23:05:37]     ⚠️  has_evasion_pattern
+[23:05:37] ──────────────────────────────────────────────────────────
+[23:05:37]   Temporal Bilgiler:
+[23:05:37]     first_reflection_ms                        186 ms
+[23:05:37]     first_dynamic_load_ms                      193 ms
+[23:05:37]     burst_peak_count                           25
+[23:05:37]     session_duration_ms                        1285 ms
+[23:05:37]   Aktif Temporal Flagler:
+[23:05:37]     🕐 rapid_burst_flag
+[23:05:37] ==========================================================
+
+[23:05:37]   [+] CSV satırı yazıldı.
+[23:05:42]   [+] Kaldırıldı: com.pick6fan.stormpick6
+
+[23:05:42]   Durum: ✅ 9  ⏭️  12  ❌ 0  | ⏱️  ~426.9 dk kaldı
+
+[23:05:42] [22/1001] İşleniyor...
+
+[23:05:42] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:05:42] [APK] 00ED8AAF8472BD7E0FA13909A7BDA66EBE398A3F942EC34F713EC55054FE5342.apk
+[23:05:42] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:05:42]   [+] Package : com.inhandhealth.fyzicalpt.patient
+[23:05:42]   [+] Label   : benign
+[23:05:42]   [*] Kuruluyor...
+[23:05:58]   [+] Kurulum OK
+[23:05:58]   [*] Uygulama başlatılıyor (monkey)...
+[23:05:58]   [*] PID aranıyor...
+[23:05:59]   [+] PID: 10762 — attach ediliyor...
+[23:06:00] === KangalGuard Agent Başladı ===
+[23:06:00] [+] Method.invoke (reflection)
+[23:06:00] [+] DexClassLoader.$init
+[23:06:00] [+] Runtime.exec
+[23:06:00] [+] Class.forName
+[23:06:00] [+] PackageManager.getPackageInfo
+[23:06:00] [+] SmsManager.sendTextMessage
+[23:06:00] [+] TelephonyManager.getDeviceId
+[23:06:00] [+] TelephonyManager.getSubscriberId
+[23:06:00] [+] Cipher.init
+[23:06:00] [+] KeyGenerator.generateKey
+[23:06:00] [+] Base64.encode/encodeToString
+[23:06:00] [+] SecureRandom.$init
+[23:06:00] [+] System.exit (bypass)
+[23:06:00] [+] Debug.isDebuggerConnected (bypass)
+[23:06:00] [+] SystemProperties.get (emulator check)
+[23:06:00] [+] File.exists (root path check)
+[23:06:00] [+] Thread.sleep (timing attack)
+[23:06:00] [+] Thread.getStackTrace
+[23:06:00] [+] System.loadLibrary
+[23:06:00] [+] Intent.setAction (implicit)
+[23:06:00] [+] Activity.startActivity
+[23:06:00] [+] ContextWrapper.sendBroadcast
+[23:06:00] [+] ContextWrapper.bindService
+[23:06:00] [+] ContentResolver.query
+[23:06:00] [+] ContentResolver.insert
+[23:06:00] [+] FileOutputStream.$init (write)
+[23:06:00] [+] SharedPreferences.putString
+[23:06:00] [+] ContextWrapper.openFileOutput
+[23:06:00] [+] File.delete
+[23:06:00] [+] Environment.getExternalStorageDirectory
+[23:06:00] [+] Socket.$init (raw socket)
+[23:06:00] [+] URL.openConnection
+[23:06:00] [+] SSLContext.init (TrustManager bypass)
+[23:06:00] [+] InetAddress.getByName (DNS)
+[23:06:00] [+] URLConnection.setRequestProperty
+[23:06:00] [+] AlarmManager.set
+[23:06:00] [+] JobScheduler.schedule
+[23:06:00] [+] ContextWrapper.registerReceiver
+[23:06:00] [+] Activity.requestPermissions
+[23:06:00] [+] PackageManager.setComponentEnabledSetting
+[23:06:00] [+] Thread.$init (thread create)
+[23:06:00] [+] ActivityManager.getRunningAppProcesses
+[23:06:00] [+] ByteBuffer.allocate (>5MB)
+[23:06:00] [+] ClassLoader.getParent
+[23:06:00] === 50 Feature Hook Hazır ===
+[23:06:00]   [!] Analiz başladı — 75s
+[23:06:00] [NET] URL: https://firebase-settings.crashlytics.com/spi/v2/platforms/android/gmp/1%3A852464137765%3Aandroid%3Aa0b530cd8abea88e/settings?build_version=843&display_version=5.0.63
+[23:06:01] [ANTI] Thread.sleep(10000ms)
+[23:06:01]   [~] RPC poll @1s — 35 event
+[23:06:04] [ANTI] Root check: /system/app/Superuser.apk
+[23:06:04] [ANTI] Root check: /system/app/Superuser.apk
+[23:06:04] [ANTI] Root check: /system/app/Superuser.apk
+[23:06:04] [ANTI] Root check: /system/app/Superuser.apk
+[23:06:06]   [!] Process öldü (~6s) — son snapshot kullanılıyor
+[23:06:06]   [*] Süre doldu, final RPC...
+[23:06:06]   [!] Final RPC başarısız — son poll snapshot: 35 event
+[23:06:06]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 50, toplam: 35
+
+[23:06:06] ============================================================
+[23:06:06] [+] CSV YAZILDI — 23:06:06
+[23:06:06]     com.inhandhealth.fyzicalpt.patient  |  BENIGN
+[23:06:06] ────────────────────────────────────────────────────────────
+[23:06:06]   Ham Feature'lar (aktif):
+[23:06:06]     reflection_invoke_count                      28
+[23:06:06]     sleep_call_count                             1
+[23:06:06]     implicit_intent_count                        1
+[23:06:06]     bindService_count                            1
+[23:06:06]     shared_prefs_write_count                     1
+[23:06:06]     deleteFile_count                             2
+[23:06:06]     url_connection_count                         1
+[23:06:06] ────────────────────────────────────────────────────────────
+[23:06:06]   Türetilmiş Skorlar:
+[23:06:06]     network_score                                1
+[23:06:06]     anti_analysis_score                          1
+[23:06:06]     stealth_score                                28
+[23:06:06]     exfil_score                                  1
+[23:06:06]     dynamic_exec_score                           28
+[23:06:06]     anti_to_total_ratio                          0.0286
+[23:06:06]     reflection_to_exec_ratio                     28.0
+[23:06:06]     network_to_activity_ratio                    1.0
+[23:06:06]   ⚠️  Aktif Boolean Patternler:
+[23:06:06]     has_evasion_pattern
+[23:06:06] ────────────────────────────────────────────────────────────
+[23:06:06]   Temporal Bilgiler:
+[23:06:06]     first_network_ms                             620 ms
+[23:06:06]     first_reflection_ms                          339 ms
+[23:06:06]     burst_peak_count                             35
+[23:06:06]     🕐 early_network_flag
+[23:06:06]     🕐 rapid_burst_flag
+[23:06:06] ────────────────────────────────────────────────────────────
+[23:06:06]   Sequence Log: 29 event kayıt edildi
+[23:06:06]   🔗 Aktif Sequence Patternler:
+[23:06:06]     seq_max_chain_length                         29
+[23:06:06] ============================================================
+
+
+[23:06:06] ==========================================================
+[23:06:06] [+] CSV YAZILDI — 23:06:06
+[23:06:06]     com.inhandhealth.fyzicalpt.patient  |  BENIGN
+[23:06:06] ──────────────────────────────────────────────────────────
+[23:06:06]   Ham Feature'lar (aktif):
+[23:06:06]     reflection_invoke_count                    28
+[23:06:06]     sleep_call_count                           1
+[23:06:06]     implicit_intent_count                      1
+[23:06:06]     bindService_count                          1
+[23:06:06]     shared_prefs_write_count                   1
+[23:06:06]     deleteFile_count                           2
+[23:06:06]     url_connection_count                       1
+[23:06:06] ──────────────────────────────────────────────────────────
+[23:06:06]   Türetilmiş Skorlar:
+[23:06:06]     network_score                              1
+[23:06:06]     anti_analysis_score                        1
+[23:06:06]     stealth_score                              28
+[23:06:06]     exfil_score                                1
+[23:06:06]     dynamic_exec_score                         28
+[23:06:06]     anti_to_total_ratio                        0.0286
+[23:06:06]     reflection_to_exec_ratio                   28.0
+[23:06:06]     network_to_activity_ratio                  1.0
+[23:06:06]   Aktif Boolean Patternler:
+[23:06:06]     ⚠️  has_evasion_pattern
+[23:06:06] ──────────────────────────────────────────────────────────
+[23:06:06]   Temporal Bilgiler:
+[23:06:06]     first_network_ms                           620 ms
+[23:06:06]     first_reflection_ms                        339 ms
+[23:06:06]     burst_peak_count                           35
+[23:06:06]     session_duration_ms                        1485 ms
+[23:06:06]   Aktif Temporal Flagler:
+[23:06:06]     🕐 early_network_flag
+[23:06:06]     🕐 rapid_burst_flag
+[23:06:06] ==========================================================
+
+[23:06:06]   [+] CSV satırı yazıldı.
+[23:06:11]   [+] Kaldırıldı: com.inhandhealth.fyzicalpt.patient
+
+[23:06:11]   Durum: ✅ 10  ⏭️  12  ❌ 0  | ⏱️  ~428.9 dk kaldı
+
+[23:06:11] [23/1001] İşleniyor...
+
+[23:06:11] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:06:11] [APK] 00ED9BE080C33819F12B27AF37DFBEF28A0D5F41B0150358B3E6AC45A1E13F0B.apk
+[23:06:11] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:06:11]   [+] Package : com.mosambee.mpos.ngenius
+[23:06:11]   [+] Label   : benign
+[23:06:11]   [*] Kuruluyor...
+[23:06:27]   [+] Kurulum OK
+[23:06:27]   [*] Uygulama başlatılıyor (monkey)...
+[23:06:27]   [*] PID aranıyor...
+[23:06:27]   [+] PID: 10991 — attach ediliyor...
+[23:06:28] === KangalGuard Agent Başladı ===
+[23:06:28] [+] Method.invoke (reflection)
+[23:06:28] [+] DexClassLoader.$init
+[23:06:28] [+] Runtime.exec
+[23:06:28] [+] Class.forName
+[23:06:28] [+] PackageManager.getPackageInfo
+[23:06:28] [+] SmsManager.sendTextMessage
+[23:06:28] [+] TelephonyManager.getDeviceId
+[23:06:28] [+] TelephonyManager.getSubscriberId
+[23:06:28] [+] Cipher.init
+[23:06:28] [+] KeyGenerator.generateKey
+[23:06:28] [+] Base64.encode/encodeToString
+[23:06:28] [+] SecureRandom.$init
+[23:06:28] [+] System.exit (bypass)
+[23:06:28] [+] Debug.isDebuggerConnected (bypass)
+[23:06:28] [+] SystemProperties.get (emulator check)
+[23:06:28] [+] File.exists (root path check)
+[23:06:28] [+] Thread.sleep (timing attack)
+[23:06:28] [+] Thread.getStackTrace
+[23:06:28] [+] System.loadLibrary
+[23:06:28] [+] Intent.setAction (implicit)
+[23:06:28] [+] Activity.startActivity
+[23:06:28] [+] ContextWrapper.sendBroadcast
+[23:06:28] [+] ContextWrapper.bindService
+[23:06:28] [+] ContentResolver.query
+[23:06:28] [+] ContentResolver.insert
+[23:06:28] [+] FileOutputStream.$init (write)
+[23:06:28] [+] SharedPreferences.putString
+[23:06:28] [+] ContextWrapper.openFileOutput
+[23:06:28] [+] File.delete
+[23:06:28] [+] Environment.getExternalStorageDirectory
+[23:06:28] [+] Socket.$init (raw socket)
+[23:06:28] [+] URL.openConnection
+[23:06:28] [+] SSLContext.init (TrustManager bypass)
+[23:06:28] [+] InetAddress.getByName (DNS)
+[23:06:28] [+] URLConnection.setRequestProperty
+[23:06:28] [+] AlarmManager.set
+[23:06:28] [+] JobScheduler.schedule
+[23:06:28] [+] ContextWrapper.registerReceiver
+[23:06:28] [+] Activity.requestPermissions
+[23:06:28] [+] PackageManager.setComponentEnabledSetting
+[23:06:28] [+] Thread.$init (thread create)
+[23:06:28] [+] ActivityManager.getRunningAppProcesses
+[23:06:28] [+] ByteBuffer.allocate (>5MB)
+[23:06:28] [+] ClassLoader.getParent
+[23:06:28] === 50 Feature Hook Hazır ===
+[23:06:28]   [!] Analiz başladı — 75s
+[23:06:29]   [~] RPC poll @1s — 5 event
+[23:06:29] [ANTI] Thread.sleep(10000ms)
+[23:06:31] [CRYPTO] Cipher: AES/GCM/NoPadding
+[23:06:31] [CRYPTO] Cipher: AES/GCM/NoPadding
+[23:06:31] [CRYPTO] Cipher: AES/GCM/NoPadding
+[23:06:31] [CRYPTO] Cipher: AES/GCM/NoPadding
+[23:06:31] [CRYPTO] Cipher: AES/ECB/NoPadding
+[23:06:31] [CRYPTO] Cipher: AES/ECB/NoPadding
+[23:06:31] [CRYPTO] Cipher: AES/ECB/NoPadding
+[23:06:31] [CRYPTO] Cipher: AES/ECB/NoPadding
+[23:06:31] [CRYPTO] Cipher: AES/GCM/NoPadding
+[23:06:31] [CRYPTO] Cipher: AES/GCM/NoPadding
+[23:06:31] [CRYPTO] Cipher: AES/ECB/NoPadding
+[23:06:31] [CRYPTO] Cipher: AES/ECB/NoPadding
+[23:06:31] [CRYPTO] Cipher: AES/ECB/NoPadding
+[23:06:31] [CRYPTO] Cipher: AES/ECB/NoPadding
+[23:06:31] [CRYPTO] Cipher: AES/GCM/NoPadding
+[23:06:31] [CRYPTO] Cipher: AES/GCM/NoPadding
+[23:06:31] [CRYPTO] Cipher: AES/ECB/NoPadding
+[23:06:31] [CRYPTO] Cipher: AES/ECB/NoPadding
+[23:06:31] [CRYPTO] Cipher: AES/ECB/NoPadding
+[23:06:31] [CRYPTO] Cipher: AES/ECB/NoPadding
+[23:06:31] [EXEC] logcat,-f,/storage/emulated/0/SBMLogs//logcat.txt,MyAppTAG:V,*:S
+[23:06:31] [PRIV] requestPermissions: android.permission.INTERNET,android.permission.READ_PHONE_STATE,android.permission.ACCESS_NETWORK_STATE,android.permission.MODIFY_AUDIO_SETTINGS,android.permission.ACCESS_COARSE_LOCATION,android.permission.ACCESS_FINE_LOCATION,android.permission.CAMERA
+[23:06:34]   [~] RPC poll @6s — 80 event
+[23:06:39]   [~] RPC poll @11s — 80 event
+[23:06:44]   [~] RPC poll @16s — 80 event
+[23:06:48] [~] Snapshot — 80 event | 16 aktif feature | burst: 80 | seq: 36 event
+[23:06:49]   [~] RPC poll @21s — 80 event
+[23:06:54]   [~] RPC poll @26s — 80 event
+[23:06:59]   [~] RPC poll @31s — 80 event
+[23:07:04]   [~] RPC poll @36s — 80 event
+[23:07:08] [~] Snapshot — 80 event | 16 aktif feature | burst: 80 | seq: 36 event
+[23:07:09]   [~] RPC poll @41s — 80 event
+[23:07:14]   [~] RPC poll @46s — 80 event
+[23:07:19]   [~] RPC poll @51s — 80 event
+[23:07:24]   [~] RPC poll @56s — 80 event
+[23:07:28] [~] Snapshot — 80 event | 16 aktif feature | burst: 80 | seq: 36 event
+[23:07:29]   [~] RPC poll @61s — 80 event
+[23:07:34]   [~] RPC poll @66s — 80 event
+[23:07:39]   [~] RPC poll @71s — 80 event
+[23:07:43]   [*] Süre doldu, final RPC...
+[23:07:43]   [+] RPC OK — 80 event alındı
+[23:07:43]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 50, toplam: 80
+
+[23:07:43] ============================================================
+[23:07:43] [+] CSV YAZILDI — 23:07:43
+[23:07:43]     com.mosambee.mpos.ngenius  |  BENIGN
+[23:07:43] ────────────────────────────────────────────────────────────
+[23:07:43]   Ham Feature'lar (aktif):
+[23:07:43]     reflection_invoke_count                      1
+[23:07:43]     runtime_exec_count                           1
+[23:07:43]     dynamic_class_load_count                     14
+[23:07:43]     getPackageInfo_count                         4
+[23:07:43]     cipher_init_count                            20
+[23:07:43]     cipher_aes_count                             20
+[23:07:43]     secret_key_gen_count                         1
+[23:07:43]     sleep_call_count                             1
+[23:07:43]     secure_random_count                          3
+[23:07:43]     implicit_intent_count                        5
+[23:07:43]     startActivity_count                          1
+[23:07:43]     bindService_count                            1
+[23:07:43]     shared_prefs_write_count                     3
+[23:07:43]     deleteFile_count                             3
+[23:07:43]     getExternalStorageDirectory_count            1
+[23:07:43]     requestPermission_count                      1
+[23:07:43] ────────────────────────────────────────────────────────────
+[23:07:43]   Türetilmiş Skorlar:
+[23:07:43]     anti_analysis_score                          1
+[23:07:43]     stealth_score                                15
+[23:07:43]     exfil_score                                  20
+[23:07:43]     privilege_score                              1
+[23:07:43]     surveillance_score                           4
+[23:07:43]     dynamic_exec_score                           2
+[23:07:43]     anti_to_total_ratio                          0.0125
+[23:07:43]     reflection_to_exec_ratio                     1.0
+[23:07:43]   ⚠️  Aktif Boolean Patternler:
+[23:07:43]     has_evasion_pattern
+[23:07:43] ────────────────────────────────────────────────────────────
+[23:07:43]   Temporal Bilgiler:
+[23:07:43]     first_crypto_ms                              2850 ms
+[23:07:43]     first_reflection_ms                          3000 ms
+[23:07:43]     first_exec_ms                                3077 ms
+[23:07:43]     first_dynamic_load_ms                        262 ms
+[23:07:43]     burst_peak_count                             80
+[23:07:43]     🕐 rapid_burst_flag
+[23:07:43] ────────────────────────────────────────────────────────────
+[23:07:43]   Sequence Log: 36 event kayıt edildi
+[23:07:43]   🔗 Aktif Sequence Patternler:
+[23:07:43]     seq_reflect_before_exec                      1
+[23:07:43]     seq_max_chain_length                         36
+[23:07:43] ============================================================
+
+
+[23:07:43] ==========================================================
+[23:07:43] [+] CSV YAZILDI — 23:07:43
+[23:07:43]     com.mosambee.mpos.ngenius  |  BENIGN
+[23:07:43] ──────────────────────────────────────────────────────────
+[23:07:43]   Ham Feature'lar (aktif):
+[23:07:43]     reflection_invoke_count                    1
+[23:07:43]     runtime_exec_count                         1
+[23:07:43]     dynamic_class_load_count                   14
+[23:07:43]     getPackageInfo_count                       4
+[23:07:43]     cipher_init_count                          20
+[23:07:43]     cipher_aes_count                           20
+[23:07:43]     secret_key_gen_count                       1
+[23:07:43]     sleep_call_count                           1
+[23:07:43]     secure_random_count                        3
+[23:07:43]     implicit_intent_count                      5
+[23:07:43]     startActivity_count                        1
+[23:07:43]     bindService_count                          1
+[23:07:43]     shared_prefs_write_count                   3
+[23:07:43]     deleteFile_count                           3
+[23:07:43]     getExternalStorageDirectory_count          1
+[23:07:43]     requestPermission_count                    1
+[23:07:43] ──────────────────────────────────────────────────────────
+[23:07:43]   Türetilmiş Skorlar:
+[23:07:43]     anti_analysis_score                        1
+[23:07:43]     stealth_score                              15
+[23:07:43]     exfil_score                                20
+[23:07:43]     privilege_score                            1
+[23:07:43]     surveillance_score                         4
+[23:07:43]     dynamic_exec_score                         2
+[23:07:43]     anti_to_total_ratio                        0.0125
+[23:07:43]     reflection_to_exec_ratio                   1.0
+[23:07:43]   Aktif Boolean Patternler:
+[23:07:43]     ⚠️  has_evasion_pattern
+[23:07:43] ──────────────────────────────────────────────────────────
+[23:07:43]   Temporal Bilgiler:
+[23:07:43]     first_crypto_ms                            2850 ms
+[23:07:43]     first_reflection_ms                        3000 ms
+[23:07:43]     first_exec_ms                              3077 ms
+[23:07:43]     first_dynamic_load_ms                      262 ms
+[23:07:43]     burst_peak_count                           80
+[23:07:43]     session_duration_ms                        75342 ms
+[23:07:43]   Aktif Temporal Flagler:
+[23:07:43]     🕐 rapid_burst_flag
+[23:07:43] ==========================================================
+
+[23:07:43]   [+] CSV satırı yazıldı.
+[23:07:48]   [+] Kaldırıldı: com.mosambee.mpos.ngenius
+
+[23:07:48]   Durum: ✅ 11  ⏭️  12  ❌ 0  | ⏱️  ~478.6 dk kaldı
+
+[23:07:48] [24/1001] İşleniyor...
+
+[23:07:48] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:07:48] [APK] 00EDA8FD64D64451DA605530065E29E115E56B9D570E324A63FB518F823B959A.apk
+[23:07:48] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:07:48]   [+] Package : com.xerintel.wakeup93187
+[23:07:48]   [+] Label   : benign
+[23:07:48]   [*] Kuruluyor...
+[23:08:04]   [+] Kurulum OK
+[23:08:04]   [*] Uygulama başlatılıyor (monkey)...
+[23:08:04]   [*] PID aranıyor...
+[23:08:04]   [+] PID: 11128 — attach ediliyor...
+[23:08:05] === KangalGuard Agent Başladı ===
+[23:08:05] [+] Method.invoke (reflection)
+[23:08:05] [+] DexClassLoader.$init
+[23:08:05] [+] Runtime.exec
+[23:08:05] [+] Class.forName
+[23:08:05] [+] PackageManager.getPackageInfo
+[23:08:05] [+] SmsManager.sendTextMessage
+[23:08:05] [+] TelephonyManager.getDeviceId
+[23:08:05] [+] TelephonyManager.getSubscriberId
+[23:08:05] [+] Cipher.init
+[23:08:05] [+] KeyGenerator.generateKey
+[23:08:05] [+] Base64.encode/encodeToString
+[23:08:05] [+] SecureRandom.$init
+[23:08:05] [+] System.exit (bypass)
+[23:08:05] [+] Debug.isDebuggerConnected (bypass)
+[23:08:05] [+] SystemProperties.get (emulator check)
+[23:08:05] [+] File.exists (root path check)
+[23:08:05] [+] Thread.sleep (timing attack)
+[23:08:05] [+] Thread.getStackTrace
+[23:08:05] [+] System.loadLibrary
+[23:08:05] [+] Intent.setAction (implicit)
+[23:08:05] [+] Activity.startActivity
+[23:08:05] [+] ContextWrapper.sendBroadcast
+[23:08:05] [+] ContextWrapper.bindService
+[23:08:05] [+] ContentResolver.query
+[23:08:05] [+] ContentResolver.insert
+[23:08:05] [+] FileOutputStream.$init (write)
+[23:08:05] [+] SharedPreferences.putString
+[23:08:05] [+] ContextWrapper.openFileOutput
+[23:08:05] [+] File.delete
+[23:08:05] [+] Environment.getExternalStorageDirectory
+[23:08:05] [+] Socket.$init (raw socket)
+[23:08:05] [+] URL.openConnection
+[23:08:05] [+] SSLContext.init (TrustManager bypass)
+[23:08:06] [+] InetAddress.getByName (DNS)
+[23:08:06] [+] URLConnection.setRequestProperty
+[23:08:06] [+] AlarmManager.set
+[23:08:06] [+] JobScheduler.schedule
+[23:08:06] [+] ContextWrapper.registerReceiver
+[23:08:06] [+] Activity.requestPermissions
+[23:08:06] [+] PackageManager.setComponentEnabledSetting
+[23:08:06] [+] Thread.$init (thread create)
+[23:08:06] [+] ActivityManager.getRunningAppProcesses
+[23:08:06] [+] ByteBuffer.allocate (>5MB)
+[23:08:06] [+] ClassLoader.getParent
+[23:08:06] === 50 Feature Hook Hazır ===
+[23:08:06]   [!] Analiz başladı — 75s
+[23:08:06] [ANTI] Thread.sleep(10000ms)
+[23:08:07]   [~] RPC poll @1s — 60 event
+[23:08:12]   [~] RPC poll @6s — 372 event
+[23:08:17]   [~] RPC poll @11s — 658 event
+[23:08:22]   [~] RPC poll @16s — 1014 event
+[23:08:26] [~] Snapshot — 1295 event | 9 aktif feature | burst: 364 | seq: 200 event
+[23:08:27]   [~] RPC poll @21s — 1373 event
+[23:08:32]   [~] RPC poll @26s — 1754 event
+[23:08:37]   [~] RPC poll @31s — 2143 event
+[23:08:42]   [~] RPC poll @36s — 2520 event
+[23:08:46] [~] Snapshot — 2802 event | 9 aktif feature | burst: 392 | seq: 200 event
+[23:08:47]   [~] RPC poll @41s — 2886 event
+[23:08:52]   [~] RPC poll @46s — 3279 event
+[23:08:57]   [~] RPC poll @51s — 3662 event
+[23:09:02]   [~] RPC poll @56s — 4042 event
+[23:09:06] [~] Snapshot — 4325 event | 9 aktif feature | burst: 406 | seq: 200 event
+[23:09:07]   [~] RPC poll @61s — 4412 event
+[23:09:12]   [~] RPC poll @66s — 4788 event
+[23:09:17]   [~] RPC poll @71s — 5159 event
+[23:09:21]   [*] Süre doldu, final RPC...
+[23:09:21]   [+] RPC OK — 5472 event alındı
+[23:09:21]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 50, toplam: 5472
+
+[23:09:21] ============================================================
+[23:09:21] [+] CSV YAZILDI — 23:09:21
+[23:09:21]     com.xerintel.wakeup93187  |  BENIGN
+[23:09:21] ────────────────────────────────────────────────────────────
+[23:09:21]   Ham Feature'lar (aktif):
+[23:09:21]     reflection_invoke_count                      5449
+[23:09:21]     base64_encode_count                          4
+[23:09:21]     sleep_call_count                             1
+[23:09:21]     implicit_intent_count                        6
+[23:09:21]     sendBroadcast_count                          1
+[23:09:21]     bindService_count                            1
+[23:09:21]     shared_prefs_write_count                     2
+[23:09:21]     deleteFile_count                             4
+[23:09:21]     register_receiver_count                      4
+[23:09:21] ────────────────────────────────────────────────────────────
+[23:09:21]   Türetilmiş Skorlar:
+[23:09:21]     anti_analysis_score                          1
+[23:09:21]     persistence_score                            4
+[23:09:21]     stealth_score                                5449
+[23:09:21]     exfil_score                                  4
+[23:09:21]     dynamic_exec_score                           5449
+[23:09:21]     anti_to_total_ratio                          0.0002
+[23:09:21]     reflection_to_exec_ratio                     5449.0
+[23:09:21]   ⚠️  Aktif Boolean Patternler:
+[23:09:21]     has_evasion_pattern
+[23:09:21] ────────────────────────────────────────────────────────────
+[23:09:21]   Temporal Bilgiler:
+[23:09:21]     first_reflection_ms                          598 ms
+[23:09:21]     burst_peak_count                             406
+[23:09:21]     🕐 rapid_burst_flag
+[23:09:21] ────────────────────────────────────────────────────────────
+[23:09:21]   Sequence Log: 200 event kayıt edildi
+[23:09:21]   🔗 Aktif Sequence Patternler:
+[23:09:21]     seq_max_chain_length                         200
+[23:09:21] ============================================================
+
+
+[23:09:21] ==========================================================
+[23:09:21] [+] CSV YAZILDI — 23:09:21
+[23:09:21]     com.xerintel.wakeup93187  |  BENIGN
+[23:09:21] ──────────────────────────────────────────────────────────
+[23:09:21]   Ham Feature'lar (aktif):
+[23:09:21]     reflection_invoke_count                    5449
+[23:09:21]     base64_encode_count                        4
+[23:09:21]     sleep_call_count                           1
+[23:09:21]     implicit_intent_count                      6
+[23:09:21]     sendBroadcast_count                        1
+[23:09:21]     bindService_count                          1
+[23:09:21]     shared_prefs_write_count                   2
+[23:09:21]     deleteFile_count                           4
+[23:09:21]     register_receiver_count                    4
+[23:09:21] ──────────────────────────────────────────────────────────
+[23:09:21]   Türetilmiş Skorlar:
+[23:09:21]     anti_analysis_score                        1
+[23:09:21]     persistence_score                          4
+[23:09:21]     stealth_score                              5449
+[23:09:21]     exfil_score                                4
+[23:09:21]     dynamic_exec_score                         5449
+[23:09:21]     anti_to_total_ratio                        0.0002
+[23:09:21]     reflection_to_exec_ratio                   5449.0
+[23:09:21]   Aktif Boolean Patternler:
+[23:09:21]     ⚠️  has_evasion_pattern
+[23:09:21] ──────────────────────────────────────────────────────────
+[23:09:21]   Temporal Bilgiler:
+[23:09:21]     first_reflection_ms                        598 ms
+[23:09:21]     burst_peak_count                           406
+[23:09:21]     session_duration_ms                        75681 ms
+[23:09:21]   Aktif Temporal Flagler:
+[23:09:21]     🕐 rapid_burst_flag
+[23:09:21] ==========================================================
+
+[23:09:21]   [+] CSV satırı yazıldı.
+[23:09:26]   [+] Kaldırıldı: com.xerintel.wakeup93187
+
+[23:09:26]   Durum: ✅ 12  ⏭️  12  ❌ 0  | ⏱️  ~524.5 dk kaldı
+
+[23:09:26] [25/1001] İşleniyor...
+
+[23:09:26] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:09:26] [APK] 00EE2D4F8B74E4998C9AB0A7ABA9344F6ACED94631970CC71EB7F826CD8B8051.apk
+[23:09:26] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:09:26]   [+] Package : net.rd.android.membercentric.snisonline
+[23:09:26]   [+] Label   : benign
+[23:09:26]   [*] Kuruluyor...
+[23:09:42]   [+] Kurulum OK
+[23:09:42]   [*] Uygulama başlatılıyor (monkey)...
+[23:09:42]   [*] PID aranıyor...
+[23:09:43]   [+] PID: 11398 — attach ediliyor...
+[23:09:44] === KangalGuard Agent Başladı ===
+[23:09:44] [+] Method.invoke (reflection)
+[23:09:44] [+] DexClassLoader.$init
+[23:09:44] [+] Runtime.exec
+[23:09:44] [+] Class.forName
+[23:09:44] [+] PackageManager.getPackageInfo
+[23:09:44] [+] SmsManager.sendTextMessage
+[23:09:44] [+] TelephonyManager.getDeviceId
+[23:09:44] [+] TelephonyManager.getSubscriberId
+[23:09:44] [+] Cipher.init
+[23:09:44] [+] KeyGenerator.generateKey
+[23:09:44] [+] Base64.encode/encodeToString
+[23:09:44] [+] SecureRandom.$init
+[23:09:44] [+] System.exit (bypass)
+[23:09:44] [+] Debug.isDebuggerConnected (bypass)
+[23:09:44] [+] SystemProperties.get (emulator check)
+[23:09:44] [+] File.exists (root path check)
+[23:09:44] [+] Thread.sleep (timing attack)
+[23:09:44] [+] Thread.getStackTrace
+[23:09:44] [+] System.loadLibrary
+[23:09:44] [+] Intent.setAction (implicit)
+[23:09:44] [+] Activity.startActivity
+[23:09:44] [+] ContextWrapper.sendBroadcast
+[23:09:44] [+] ContextWrapper.bindService
+[23:09:44] [+] ContentResolver.query
+[23:09:44] [+] ContentResolver.insert
+[23:09:44] [+] FileOutputStream.$init (write)
+[23:09:44] [+] SharedPreferences.putString
+[23:09:44] [+] ContextWrapper.openFileOutput
+[23:09:44] [+] File.delete
+[23:09:44] [+] Environment.getExternalStorageDirectory
+[23:09:44] [+] Socket.$init (raw socket)
+[23:09:44] [+] URL.openConnection
+[23:09:44] [+] SSLContext.init (TrustManager bypass)
+[23:09:44] [+] InetAddress.getByName (DNS)
+[23:09:44] [+] URLConnection.setRequestProperty
+[23:09:44] [+] AlarmManager.set
+[23:09:44] [+] JobScheduler.schedule
+[23:09:44] [+] ContextWrapper.registerReceiver
+[23:09:44] [+] Activity.requestPermissions
+[23:09:44] [+] PackageManager.setComponentEnabledSetting
+[23:09:44] [+] Thread.$init (thread create)
+[23:09:44] [+] ActivityManager.getRunningAppProcesses
+[23:09:44] [+] ByteBuffer.allocate (>5MB)
+[23:09:44] [+] ClassLoader.getParent
+[23:09:44] === 50 Feature Hook Hazır ===
+[23:09:44]   [!] Analiz başladı — 75s
+[23:09:45]   [~] RPC poll @1s — 17 event
+[23:09:50]   [~] RPC poll @6s — 22 event
+[23:09:55]   [~] RPC poll @11s — 22 event
+[23:10:01]   [~] RPC poll @16s — 22 event
+[23:10:04] [~] Snapshot — 22 event | 7 aktif feature | burst: 22 | seq: 11 event
+[23:10:06]   [~] RPC poll @21s — 22 event
+[23:10:11]   [~] RPC poll @26s — 22 event
+[23:10:16]   [~] RPC poll @31s — 22 event
+[23:10:21]   [~] RPC poll @36s — 22 event
+[23:10:25] [~] Snapshot — 22 event | 7 aktif feature | burst: 22 | seq: 11 event
+[23:10:26]   [~] RPC poll @41s — 22 event
+[23:10:31]   [~] RPC poll @46s — 22 event
+[23:10:36]   [~] RPC poll @51s — 22 event
+[23:10:36] [NET] URL: https://firebaselogging-pa.googleapis.com/v1/firelog/legacy/batchlog
+[23:10:41]   [~] RPC poll @56s — 47 event
+[23:10:45] [~] Snapshot — 47 event | 9 aktif feature | burst: 25 | seq: 21 event
+[23:10:46]   [~] RPC poll @61s — 47 event
+[23:10:51]   [~] RPC poll @66s — 47 event
+[23:10:56]   [~] RPC poll @71s — 47 event
+[23:11:00]   [*] Süre doldu, final RPC...
+[23:11:00]   [+] RPC OK — 47 event alındı
+[23:11:00]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 50, toplam: 47
+
+[23:11:00] ============================================================
+[23:11:00] [+] CSV YAZILDI — 23:11:00
+[23:11:00]     net.rd.android.membercentric.snisonline  |  BENIGN
+[23:11:00] ────────────────────────────────────────────────────────────
+[23:11:00]   Ham Feature'lar (aktif):
+[23:11:00]     reflection_invoke_count                      18
+[23:11:00]     dynamic_class_load_count                     2
+[23:11:00]     getPackageInfo_count                         3
+[23:11:00]     base64_encode_count                          12
+[23:11:00]     implicit_intent_count                        5
+[23:11:00]     bindService_count                            1
+[23:11:00]     shared_prefs_write_count                     1
+[23:11:00]     deleteFile_count                             4
+[23:11:00]     url_connection_count                         1
+[23:11:00] ────────────────────────────────────────────────────────────
+[23:11:00]   Türetilmiş Skorlar:
+[23:11:00]     network_score                                1
+[23:11:00]     stealth_score                                20
+[23:11:00]     exfil_score                                  13
+[23:11:00]     surveillance_score                           3
+[23:11:00]     dynamic_exec_score                           18
+[23:11:00]     reflection_to_exec_ratio                     18.0
+[23:11:00]     network_to_activity_ratio                    1.0
+[23:11:00]   ⚠️  Aktif Boolean Patternler:
+[23:11:00]     has_exfil_pattern
+[23:11:00] ────────────────────────────────────────────────────────────
+[23:11:00]   Temporal Bilgiler:
+[23:11:00]     first_network_ms                             51600 ms
+[23:11:00]     first_reflection_ms                          181 ms
+[23:11:00]     first_dynamic_load_ms                        3978 ms
+[23:11:00]     burst_peak_count                             25
+[23:11:00]     🕐 rapid_burst_flag
+[23:11:00] ────────────────────────────────────────────────────────────
+[23:11:00]   Sequence Log: 21 event kayıt edildi
+[23:11:00]   🔗 Aktif Sequence Patternler:
+[23:11:00]     seq_max_chain_length                         21
+[23:11:00] ============================================================
+
+
+[23:11:00] ==========================================================
+[23:11:00] [+] CSV YAZILDI — 23:11:00
+[23:11:00]     net.rd.android.membercentric.snisonline  |  BENIGN
+[23:11:00] ──────────────────────────────────────────────────────────
+[23:11:00]   Ham Feature'lar (aktif):
+[23:11:00]     reflection_invoke_count                    18
+[23:11:00]     dynamic_class_load_count                   2
+[23:11:00]     getPackageInfo_count                       3
+[23:11:00]     base64_encode_count                        12
+[23:11:00]     implicit_intent_count                      5
+[23:11:00]     bindService_count                          1
+[23:11:00]     shared_prefs_write_count                   1
+[23:11:00]     deleteFile_count                           4
+[23:11:00]     url_connection_count                       1
+[23:11:00] ──────────────────────────────────────────────────────────
+[23:11:00]   Türetilmiş Skorlar:
+[23:11:00]     network_score                              1
+[23:11:00]     stealth_score                              20
+[23:11:00]     exfil_score                                13
+[23:11:00]     surveillance_score                         3
+[23:11:00]     dynamic_exec_score                         18
+[23:11:00]     reflection_to_exec_ratio                   18.0
+[23:11:00]     network_to_activity_ratio                  1.0
+[23:11:00]   Aktif Boolean Patternler:
+[23:11:00]     ⚠️  has_exfil_pattern
+[23:11:00] ──────────────────────────────────────────────────────────
+[23:11:00]   Temporal Bilgiler:
+[23:11:00]     first_network_ms                           51600 ms
+[23:11:00]     first_reflection_ms                        181 ms
+[23:11:00]     first_dynamic_load_ms                      3978 ms
+[23:11:00]     burst_peak_count                           25
+[23:11:00]     session_duration_ms                        75362 ms
+[23:11:00]   Aktif Temporal Flagler:
+[23:11:00]     🕐 rapid_burst_flag
+[23:11:00] ==========================================================
+
+[23:11:00]   [+] CSV satırı yazıldı.
+[23:11:05]   [+] Kaldırıldı: net.rd.android.membercentric.snisonline
+
+[23:11:05]   Durum: ✅ 13  ⏭️  12  ❌ 0  | ⏱️  ~567.3 dk kaldı
+
+[23:11:05] [26/1001] İşleniyor...
+
+[23:11:05] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:11:05] [APK] 00EE7BDA14BCF219A5D4356AFF6A03F7F03FD0381ED89C2F6EF871D1D646B124.apk
+[23:11:05] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:11:05]   [+] Package : com.zhichengcloud.energo
+[23:11:05]   [+] Label   : benign
+[23:11:05]   [*] Kuruluyor...
+[23:11:21]   [+] Kurulum OK
+[23:11:21]   [*] Uygulama başlatılıyor (monkey)...
+[23:11:21]   [*] PID aranıyor...
+[23:11:22]   [+] PID: 11632 — attach ediliyor...
+[23:11:23] === KangalGuard Agent Başladı ===
+[23:11:23] [+] Method.invoke (reflection)
+[23:11:23] [+] DexClassLoader.$init
+[23:11:23] [+] Runtime.exec
+[23:11:23] [+] Class.forName
+[23:11:23] [+] PackageManager.getPackageInfo
+[23:11:23] [+] SmsManager.sendTextMessage
+[23:11:23] [+] TelephonyManager.getDeviceId
+[23:11:23] [+] TelephonyManager.getSubscriberId
+[23:11:23] [+] Cipher.init
+[23:11:23] [+] KeyGenerator.generateKey
+[23:11:23] [+] Base64.encode/encodeToString
+[23:11:23] [+] SecureRandom.$init
+[23:11:23] [+] System.exit (bypass)
+[23:11:23] [+] Debug.isDebuggerConnected (bypass)
+[23:11:23] [+] SystemProperties.get (emulator check)
+[23:11:23] [+] File.exists (root path check)
+[23:11:23] [+] Thread.sleep (timing attack)
+[23:11:23] [+] Thread.getStackTrace
+[23:11:23] [+] System.loadLibrary
+[23:11:23] [+] Intent.setAction (implicit)
+[23:11:23] [+] Activity.startActivity
+[23:11:23] [+] ContextWrapper.sendBroadcast
+[23:11:23] [+] ContextWrapper.bindService
+[23:11:23] [+] ContentResolver.query
+[23:11:23] [+] ContentResolver.insert
+[23:11:23] [+] FileOutputStream.$init (write)
+[23:11:23] [+] SharedPreferences.putString
+[23:11:23] [+] ContextWrapper.openFileOutput
+[23:11:23] [+] File.delete
+[23:11:23] [+] Environment.getExternalStorageDirectory
+[23:11:23] [+] Socket.$init (raw socket)
+[23:11:23] [+] URL.openConnection
+[23:11:23] [+] SSLContext.init (TrustManager bypass)
+[23:11:23] [+] InetAddress.getByName (DNS)
+[23:11:23] [+] URLConnection.setRequestProperty
+[23:11:23] [+] AlarmManager.set
+[23:11:23] [+] JobScheduler.schedule
+[23:11:23] [+] ContextWrapper.registerReceiver
+[23:11:23] [+] Activity.requestPermissions
+[23:11:23] [+] PackageManager.setComponentEnabledSetting
+[23:11:23] [+] Thread.$init (thread create)
+[23:11:23] [+] ActivityManager.getRunningAppProcesses
+[23:11:23] [+] ByteBuffer.allocate (>5MB)
+[23:11:23] [+] ClassLoader.getParent
+[23:11:23] === 50 Feature Hook Hazır ===
+[23:11:23]   [!] Analiz başladı — 75s
+[23:11:23] [ANTI] Thread.sleep(10000ms)
+[23:11:24]   [~] RPC poll @1s — 3 event
+[23:11:29]   [!] Process öldü (~6s) — son snapshot kullanılıyor
+[23:11:29]   [*] Süre doldu, final RPC...
+[23:11:29]   [!] Final RPC başarısız — son poll snapshot: 3 event
+[23:11:29]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 50, toplam: 3
+
+[23:11:29] ============================================================
+[23:11:29] [+] CSV YAZILDI — 23:11:29
+[23:11:29]     com.zhichengcloud.energo  |  BENIGN
+[23:11:29] ────────────────────────────────────────────────────────────
+[23:11:29]   Ham Feature'lar (aktif):
+[23:11:29]     sleep_call_count                             1
+[23:11:29]     implicit_intent_count                        1
+[23:11:29]     deleteFile_count                             1
+[23:11:29] ────────────────────────────────────────────────────────────
+[23:11:29]   Türetilmiş Skorlar:
+[23:11:29]     anti_analysis_score                          1
+[23:11:29]     anti_to_total_ratio                          0.3333
+[23:11:29] ────────────────────────────────────────────────────────────
+[23:11:29]   Temporal Bilgiler:
+[23:11:29]     burst_peak_count                             3
+[23:11:29] ────────────────────────────────────────────────────────────
+[23:11:29]   Sequence Log: 0 event kayıt edildi
+[23:11:29]   (Tehlikeli sequence tespit edilmedi)
+[23:11:29] ============================================================
+
+
+[23:11:29] ==========================================================
+[23:11:29] [+] CSV YAZILDI — 23:11:29
+[23:11:29]     com.zhichengcloud.energo  |  BENIGN
+[23:11:29] ──────────────────────────────────────────────────────────
+[23:11:29]   Ham Feature'lar (aktif):
+[23:11:29]     sleep_call_count                           1
+[23:11:29]     implicit_intent_count                      1
+[23:11:29]     deleteFile_count                           1
+[23:11:29] ──────────────────────────────────────────────────────────
+[23:11:29]   Türetilmiş Skorlar:
+[23:11:29]     anti_analysis_score                        1
+[23:11:29]     anti_to_total_ratio                        0.3333
+[23:11:29]   Aktif Boolean Patternler:
+[23:11:29]     (Tehlikeli pattern tespit edilmedi)
+[23:11:29] ──────────────────────────────────────────────────────────
+[23:11:29]   Temporal Bilgiler:
+[23:11:29]     burst_peak_count                           3
+[23:11:29]     session_duration_ms                        1156 ms
+[23:11:29] ==========================================================
+
+[23:11:29]   [+] CSV satırı yazıldı.
+[23:11:34]   [+] Kaldırıldı: com.zhichengcloud.energo
+
+[23:11:34]   Durum: ✅ 14  ⏭️  12  ❌ 0  | ⏱️  ~563.3 dk kaldı
+
+[23:11:34] [27/1001] İşleniyor...
+
+[23:11:34] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:11:34] [APK] 00EE82BB981E1858EECF445A4DD11DE5D1C2FBA17C8E5FC3AEF386F2E69BB72A.apk
+[23:11:34] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:11:34]   [+] Package : com.snooze.app
+[23:11:34]   [+] Label   : benign
+[23:11:34]   [*] Kuruluyor...
+[23:11:50]   [+] Kurulum OK
+[23:11:50]   [*] Uygulama başlatılıyor (monkey)...
+[23:11:50]   [*] PID aranıyor...
+[23:11:50]   [+] PID: 11923 — attach ediliyor...
+[23:11:51] === KangalGuard Agent Başladı ===
+[23:11:51] [+] Method.invoke (reflection)
+[23:11:51] [+] DexClassLoader.$init
+[23:11:51] [+] Runtime.exec
+[23:11:51] [+] Class.forName
+[23:11:51] [+] PackageManager.getPackageInfo
+[23:11:51] [+] SmsManager.sendTextMessage
+[23:11:51] [+] TelephonyManager.getDeviceId
+[23:11:51] [+] TelephonyManager.getSubscriberId
+[23:11:51] [+] Cipher.init
+[23:11:51] [+] KeyGenerator.generateKey
+[23:11:51] [+] Base64.encode/encodeToString
+[23:11:51] [+] SecureRandom.$init
+[23:11:51] [+] System.exit (bypass)
+[23:11:51] [+] Debug.isDebuggerConnected (bypass)
+[23:11:51] [+] SystemProperties.get (emulator check)
+[23:11:51] [+] File.exists (root path check)
+[23:11:51] [+] Thread.sleep (timing attack)
+[23:11:51] [+] Thread.getStackTrace
+[23:11:51] [+] System.loadLibrary
+[23:11:51] [+] Intent.setAction (implicit)
+[23:11:51] [+] Activity.startActivity
+[23:11:51] [+] ContextWrapper.sendBroadcast
+[23:11:51] [+] ContextWrapper.bindService
+[23:11:51] [ANTI] Root check: /system/app/Superuser.apk
+[23:11:51] [ANTI] Root check: /system/xbin/su
+[23:11:51] [+] ContentResolver.query
+[23:11:51] [+] ContentResolver.insert
+[23:11:51] [+] FileOutputStream.$init (write)
+[23:11:51] [+] SharedPreferences.putString
+[23:11:51] [+] ContextWrapper.openFileOutput
+[23:11:51] [+] File.delete
+[23:11:51] [+] Environment.getExternalStorageDirectory
+[23:11:51] [+] Socket.$init (raw socket)
+[23:11:51] [+] URL.openConnection
+[23:11:51] [ANTI] Root check: /system/app/Superuser.apk
+[23:11:51] [ANTI] Root check: /system/xbin/su
+[23:11:51] [+] SSLContext.init (TrustManager bypass)
+[23:11:51] [+] InetAddress.getByName (DNS)
+[23:11:51] [+] URLConnection.setRequestProperty
+[23:11:51] [+] AlarmManager.set
+[23:11:51] [+] JobScheduler.schedule
+[23:11:51] [+] ContextWrapper.registerReceiver
+[23:11:51] [+] Activity.requestPermissions
+[23:11:51] [+] PackageManager.setComponentEnabledSetting
+[23:11:51] [+] Thread.$init (thread create)
+[23:11:51] [+] ActivityManager.getRunningAppProcesses
+[23:11:51] [+] ByteBuffer.allocate (>5MB)
+[23:11:52] [+] ClassLoader.getParent
+[23:11:52] === 50 Feature Hook Hazır ===
+[23:11:52]   [!] Analiz başladı — 75s
+[23:11:52] [ANTI] Root check: /system/app/Superuser.apk
+[23:11:52] [ANTI] Root check: /system/xbin/su
+[23:11:52] [ANTI] Root check: /system/app/Superuser.apk
+[23:11:52] [ANTI] Root check: /system/xbin/su
+[23:11:52] [ANTI] Root check: /system/app/Superuser.apk
+[23:11:52] [ANTI] Root check: /system/xbin/su
+[23:11:52] [ANTI] Root check: /system/app/Superuser.apk
+[23:11:52] [ANTI] Root check: /system/xbin/su
+[23:11:52] [ANTI] Root check: /system/app/Superuser.apk
+[23:11:52] [ANTI] Root check: /system/xbin/su
+[23:11:52] [ANTI] Root check: /system/app/Superuser.apk
+[23:11:52] [ANTI] Root check: /system/xbin/su
+[23:11:53]   [!] Process öldü (~1s) — son snapshot kullanılıyor
+[23:11:53]   [*] Süre doldu, final RPC...
+[23:11:53]   [!] RPC başarısız (script has been destroyed) — snapshot da yok
+[23:11:53]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 0, toplam: 0
+[23:11:53]   [-] Sayaç verisi yok — boş satır yazılmıyor.
+[23:11:58]   [+] Kaldırıldı: com.snooze.app
+
+[23:11:58]   Durum: ✅ 15  ⏭️  12  ❌ 0  | ⏱️  ~556.0 dk kaldı
+
+[23:11:58] [28/1001] İşleniyor...
+
+[23:11:58] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:11:58] [APK] 00EE9E807E720FB558F6A67335A31886E6484511661D888DB090DEF53C915FD8.apk
+[23:11:58] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:11:58]   [+] Package : com.csa.utilitynexus.natchezTraceEPA
+[23:11:58]   [+] Label   : benign
+[23:11:58]   [*] Kuruluyor...
+[23:12:13]   [+] Kurulum OK
+[23:12:13]   [*] Uygulama başlatılıyor (monkey)...
+[23:12:14]   [*] PID aranıyor...
+[23:12:14]   [+] PID: 12193 — attach ediliyor...
+[23:12:14] === KangalGuard Agent Başladı ===
+[23:12:14] [+] Method.invoke (reflection)
+[23:12:14] [+] DexClassLoader.$init
+[23:12:14] [+] Runtime.exec
+[23:12:14] [+] Class.forName
+[23:12:14] [+] PackageManager.getPackageInfo
+[23:12:14] [+] SmsManager.sendTextMessage
+[23:12:14] [+] TelephonyManager.getDeviceId
+[23:12:14] [+] TelephonyManager.getSubscriberId
+[23:12:14] [+] Cipher.init
+[23:12:14] [+] KeyGenerator.generateKey
+[23:12:14] [+] Base64.encode/encodeToString
+[23:12:14] [+] SecureRandom.$init
+[23:12:15] [+] System.exit (bypass)
+[23:12:15] [+] Debug.isDebuggerConnected (bypass)
+[23:12:15] [+] SystemProperties.get (emulator check)
+[23:12:15] [+] File.exists (root path check)
+[23:12:15] [+] Thread.sleep (timing attack)
+[23:12:15] [+] Thread.getStackTrace
+[23:12:15] [+] System.loadLibrary
+[23:12:15] [+] Intent.setAction (implicit)
+[23:12:15] [+] Activity.startActivity
+[23:12:15] [+] ContextWrapper.sendBroadcast
+[23:12:15] [+] ContextWrapper.bindService
+[23:12:15] [+] ContentResolver.query
+[23:12:15] [+] ContentResolver.insert
+[23:12:15] [+] FileOutputStream.$init (write)
+[23:12:15] [+] SharedPreferences.putString
+[23:12:15] [+] ContextWrapper.openFileOutput
+[23:12:15] [+] File.delete
+[23:12:15] [+] Environment.getExternalStorageDirectory
+[23:12:15] [+] Socket.$init (raw socket)
+[23:12:15] [+] URL.openConnection
+[23:12:15] [+] SSLContext.init (TrustManager bypass)
+[23:12:15] [+] InetAddress.getByName (DNS)
+[23:12:15] [+] URLConnection.setRequestProperty
+[23:12:15] [+] AlarmManager.set
+[23:12:15] [+] JobScheduler.schedule
+[23:12:15] [+] ContextWrapper.registerReceiver
+[23:12:15] [+] Activity.requestPermissions
+[23:12:15] [+] PackageManager.setComponentEnabledSetting
+[23:12:15] [+] Thread.$init (thread create)
+[23:12:15] [+] ActivityManager.getRunningAppProcesses
+[23:12:15] [+] ByteBuffer.allocate (>5MB)
+[23:12:15] [+] ClassLoader.getParent
+[23:12:15] === 50 Feature Hook Hazır ===
+[23:12:15]   [!] Analiz başladı — 75s
+[23:12:15] [NET] URL: jar:file:/apex/com.android.art/javalib/core-oj.jar!/sun/util/logging/resources/logging.properties
+[23:12:16] [NET] URL: https://ntepa.utilitynexus.com:443/api/v007/utilities
+[23:12:16]   [~] RPC poll @1s — 29 event
+[23:12:16] [ANTI] Thread.sleep(10000ms)
+[23:12:21]   [~] RPC poll @6s — 1862 event
+[23:12:26]   [~] RPC poll @11s — 1862 event
+[23:12:31]   [~] RPC poll @16s — 1862 event
+[23:12:35] [~] Snapshot — 1862 event | 6 aktif feature | burst: 1862 | seq: 200 event
+[23:12:36]   [~] RPC poll @21s — 1862 event
+[23:12:41]   [~] RPC poll @26s — 1862 event
+[23:12:46]   [~] RPC poll @31s — 1862 event
+[23:12:51]   [~] RPC poll @36s — 1862 event
+[23:12:55] [~] Snapshot — 1862 event | 6 aktif feature | burst: 1862 | seq: 200 event
+[23:12:56]   [~] RPC poll @41s — 1862 event
+[23:13:01]   [~] RPC poll @46s — 1862 event
+[23:13:06]   [~] RPC poll @51s — 1862 event
+[23:13:11]   [~] RPC poll @56s — 1862 event
+[23:13:15] [~] Snapshot — 1862 event | 6 aktif feature | burst: 1862 | seq: 200 event
+[23:13:16]   [~] RPC poll @61s — 1862 event
+[23:13:21]   [~] RPC poll @66s — 1862 event
+[23:13:26]   [~] RPC poll @71s — 1862 event
+[23:13:30]   [*] Süre doldu, final RPC...
+[23:13:30]   [+] RPC OK — 1862 event alındı
+[23:13:30]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 50, toplam: 1862
+
+[23:13:30] ============================================================
+[23:13:30] [+] CSV YAZILDI — 23:13:30
+[23:13:30]     com.csa.utilitynexus.natchezTraceEPA  |  BENIGN
+[23:13:30] ────────────────────────────────────────────────────────────
+[23:13:30]   Ham Feature'lar (aktif):
+[23:13:30]     reflection_invoke_count                      1842
+[23:13:30]     dynamic_class_load_count                     11
+[23:13:30]     sleep_call_count                             1
+[23:13:30]     shared_prefs_write_count                     5
+[23:13:30]     deleteFile_count                             1
+[23:13:30]     url_connection_count                         2
+[23:13:30] ────────────────────────────────────────────────────────────
+[23:13:30]   Türetilmiş Skorlar:
+[23:13:30]     network_score                                2
+[23:13:30]     anti_analysis_score                          1
+[23:13:30]     stealth_score                                1853
+[23:13:30]     exfil_score                                  2
+[23:13:30]     dynamic_exec_score                           1842
+[23:13:30]     anti_to_total_ratio                          0.0005
+[23:13:30]     reflection_to_exec_ratio                     1842.0
+[23:13:30]     network_to_activity_ratio                    2.0
+[23:13:30]   ⚠️  Aktif Boolean Patternler:
+[23:13:30]     has_evasion_pattern
+[23:13:30] ────────────────────────────────────────────────────────────
+[23:13:30]   Temporal Bilgiler:
+[23:13:30]     first_network_ms                             1064 ms
+[23:13:30]     first_reflection_ms                          397 ms
+[23:13:30]     first_dynamic_load_ms                        374 ms
+[23:13:30]     burst_peak_count                             1862
+[23:13:30]     🕐 early_network_flag
+[23:13:30]     🕐 rapid_burst_flag
+[23:13:30] ────────────────────────────────────────────────────────────
+[23:13:30]   Sequence Log: 200 event kayıt edildi
+[23:13:30]   🔗 Aktif Sequence Patternler:
+[23:13:30]     seq_max_chain_length                         200
+[23:13:30] ============================================================
+
+
+[23:13:30] ==========================================================
+[23:13:30] [+] CSV YAZILDI — 23:13:30
+[23:13:30]     com.csa.utilitynexus.natchezTraceEPA  |  BENIGN
+[23:13:30] ──────────────────────────────────────────────────────────
+[23:13:30]   Ham Feature'lar (aktif):
+[23:13:30]     reflection_invoke_count                    1842
+[23:13:30]     dynamic_class_load_count                   11
+[23:13:30]     sleep_call_count                           1
+[23:13:30]     shared_prefs_write_count                   5
+[23:13:30]     deleteFile_count                           1
+[23:13:30]     url_connection_count                       2
+[23:13:30] ──────────────────────────────────────────────────────────
+[23:13:30]   Türetilmiş Skorlar:
+[23:13:30]     network_score                              2
+[23:13:30]     anti_analysis_score                        1
+[23:13:30]     stealth_score                              1853
+[23:13:30]     exfil_score                                2
+[23:13:30]     dynamic_exec_score                         1842
+[23:13:30]     anti_to_total_ratio                        0.0005
+[23:13:30]     reflection_to_exec_ratio                   1842.0
+[23:13:30]     network_to_activity_ratio                  2.0
+[23:13:30]   Aktif Boolean Patternler:
+[23:13:30]     ⚠️  has_evasion_pattern
+[23:13:30] ──────────────────────────────────────────────────────────
+[23:13:30]   Temporal Bilgiler:
+[23:13:30]     first_network_ms                           1064 ms
+[23:13:30]     first_reflection_ms                        397 ms
+[23:13:30]     first_dynamic_load_ms                      374 ms
+[23:13:30]     burst_peak_count                           1862
+[23:13:30]     session_duration_ms                        75377 ms
+[23:13:30]   Aktif Temporal Flagler:
+[23:13:30]     🕐 early_network_flag
+[23:13:30]     🕐 rapid_burst_flag
+[23:13:30] ==========================================================
+
+[23:13:30]   [+] CSV satırı yazıldı.
+[23:13:35]   [+] Kaldırıldı: com.csa.utilitynexus.natchezTraceEPA
+
+[23:13:35]   Durum: ✅ 16  ⏭️  12  ❌ 0  | ⏱️  ~591.9 dk kaldı
+
+[23:13:35] [29/1001] İşleniyor...
+
+[23:13:35] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:13:35] [APK] 00EEA8DA975827673B107FD8437951889B7D43A377E4B0379879A1C3EA2C8F4B.apk
+[23:13:35] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:13:35]   [+] Package : com.mobeasyapp.app694467752084
+[23:13:35]   [+] Label   : benign
+[23:13:35]   [*] Kuruluyor...
+[23:13:51]   [+] Kurulum OK
+[23:13:51]   [*] Uygulama başlatılıyor (monkey)...
+[23:13:51]   [*] PID aranıyor...
+[23:13:51]   [+] PID: 12378 — attach ediliyor...
+[23:14:16]   [!] Transport hatası (TransportError): timeout was reached
+[23:14:16]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[23:14:24]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[23:14:24]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 0, toplam: 0
+[23:14:24]   [-] Sayaç verisi yok — boş satır yazılmıyor.
+[23:14:30]   [+] Kaldırıldı: com.mobeasyapp.app694467752084
+
+[23:14:30]   Durum: ✅ 16  ⏭️  13  ❌ 0  | ⏱️  ~601.5 dk kaldı
+
+[23:14:30] [30/1001] İşleniyor...
+
+[23:14:30] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:14:30] [APK] 00EEBDC76FC4B19CC65E78EFEC31EBCDB160AC4FAE90A0A640D79FEAA2CFACFE.apk
+[23:14:30] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:14:30]   [+] Package : com.measurement.tools
+[23:14:30]   [+] Label   : benign
+[23:14:30]   [*] Kuruluyor...
+[23:14:46]   [+] Kurulum OK
+[23:14:46]   [*] Uygulama başlatılıyor (monkey)...
+[23:14:46]   [*] PID aranıyor...
+[23:14:46]   [+] PID: 12616 — attach ediliyor...
+[23:15:12]   [!] Transport hatası (TransportError): timeout was reached
+[23:15:12]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[23:15:20]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[23:15:20]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 0, toplam: 0
+[23:15:20]   [-] Sayaç verisi yok — boş satır yazılmıyor.
+[23:15:25]   [+] Kaldırıldı: com.measurement.tools
+
+[23:15:25]   Durum: ✅ 16  ⏭️  14  ❌ 0  | ⏱️  ~610.8 dk kaldı
+
+[23:15:25] [31/1001] İşleniyor...
+
+[23:15:25] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:15:25] [APK] 00EEC9AA6A80B864541733F98F7FC597219626D6CD1C2721C4542819035E652D.apk
+[23:15:25] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:15:25]   [+] Package : volumebooster.soundspeaker.boosterx
+[23:15:25]   [+] Label   : benign
+[23:15:25]   [*] Kuruluyor...
+[23:15:41]   [+] Kurulum OK
+[23:15:41]   [*] Uygulama başlatılıyor (monkey)...
+[23:15:42]   [*] PID aranıyor...
+[23:15:42]   [+] PID: 12903 — attach ediliyor...
+[23:15:43] === KangalGuard Agent Başladı ===
+[23:15:43] [+] Method.invoke (reflection)
+[23:15:43] [+] DexClassLoader.$init
+[23:15:43] [+] Runtime.exec
+[23:15:43] [+] Class.forName
+[23:15:43] [+] PackageManager.getPackageInfo
+[23:15:43] [+] SmsManager.sendTextMessage
+[23:15:43] [+] TelephonyManager.getDeviceId
+[23:15:43] [+] TelephonyManager.getSubscriberId
+[23:15:43] [+] Cipher.init
+[23:15:43] [+] KeyGenerator.generateKey
+[23:15:43] [+] Base64.encode/encodeToString
+[23:15:43] [+] SecureRandom.$init
+[23:15:43] [+] System.exit (bypass)
+[23:15:43] [+] Debug.isDebuggerConnected (bypass)
+[23:15:43] [+] SystemProperties.get (emulator check)
+[23:15:43] [+] File.exists (root path check)
+[23:15:43] [+] Thread.sleep (timing attack)
+[23:15:43] [+] Thread.getStackTrace
+[23:15:43] [+] System.loadLibrary
+[23:15:43] [+] Intent.setAction (implicit)
+[23:15:43] [+] Activity.startActivity
+[23:15:43] [+] ContextWrapper.sendBroadcast
+[23:15:43] [+] ContextWrapper.bindService
+[23:15:43] [+] ContentResolver.query
+[23:15:43] [+] ContentResolver.insert
+[23:15:43] [+] FileOutputStream.$init (write)
+[23:15:43] [+] SharedPreferences.putString
+[23:15:43] [+] ContextWrapper.openFileOutput
+[23:15:43] [+] File.delete
+[23:15:43] [+] Environment.getExternalStorageDirectory
+[23:15:43] [+] Socket.$init (raw socket)
+[23:15:43] [+] URL.openConnection
+[23:15:43] [+] SSLContext.init (TrustManager bypass)
+[23:15:43] [+] InetAddress.getByName (DNS)
+[23:15:43] [+] URLConnection.setRequestProperty
+[23:15:43] [+] AlarmManager.set
+[23:15:43] [+] JobScheduler.schedule
+[23:15:43] [+] ContextWrapper.registerReceiver
+[23:15:43] [+] Activity.requestPermissions
+[23:15:43] [+] PackageManager.setComponentEnabledSetting
+[23:15:43] [+] Thread.$init (thread create)
+[23:15:43] [+] ActivityManager.getRunningAppProcesses
+[23:15:43] [+] ByteBuffer.allocate (>5MB)
+[23:15:43] [+] ClassLoader.getParent
+[23:15:43] === 50 Feature Hook Hazır ===
+[23:15:43]   [!] Analiz başladı — 75s
+[23:15:44] [NET] URL: https://graph.facebook.com/v16.0/app/mobile_sdk_gk?access_token=0000000000000000%7Cidfake000000000d00cbb5334a6915f6&fields=gatekeepers&format=json&sdk_version=16.0.0&sdk=android&platform=android
+[23:15:44] [NET] URL: https://graph.facebook.com/v16.0/0000000000000000/activities
+[23:15:44] [NET] URL: https://firebaseremoteconfig.googleapis.com/v1/projects/66759475126/namespaces/firebase:fetch
+[23:15:44] [NET] URL: https://graph.facebook.com/v16.0/0000000000000000/activities
+[23:15:44] [NET] URL: https://graph.facebook.com/v16.0/0000000000000000/activities
+[23:15:44] [FILE] openFileOutput: AdjustIoActivityState
+[23:15:44] [FILE] openFileOutput: AdjustIoPackageQueue
+[23:15:44] [FILE] openFileOutput: AdjustIoActivityState
+[23:15:44]   [~] RPC poll @1s — 56 event
+[23:15:45] [FILE] openFileOutput: AdjustIoActivityState
+[23:15:45] [NET] URL: https://app.adjust.com/session
+[23:15:45] [NET] URL: https://graph.facebook.com/v16.0/app/mobile_sdk_gk?access_token=0000000000000000%7Cidfake000000000d00cbb5334a6915f6&fields=gatekeepers&format=json&sdk_version=16.0.0&sdk=android&platform=android
+[23:15:46] [NET] URL: https://graph.facebook.com/v16.0/app/mobile_sdk_gk?access_token=0000000000000000%7Cidfake000000000d00cbb5334a6915f6&fields=gatekeepers&format=json&sdk_version=16.0.0&sdk=android&platform=android
+[23:15:46] [FILE] openFileOutput: AppEventsLogger.persistedevents
+[23:15:46] [NET] URL: https://graph.facebook.com/v16.0/app/mobile_sdk_gk?access_token=0000000000000000%7Cidfake000000000d00cbb5334a6915f6&fields=gatekeepers&format=json&sdk_version=16.0.0&sdk=android&platform=android
+[23:15:46] [FILE] openFileOutput: frc_1:66759475126:android:19c03af266fe46dbd34b17_firebase_fetch.json
+[23:15:46] [FILE] openFileOutput: frc_1:66759475126:android:19c03af266fe46dbd34b17_firebase_activate.json
+[23:15:47] [FILE] openFileOutput: AdjustIoPackageQueue
+[23:15:47] [FILE] openFileOutput: AdjustIoActivityState
+[23:15:47] [FILE] openFileOutput: AdjustIoActivityState
+[23:15:49] [NET] URL: https://app.adjust.com/attribution?initiated_by=backend&gps_adid_attempt=1&api_level=31&event_buffering_enabled=0&app_version=v1.2.1&app_token=yt0xn64ax88w&os_version=12&created_at=2026-02-28T20%3A15%3A48.305Z%2B0000&device_type=phone&gps_adid=dcd9308b-0f8b-4323-ae70-ec135bbb5fd4&android_uuid=7beedf11-8ead-49c6-a1de-b774ac61911e&device_name=sdk_gphone64_x86_64&environment=production&needs_response_details=1&attribution_deeplink=1&package_name=volumebooster.soundspeaker.boosterx&os_name=android&ui_mode=1&gps_adid_src=service&tracking_enabled=1&sent_at=2026-02-28T20%3A15%3A48.315Z%2B0000
+[23:15:49] [FILE] openFileOutput: AdjustIoActivityState
+[23:15:49] [FILE] openFileOutput: AdjustAttribution
+[23:15:49]   [~] RPC poll @6s — 154 event
+[23:15:54]   [~] RPC poll @11s — 154 event
+[23:15:59] [NET] URL: https://graph.facebook.com/v16.0/app/mobile_sdk_gk?access_token=0000000000000000%7Cidfake000000000d00cbb5334a6915f6&fields=gatekeepers&format=json&sdk_version=16.0.0&sdk=android&platform=android
+[23:15:59] [NET] URL: https://graph.facebook.com/v16.0/0000000000000000/activities
+[23:15:59] [NET] URL: https://graph.facebook.com/v16.0/app/mobile_sdk_gk?access_token=0000000000000000%7Cidfake000000000d00cbb5334a6915f6&fields=gatekeepers&format=json&sdk_version=16.0.0&sdk=android&platform=android
+[23:15:59] [NET] URL: https://graph.facebook.com/v16.0/app/mobile_sdk_gk?access_token=0000000000000000%7Cidfake000000000d00cbb5334a6915f6&fields=gatekeepers&format=json&sdk_version=16.0.0&sdk=android&platform=android
+[23:15:59] [NET] URL: https://graph.facebook.com/v16.0/app/mobile_sdk_gk?access_token=0000000000000000%7Cidfake000000000d00cbb5334a6915f6&fields=gatekeepers&format=json&sdk_version=16.0.0&sdk=android&platform=android
+[23:16:00]   [~] RPC poll @16s — 172 event
+[23:16:03] [~] Snapshot — 172 event | 12 aktif feature | burst: 138 | seq: 110 event
+[23:16:05]   [~] RPC poll @21s — 172 event
+[23:16:10]   [~] RPC poll @26s — 172 event
+[23:16:15]   [~] RPC poll @31s — 172 event
+[23:16:20]   [~] RPC poll @36s — 172 event
+[23:16:23] [~] Snapshot — 172 event | 12 aktif feature | burst: 138 | seq: 110 event
+[23:16:25]   [~] RPC poll @41s — 172 event
+[23:16:30]   [~] RPC poll @46s — 172 event
+[23:16:35]   [~] RPC poll @51s — 172 event
+[23:16:40]   [~] RPC poll @56s — 172 event
+[23:16:43] [~] Snapshot — 172 event | 12 aktif feature | burst: 138 | seq: 110 event
+[23:16:45]   [~] RPC poll @61s — 172 event
+[23:16:45] [FILE] openFileOutput: AdjustIoActivityState
+[23:16:50]   [~] RPC poll @66s — 174 event
+[23:16:55]   [~] RPC poll @71s — 174 event
+[23:16:59]   [*] Süre doldu, final RPC...
+[23:16:59]   [+] RPC OK — 174 event alındı
+[23:16:59]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 50, toplam: 174
+
+[23:16:59] ============================================================
+[23:16:59] [+] CSV YAZILDI — 23:16:59
+[23:16:59]     volumebooster.soundspeaker.boosterx  |  BENIGN
+[23:16:59] ────────────────────────────────────────────────────────────
+[23:16:59]   Ham Feature'lar (aktif):
+[23:16:59]     reflection_invoke_count                      71
+[23:16:59]     dynamic_class_load_count                     25
+[23:16:59]     getPackageInfo_count                         13
+[23:16:59]     implicit_intent_count                        8
+[23:16:59]     bindService_count                            3
+[23:16:59]     shared_prefs_write_count                     4
+[23:16:59]     openFileOutput_count                         13
+[23:16:59]     deleteFile_count                             15
+[23:16:59]     getExternalStorageDirectory_count            2
+[23:16:59]     url_connection_count                         15
+[23:16:59]     thread_create_count                          1
+[23:16:59]     process_list_query_count                     4
+[23:16:59] ────────────────────────────────────────────────────────────
+[23:16:59]   Türetilmiş Skorlar:
+[23:16:59]     network_score                                15
+[23:16:59]     stealth_score                                96
+[23:16:59]     exfil_score                                  15
+[23:16:59]     privilege_score                              4
+[23:16:59]     surveillance_score                           13
+[23:16:59]     dynamic_exec_score                           71
+[23:16:59]     reflection_to_exec_ratio                     71.0
+[23:16:59]     network_to_activity_ratio                    15.0
+[23:16:59] ────────────────────────────────────────────────────────────
+[23:16:59]   Temporal Bilgiler:
+[23:16:59]     first_network_ms                             604 ms
+[23:16:59]     first_reflection_ms                          749 ms
+[23:16:59]     first_dynamic_load_ms                        584 ms
+[23:16:59]     burst_peak_count                             138
+[23:16:59]     🕐 early_network_flag
+[23:16:59]     🕐 rapid_burst_flag
+[23:16:59] ────────────────────────────────────────────────────────────
+[23:16:59]   Sequence Log: 111 event kayıt edildi
+[23:16:59]   🔗 Aktif Sequence Patternler:
+[23:16:59]     seq_max_chain_length                         111
+[23:16:59] ============================================================
+
+
+[23:16:59] ==========================================================
+[23:16:59] [+] CSV YAZILDI — 23:16:59
+[23:16:59]     volumebooster.soundspeaker.boosterx  |  BENIGN
+[23:16:59] ──────────────────────────────────────────────────────────
+[23:16:59]   Ham Feature'lar (aktif):
+[23:16:59]     reflection_invoke_count                    71
+[23:16:59]     dynamic_class_load_count                   25
+[23:16:59]     getPackageInfo_count                       13
+[23:16:59]     implicit_intent_count                      8
+[23:16:59]     bindService_count                          3
+[23:16:59]     shared_prefs_write_count                   4
+[23:16:59]     openFileOutput_count                       13
+[23:16:59]     deleteFile_count                           15
+[23:16:59]     getExternalStorageDirectory_count          2
+[23:16:59]     url_connection_count                       15
+[23:16:59]     thread_create_count                        1
+[23:16:59]     process_list_query_count                   4
+[23:16:59] ──────────────────────────────────────────────────────────
+[23:16:59]   Türetilmiş Skorlar:
+[23:16:59]     network_score                              15
+[23:16:59]     stealth_score                              96
+[23:16:59]     exfil_score                                15
+[23:16:59]     privilege_score                            4
+[23:16:59]     surveillance_score                         13
+[23:16:59]     dynamic_exec_score                         71
+[23:16:59]     reflection_to_exec_ratio                   71.0
+[23:16:59]     network_to_activity_ratio                  15.0
+[23:16:59]   Aktif Boolean Patternler:
+[23:16:59]     (Tehlikeli pattern tespit edilmedi)
+[23:16:59] ──────────────────────────────────────────────────────────
+[23:16:59]   Temporal Bilgiler:
+[23:16:59]     first_network_ms                           604 ms
+[23:16:59]     first_reflection_ms                        749 ms
+[23:16:59]     first_dynamic_load_ms                      584 ms
+[23:16:59]     burst_peak_count                           138
+[23:16:59]     session_duration_ms                        75664 ms
+[23:16:59]   Aktif Temporal Flagler:
+[23:16:59]     🕐 early_network_flag
+[23:16:59]     🕐 rapid_burst_flag
+[23:16:59] ==========================================================
+
+[23:16:59]   [+] CSV satırı yazıldı.
+[23:17:04]   [+] Kaldırıldı: volumebooster.soundspeaker.boosterx
+
+[23:17:04]   Durum: ✅ 17  ⏭️  14  ❌ 0  | ⏱️  ~641.9 dk kaldı
+
+[23:17:04] [32/1001] İşleniyor...
+
+[23:17:04] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:17:04] [APK] 00EEDE3F5D60C4DC11948984ABCFEDC5F69AA7D756D6B00300385B677082D2D7.apk
+[23:17:04] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:17:04]   [+] Package : com.abdulqaderqawza.songs
+[23:17:04]   [+] Label   : benign
+[23:17:04]   [*] Kuruluyor...
+[23:17:20]   [+] Kurulum OK
+[23:17:20]   [*] Uygulama başlatılıyor (monkey)...
+[23:17:20]   [*] PID aranıyor...
+[23:17:20]   [+] PID: 13202 — attach ediliyor...
+[23:17:21]   [!] Transport hatası (InvalidArgumentError): invalid session ID
+[23:17:21]   [*] Frida server yeniden başlatılıyor (/data/local/tmp/frida-server)...
+[23:17:29]   [+] Frida server yeniden başlatıldı (6s beklendi)
+[23:17:29]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 0, toplam: 0
+[23:17:29]   [-] Sayaç verisi yok — boş satır yazılmıyor.
+[23:17:34]   [+] Kaldırıldı: com.abdulqaderqawza.songs
+
+[23:17:34]   Durum: ✅ 17  ⏭️  15  ❌ 0  | ⏱️  ~636.6 dk kaldı
+
+[23:17:35] [33/1001] İşleniyor...
+
+[23:17:35] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:17:35] [APK] 00EF49FFE5FA283C68451A66B00C09C3F3ED6B63B533D8ECDF446CD4B408AE12.apk
+[23:17:35] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:17:35]   [+] Package : com.pomoroom.pomoroom
+[23:17:35]   [+] Label   : benign
+[23:17:35]   [*] Kuruluyor...
+[23:17:50]   [+] Kurulum OK
+[23:17:50]   [*] Uygulama başlatılıyor (monkey)...
+[23:17:50]   [*] PID aranıyor...
+[23:17:51]   [+] PID: 13415 — attach ediliyor...
+[23:17:51] === KangalGuard Agent Başladı ===
+[23:17:52] [+] Method.invoke (reflection)
+[23:17:52] [+] DexClassLoader.$init
+[23:17:52] [+] Runtime.exec
+[23:17:52] [+] Class.forName
+[23:17:52] [+] PackageManager.getPackageInfo
+[23:17:52] [+] SmsManager.sendTextMessage
+[23:17:52] [+] TelephonyManager.getDeviceId
+[23:17:52] [+] TelephonyManager.getSubscriberId
+[23:17:52] [+] Cipher.init
+[23:17:52] [+] KeyGenerator.generateKey
+[23:17:52] [+] Base64.encode/encodeToString
+[23:17:52] [+] SecureRandom.$init
+[23:17:52] [+] System.exit (bypass)
+[23:17:52] [+] Debug.isDebuggerConnected (bypass)
+[23:17:52] [+] SystemProperties.get (emulator check)
+[23:17:52] [+] File.exists (root path check)
+[23:17:52] [+] Thread.sleep (timing attack)
+[23:17:52] [+] Thread.getStackTrace
+[23:17:52] [+] System.loadLibrary
+[23:17:52] [+] Intent.setAction (implicit)
+[23:17:52] [+] Activity.startActivity
+[23:17:52] [+] ContextWrapper.sendBroadcast
+[23:17:52] [+] ContextWrapper.bindService
+[23:17:52] [+] ContentResolver.query
+[23:17:52] [+] ContentResolver.insert
+[23:17:52] [+] FileOutputStream.$init (write)
+[23:17:52] [+] SharedPreferences.putString
+[23:17:52] [+] ContextWrapper.openFileOutput
+[23:17:52] [+] File.delete
+[23:17:52] [+] Environment.getExternalStorageDirectory
+[23:17:52] [+] Socket.$init (raw socket)
+[23:17:52] [+] URL.openConnection
+[23:17:52] [+] SSLContext.init (TrustManager bypass)
+[23:17:52] [+] InetAddress.getByName (DNS)
+[23:17:52] [+] URLConnection.setRequestProperty
+[23:17:52] [+] AlarmManager.set
+[23:17:52] [+] JobScheduler.schedule
+[23:17:52] [+] ContextWrapper.registerReceiver
+[23:17:52] [+] Activity.requestPermissions
+[23:17:52] [+] PackageManager.setComponentEnabledSetting
+[23:17:52] [+] Thread.$init (thread create)
+[23:17:52] [+] ActivityManager.getRunningAppProcesses
+[23:17:52] [+] ByteBuffer.allocate (>5MB)
+[23:17:52] [+] ClassLoader.getParent
+[23:17:52] === 50 Feature Hook Hazır ===
+[23:17:52]   [!] Analiz başladı — 75s
+[23:17:52] [ANTI] Thread.sleep(10000ms)
+[23:17:53]   [~] RPC poll @1s — 13 event
+[23:17:58]   [!] Process öldü (~6s) — son snapshot kullanılıyor
+[23:17:58]   [*] Süre doldu, final RPC...
+[23:17:58]   [!] Final RPC başarısız — son poll snapshot: 13 event
+[23:17:58]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 50, toplam: 13
+
+[23:17:58] ============================================================
+[23:17:58] [+] CSV YAZILDI — 23:17:58
+[23:17:58]     com.pomoroom.pomoroom  |  BENIGN
+[23:17:58] ────────────────────────────────────────────────────────────
+[23:17:58]   Ham Feature'lar (aktif):
+[23:17:58]     reflection_invoke_count                      9
+[23:17:58]     base64_encode_count                          2
+[23:17:58]     sleep_call_count                             1
+[23:17:58]     implicit_intent_count                        1
+[23:17:58] ────────────────────────────────────────────────────────────
+[23:17:58]   Türetilmiş Skorlar:
+[23:17:58]     anti_analysis_score                          1
+[23:17:58]     stealth_score                                9
+[23:17:58]     exfil_score                                  2
+[23:17:58]     dynamic_exec_score                           9
+[23:17:58]     anti_to_total_ratio                          0.0769
+[23:17:58]     reflection_to_exec_ratio                     9.0
+[23:17:58]   ⚠️  Aktif Boolean Patternler:
+[23:17:58]     has_evasion_pattern
+[23:17:58] ────────────────────────────────────────────────────────────
+[23:17:58]   Temporal Bilgiler:
+[23:17:58]     first_reflection_ms                          574 ms
+[23:17:58]     burst_peak_count                             13
+[23:17:58] ────────────────────────────────────────────────────────────
+[23:17:58]   Sequence Log: 9 event kayıt edildi
+[23:17:58]   🔗 Aktif Sequence Patternler:
+[23:17:58]     seq_max_chain_length                         9
+[23:17:58] ============================================================
+
+
+[23:17:58] ==========================================================
+[23:17:58] [+] CSV YAZILDI — 23:17:58
+[23:17:58]     com.pomoroom.pomoroom  |  BENIGN
+[23:17:58] ──────────────────────────────────────────────────────────
+[23:17:58]   Ham Feature'lar (aktif):
+[23:17:58]     reflection_invoke_count                    9
+[23:17:58]     base64_encode_count                        2
+[23:17:58]     sleep_call_count                           1
+[23:17:58]     implicit_intent_count                      1
+[23:17:58] ──────────────────────────────────────────────────────────
+[23:17:58]   Türetilmiş Skorlar:
+[23:17:58]     anti_analysis_score                        1
+[23:17:58]     stealth_score                              9
+[23:17:58]     exfil_score                                2
+[23:17:58]     dynamic_exec_score                         9
+[23:17:58]     anti_to_total_ratio                        0.0769
+[23:17:58]     reflection_to_exec_ratio                   9.0
+[23:17:58]   Aktif Boolean Patternler:
+[23:17:58]     ⚠️  has_evasion_pattern
+[23:17:58] ──────────────────────────────────────────────────────────
+[23:17:58]   Temporal Bilgiler:
+[23:17:58]     first_reflection_ms                        574 ms
+[23:17:58]     burst_peak_count                           13
+[23:17:58]     session_duration_ms                        1203 ms
+[23:17:58] ==========================================================
+
+[23:17:58]   [+] CSV satırı yazıldı.
+[23:18:03]   [+] Kaldırıldı: com.pomoroom.pomoroom
+
+[23:18:03]   Durum: ✅ 18  ⏭️  15  ❌ 0  | ⏱️  ~630.5 dk kaldı
+
+[23:18:03] [34/1001] İşleniyor...
+
+[23:18:03] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:18:03] [APK] 00EFD03DF3394B0FA1DF0A4ACC9FA2DF5E83DB3783FA1F1247E7A51CD8471E9D.apk
+[23:18:03] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:18:03]   [+] Package : app.schooldismissalmanager.com
+[23:18:03]   [+] Label   : benign
+[23:18:03]   [*] Kuruluyor...
+[23:18:19]   [+] Kurulum OK
+[23:18:19]   [*] Uygulama başlatılıyor (monkey)...
+[23:18:19]   [*] PID aranıyor...
+[23:18:27]   [-] PID bulunamadı → SKIP
+[23:18:27]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 0, toplam: 0
+[23:18:27]   [-] Sayaç verisi yok — boş satır yazılmıyor.
+[23:18:33]   [+] Kaldırıldı: app.schooldismissalmanager.com
+
+[23:18:33]   Durum: ✅ 18  ⏭️  16  ❌ 0  | ⏱️  ~625.6 dk kaldı
+
+[23:18:33] [35/1001] İşleniyor...
+
+[23:18:33] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:18:33] [APK] 00EFED4D5E3EFD16B228241F01317BB30D10710745B0152B29A97D4FE612BB08.apk
+[23:18:33] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[23:18:33]   [+] Package : r.stereobendicion
+[23:18:33]   [+] Label   : benign
+[23:18:33]   [*] Kuruluyor...
+[23:18:49]   [+] Kurulum OK
+[23:18:49]   [*] Uygulama başlatılıyor (monkey)...
+[23:18:50]   [*] PID aranıyor...
+[23:18:51]   [+] PID: 13787 — attach ediliyor...
+[23:18:52] === KangalGuard Agent Başladı ===
+[23:18:52]   [DEBUG] latest_counters tip: <class 'dict'>, uzunluk: 0, toplam: 0
+[23:18:52]   [-] Sayaç verisi yok — boş satır yazılmıyor.
+[23:18:57]   [+] Kaldırıldı: r.stereobendicion
