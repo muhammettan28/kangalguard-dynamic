@@ -4,3 +4,6 @@ _agent.js
 *.apk
 frida-server
 *.pyc
+*.log
+*.zip
+*.log
