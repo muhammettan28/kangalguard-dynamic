@@ -56,3 +56,7 @@ The pipeline has three layers:
 - Python packages: `frida`, `androguard` (fallback for package name extraction)
 - Android SDK tools: `adb`, `aapt` (for package name extraction)
 - AVD snapshot named `kangal_clean` (created via `--setup`)
+
+## Code Style
+
+- Use comments sparingly — only where logic is genuinely complex and non-obvious.
