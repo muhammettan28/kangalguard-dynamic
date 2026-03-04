@@ -7,3 +7,4 @@ frida-server
 *.log
 *.zip
 *.log
+/data/
