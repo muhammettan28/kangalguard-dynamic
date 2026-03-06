@@ -9,12 +9,12 @@ from datetime import datetime
 # ─── Ayarlar ─────────────────────────────────────────────────────────────────
 
 PACKAGE_NAME  = "owasp.mstg.uncrackable1"
-LABEL         = "benign"          # "benign" veya "malware" — elle değiştir
+LABEL         = "benign"         
 ANALYSIS_TIME = 75                # Kaç saniye analiz yapılsın (0 = sonsuz)
 CSV_FILE      = "kangal_dataset.csv"
 AGENT_TS      = os.path.join(os.path.dirname(os.path.abspath(__file__)), "agent.ts")
 
-# ─── Ham Feature Sütunları (agent.ts'ten gelen 50 sayaç) ─────────────────────
+
 
 RAW_FEATURE_COLUMNS = [
     # Java API Calls
