@@ -8,3 +8,4 @@ frida-server
 *.zip
 *.log
 /data/
+/arşiv
