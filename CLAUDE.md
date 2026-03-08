@@ -57,6 +57,18 @@ The pipeline has three layers:
 - Android SDK tools: `adb`, `aapt` (for package name extraction)
 - AVD snapshot named `kangal_clean` (created via `--setup`)
 
+## Claude Code Hooks
+
+Hook scripts live in `.claude/hooks/` and are configured in `.claude/settings.json`.
+
+| Event | Matcher | Script | Davranış |
+|-------|---------|--------|----------|
+| PreToolUse | Edit\|Write | `protect_csv.py` | `kangal_dataset.csv` ve `failed_apks.csv` dosyalarına doğrudan yazmayı engeller |
+| PreToolUse | Bash | `filter_dangerous_bash.py` | `rm -rf`, CSV üzerine yazma, AVD silme gibi tehlikeli komutları engeller |
+| PostToolUse | Edit\|Write | `check_agent_ts.py` | `agent.ts` değiştirildikten sonra `npx tsc --noEmit` çalıştırır |
+| PostToolUse | Edit\|Write | `check_python_syntax.py` | `.py` dosyaları değiştirildikten sonra `py_compile` ile syntax kontrolü yapar |
+| PostToolUse | Bash | `dataset_rowcount.py` | `batch_analyzer.py` çalıştırıldıktan sonra benign/malware sample sayısını raporlar |
+
 ## Code Style
 
 - Use comments sparingly — only where logic is genuinely complex and non-obvious.

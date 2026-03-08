@@ -684,5 +684,13 @@ apk_name,package_name,label,reason,timestamp
 5687.apk,org.moire.ultrasonic,benign,pid_not_found,2026-03-07 23:35:02
 5697.apk,org.mozc.android.inputmethod.japanese,benign,install_failed,2026-03-07 23:35:45
 5732.apk,org.navitproject.navit,benign,install_failed,2026-03-07 23:36:29
-5737.apk,org.nerdcircus.android.klaxon,benign,pid_not_found,2026-03-07 23:37:59
-5774.apk,org.odk.collect.android,benign,pid_not_found,2026-03-07 23:46:05
+5737.apk,org.nerdcircus.android.klaxon,benign,pid_not_found,2026-03-07 23:37:59044cec542acb330bbc2e9fe1ad503b6edf4bad7496071fbfeb6cabb9fd06050a.apk,com.qlr.zynxlh,malware,ProcessNotRespondingError,2026-03-08 18:59:19
+05eb4bc18f37510f88a53a389bcc302c07309555a00612566adfc8980e235a14.apk,com.kij.lgxfud,malware,ProcessNotRespondingError,2026-03-08 19:29:25
+07117f99c78d63b957ac05507dc5182c25246b386cde9e348b4c29af802dc943.apk,com.qvn.eetpor,malware,ProcessNotRespondingError,2026-03-08 19:54:00
+093bcda5acd25836c9f3e9bd35b210d8f06defc5f5b9682f7af82fad87192878.apk,com.hja.ooqxvi,malware,ProcessNotRespondingError,2026-03-08 21:33:30
+0c85d87a9ea4f81ca2dea7e01b164a4a6c926961802ce1f39cf0f998396f72ab.apk,com.jpp.xmznaj,malware,ProcessNotRespondingError,2026-03-08 22:28:58
+0cc2596574486c680c46976b7177eb0a69fc1a900036dde7f2bdc44069a7c1eb.apk,com.xgo.ehrftq,malware,ProcessNotRespondingError,2026-03-08 22:32:17
+111cbd40740acfb7a7355898bbf983d8ecd5ae4e48c10506e06b9de34d21764c.apk,com.ivt.jyykvw,malware,ProcessNotRespondingError,2026-03-08 23:44:50
+118a0a7f19a2e5c7a122f61eeb0d27463974de012bcd1bc78490ddff3aeb1b3a.apk,com.yqz.vrpzvb,malware,ProcessNotRespondingError,2026-03-08 23:53:15
+1296457e3286bda49079d37277ab39f3133dfd21a222f14a73d6fe21f23d2fd4.apk,com.ubq.bdzobm,malware,ProcessNotRespondingError,2026-03-09 00:13:04
+134b45f6c56ad8424d82176b21db37be8d2ee012baccf79add45dccbb877967f.apk,com.tmaggj.vzedxxwo,malware,ProcessNotRespondingError,2026-03-09 00:20:05
