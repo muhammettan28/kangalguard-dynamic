@@ -40,6 +40,25 @@ The pipeline has three layers:
 - **Snapshot restore per APK**: `adb emu avd snapshot load kangal_clean` before every APK guarantees a clean emulator state including a fresh frida-server. The snapshot must be saved with frida-server already running.
 - **Agent compiled once**: `frida.Compiler()` compiles `agent.ts` at startup; the bundle string is cached in `_compiled_bundle` and reused across all APKs.
 - **Global state in `kangal_collector.py`**: `latest_counters`, `latest_timings`, `latest_burst_peak`, `latest_session_duration_ms`, `latest_seq_log`, `PACKAGE_NAME`, `LABEL` are module-level globals that `batch_analyzer.py` resets before each APK.
+- **`_rpc_safe(timeout_s=8)`**: `exports_sync.get_counters()` has no built-in timeout — a frozen process (ANR) blocks it indefinitely. Wrapped in a daemon thread; raises `RuntimeError("rpc_timeout")` if no response within 8s. 3 consecutive freezes break the polling loop.
+- **`dismiss_dialogs()`**: Sends `KEYCODE_BACK` + `KEYCODE_ENTER` via adb to dismiss ANR / "App Has Stopped" dialogs. Called before each APK install (clears residual dialogs) and every 15s during the polling loop.
+
+## Emulator
+
+Genymotion Android 8.0 with Genymotion-ARM-Translation_for_8.0 (ARM real-device behavior).
+
+## Timing (per APK)
+
+| Phase | Duration |
+|-------|----------|
+| Dialog dismiss + install | ~17s |
+| adb monkey + PID find | ~5-8s |
+| Frida attach | ~2s |
+| Analysis window (DEFAULT_TIMEOUT) | 75s |
+| Final RPC + force-stop | ~3s |
+| Uninstall (ADB_UNINSTALL_WAIT) | ~5s |
+| Snapshot restore | ~30-60s |
+| **Total** | **~140-170s (~2.5-3 min)** |
 
 ## Data Files
 

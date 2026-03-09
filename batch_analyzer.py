@@ -19,6 +19,7 @@ import subprocess
 import argparse
 import csv
 import traceback
+import threading
 from pathlib import Path
 from datetime import datetime
 
@@ -121,7 +122,18 @@ def adb_install(apk_path: str) -> bool:
 
 
 def adb_uninstall(package_name: str) -> bool:
-    """APK'yı cihazdan kaldır. Başarılıysa True döner."""
+    """APK'yı cihazdan kaldır. Device admin yetkisi varsa önce revoke eder."""
+    # Bazı malwareler device admin alır → normal uninstall'ı reddeder.
+    # Snapshot restore zaten temizler ama devam eden run için revoke deneriz.
+    try:
+        subprocess.run(
+            ["adb", "shell", "dpm", "remove-active-admin",
+             f"{package_name}/.AdminReceiver"],
+            capture_output=True, timeout=10
+        )
+    except Exception:
+        pass
+
     try:
         result = subprocess.run(
             ["adb", "uninstall", package_name],
@@ -130,10 +142,9 @@ def adb_uninstall(package_name: str) -> bool:
         out = result.stdout.strip()
         if "Success" in out:
             return True
-        # Zaten kurulu değilse de başarı say
         if "not installed" in out or "DELETE_FAILED_INTERNAL_ERROR" in out:
             return True
-        print(f"  [!] Uninstall uyarısı: {out}")
+        print(f"  [!] Uninstall başarısız ({out}) — snapshot restore temizleyecek")
         return False
     except Exception as e:
         print(f"  [-] Uninstall hata: {e}")
@@ -149,6 +160,60 @@ def adb_force_stop(package_name: str) -> None:
         )
     except Exception:
         pass
+
+
+def dismiss_dialogs() -> None:
+    """
+    Ekrandaki ANR / 'has stopped' sistem diyaloglarını kapatır.
+    BACK tuşu çoğu diyaloğu kapatır; arkasından ENTER olası OK/Close düğmesini tetikler.
+    Her APK başında ve analiz döngüsü içinde periyodik olarak çağrılır.
+    """
+    try:
+        subprocess.run(
+            ["adb", "shell", "input", "keyevent", "4"],   # KEYCODE_BACK
+            capture_output=True, timeout=5
+        )
+        time.sleep(0.3)
+        subprocess.run(
+            ["adb", "shell", "input", "keyevent", "66"],  # KEYCODE_ENTER → OK/Close
+            capture_output=True, timeout=5
+        )
+    except Exception:
+        pass
+
+
+def _call_with_timeout(fn, timeout_s: int) -> None:
+    """fn()'i daemon thread içinde çalıştır; timeout_s sonra thread'i terk et.
+    script.unload() / session.detach() gibi blocking Frida çağrıları için kullanılır."""
+    t = threading.Thread(target=fn, daemon=True)
+    t.start()
+    t.join(timeout_s)
+
+
+def _rpc_safe(script, timeout_s: int = 8) -> dict:
+    """
+    script.exports_sync.get_counters() çağrısını daemon thread ile timeout'a bağlar.
+    ANR veya process freeze durumunda exports_sync sonsuz bloklanır; bu wrapper
+    timeout_s saniye içinde cevap gelmezse RuntimeError("rpc_timeout") fırlatır.
+    """
+    result = [None]
+    exc    = [None]
+
+    def _call():
+        try:
+            result[0] = dict(script.exports_sync.get_counters())
+        except Exception as e:
+            exc[0] = e
+
+    t = threading.Thread(target=_call, daemon=True)
+    t.start()
+    t.join(timeout_s)
+
+    if t.is_alive():
+        raise RuntimeError("rpc_timeout")
+    if exc[0] is not None:
+        raise exc[0]
+    return result[0]
 
 
 def adb_start_app(package: str) -> bool:
@@ -337,6 +402,8 @@ def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> di
     print(f"  [+] Label   : {label}")
 
     # ── 2. Install ────────────────────────────────────────────────────────────
+    # Önceki APK'dan kalma diyalogları temizle (snapshot restore başarısız olursa birikir)
+    dismiss_dialogs()
     print(f"  [*] Kuruluyor...")
     if not adb_install(apk_path):
         return {"status": "skip", "package": package, "reason": "install_failed"}
@@ -392,16 +459,25 @@ def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> di
         # ── RPC Polling döngüsü ───────────────────────────────────────────────
         # send()/on_message güvenilmez → Python her 5s'de RPC ile veri çeker.
         # Process ölünce RPC exception → döngüden çıkılır, son snapshot kalır.
-        start          = time.time()
-        last_rpc_poll  = start - 6   # ilk poll ~1s'de gerçekleşsin
+        start            = time.time()
+        last_rpc_poll    = start - 6    # ilk poll ~1s'de gerçekleşsin
+        last_dismiss     = start - 20   # ilk dismiss ~5s'de gerçekleşsin
+        rpc_freeze_count = 0
+        MAX_RPC_FREEZES  = 3            # ardışık freeze → döngüden çık
 
         while time.time() - start < timeout:
             time.sleep(1)
 
+            # Periyodik dialog dismiss — ANR/crash diyaloglarını temizler
+            if time.time() - last_dismiss >= 15:
+                last_dismiss = time.time()
+                dismiss_dialogs()
+
             if time.time() - last_rpc_poll >= 5:
                 last_rpc_poll = time.time()
                 try:
-                    raw = dict(script.exports_sync.get_counters())
+                    raw = _rpc_safe(script, timeout_s=8)
+                    rpc_freeze_count = 0   # başarılı poll → sıfırla
                     engine.latest_timings             = raw.pop("_timings", {})
                     engine.latest_burst_peak          = raw.pop("_burst_peak", 0)
                     engine.latest_session_duration_ms = raw.pop("_session_duration_ms", 0)
@@ -411,6 +487,15 @@ def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> di
                     elapsed = int(time.time() - start)
                     if total > 0:
                         print(f"  [~] RPC poll @{elapsed}s — {total} event")
+                except RuntimeError:
+                    # _rpc_safe timeout → process freeze (ANR)
+                    rpc_freeze_count += 1
+                    elapsed = int(time.time() - start)
+                    print(f"  [!] RPC freeze #{rpc_freeze_count} (~{elapsed}s) — dialog kapatılıyor...")
+                    dismiss_dialogs()
+                    if rpc_freeze_count >= MAX_RPC_FREEZES:
+                        print(f"  [!] {MAX_RPC_FREEZES} ardışık freeze — döngü sonlandırılıyor")
+                        break
                 except Exception:
                     elapsed = int(time.time() - start)
                     print(f"  [!] Process öldü (~{elapsed}s) — son snapshot kullanılıyor")
@@ -419,7 +504,7 @@ def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> di
         # ── Final RPC ─────────────────────────────────────────────────────────
         print(f"  [*] Süre doldu, final RPC...")
         try:
-            raw = dict(script.exports_sync.get_counters())
+            raw = _rpc_safe(script, timeout_s=10)
             engine.latest_timings             = raw.pop("_timings", {})
             engine.latest_burst_peak          = raw.pop("_burst_peak", 0)
             engine.latest_session_duration_ms = raw.pop("_session_duration_ms", 0)
@@ -457,12 +542,11 @@ def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> di
         _status = None  # hata yok, normal akış
     finally:
         # ── 4. Temizlik — HER DURUMDA çalışır ────────────────────────────────
-        try:
-            if script:  script.unload()
-        except Exception: pass
-        try:
-            if session: session.detach()
-        except Exception: pass
+        # Timeout olmadan unload/detach sonsuz bloklanabilir (malware process'i öldürmez).
+        if script:
+            _call_with_timeout(script.unload, 5)
+        if session:
+            _call_with_timeout(session.detach, 5)
 
         adb_force_stop(package)
 
@@ -482,7 +566,7 @@ def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> di
         if ok:
             print(f"  [+] Kaldırıldı: {package}")
         else:
-            print(f"  [!] Kaldırılamadı (elle kaldır): {package}")
+            print(f"  [!] Kaldırılamadı: {package} — bir sonraki snapshot restore temizleyecek")
 
     if _status:
         return _status
