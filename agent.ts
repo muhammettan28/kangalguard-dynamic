@@ -345,6 +345,34 @@ Java.perform(() => {
         };
     });
 
+    tryHook("Process.killProcess (bypass)", () => {
+        const Process = Java.use("android.os.Process");
+        Process.killProcess.implementation = function (pid: number) {
+            const myPid: number = Process.myPid();
+            if (pid === myPid) {
+                inc("system_exit_attempt");
+                recordTime("first_anti_analysis_ms");
+                seqPush(SEQ.ANTI);
+                console.log(`[ANTI] Process.killProcess(self) engellendi`);
+                // bypass — kendini öldürmeye izin verme
+            } else {
+                console.log(`[ANTI] Process.killProcess(${pid}) — izin verildi`);
+                this.killProcess(pid);
+            }
+        };
+    });
+
+    tryHook("Runtime.halt (bypass)", () => {
+        const Runtime = Java.use("java.lang.Runtime");
+        Runtime.halt.implementation = function (code: number) {
+            inc("system_exit_attempt");
+            recordTime("first_anti_analysis_ms");
+            seqPush(SEQ.ANTI);
+            console.log(`[ANTI] Runtime.halt(${code}) engellendi`);
+            // bypass — çağrılmıyor
+        };
+    });
+
     tryHook("Debug.isDebuggerConnected (bypass)", () => {
         const Debug = Java.use("android.os.Debug");
         Debug.isDebuggerConnected.implementation = function () {

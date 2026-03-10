@@ -37,7 +37,7 @@ import kangal_collector as engine
 
 # ─── Sabitler ────────────────────────────────────────────────────────────────
 
-DEFAULT_TIMEOUT    = 75     # saniye
+DEFAULT_TIMEOUT    = 45     # saniye
 DEFAULT_CSV        = "kangal_dataset.csv"
 ADB_INSTALL_WAIT   = 15      # kurulum sonrası bekleme (saniye)
 ADB_UNINSTALL_WAIT = 5      # kaldırma sonrası bekleme (saniye)
@@ -216,11 +216,51 @@ def _rpc_safe(script, timeout_s: int = 8) -> dict:
     return result[0]
 
 
-def adb_start_app(package: str) -> bool:
+def get_launch_activity(apk_path: str) -> str | None:
     """
-    Uygulamayı adb monkey ile başlat.
-    monkey en güvenilir yöntem — launcher activity bilmeden çalışır.
+    APK'nın launch activity'sini aapt ile okur.
+    aapt yoksa ya da activity bulunamazsa None döner.
     """
+    try:
+        result = subprocess.run(
+            ["aapt", "dump", "badging", apk_path],
+            capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=60
+        )
+        for line in result.stdout.splitlines():
+            if line.startswith("launchable-activity:"):
+                for part in line.split():
+                    if part.startswith("name="):
+                        return part.split("'")[1]
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        pass
+    return None
+
+
+def adb_start_app(package: str, activity: str | None = None) -> bool:
+    """
+    Uygulamayı başlatır.
+
+    Tercih sırası:
+    1. am start -n package/activity  — activity biliniyorsa, kesin hedef
+    2. monkey -p package LAUNCHER 1  — activity bilinmiyorsa fallback
+
+    monkey -p ile hedef pakette LAUNCHER activity yoksa tüm uygulamalara
+    fallback yapıp rastgele bir uygulamayı (örn. Amaze) başlatır.
+    am start bu durumda temiz şekilde başarısız olur.
+    """
+    if activity:
+        try:
+            result = subprocess.run(
+                ["adb", "shell", "am", "start", "-n", f"{package}/{activity}"],
+                capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=60
+            )
+            out = result.stdout + result.stderr
+            if "Starting:" in out or "Warning:" in out:
+                return True
+        except Exception:
+            pass
+
+    # Fallback: monkey
     try:
         result = subprocess.run(
             ["adb", "shell", "monkey", "-p", package,
@@ -392,14 +432,17 @@ def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> di
     print(f"[APK] {apk_name}")
     print(f"{'━'*60}")
 
-    # ── 1. Package name ───────────────────────────────────────────────────────
+    # ── 1. Package name + launch activity ────────────────────────────────────
     package = get_package_name(apk_path)
     if not package:
         print(f"  [-] Package name okunamadı → SKIP")
         return {"status": "skip", "package": None, "reason": "no_package_name"}
 
-    print(f"  [+] Package : {package}")
-    print(f"  [+] Label   : {label}")
+    launch_activity = get_launch_activity(apk_path)
+
+    print(f"  [+] Package  : {package}")
+    print(f"  [+] Activity : {launch_activity or '(yok — monkey fallback)'}")
+    print(f"  [+] Label    : {label}")
 
     # ── 2. Install ────────────────────────────────────────────────────────────
     # Önceki APK'dan kalma diyalogları temizle (snapshot restore başarısız olursa birikir)
@@ -433,12 +476,13 @@ def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> di
 
         # ── spawn() yerine: am start + PID bul + attach ──────────────────────
         # device.spawn() jailed Android'da "need Gadget" hatası veriyor.
-        # Çözüm: monkey ile uygulamayı aç, PID'e attach et.
+        # Çözüm: am start (ya da monkey fallback) ile aç, PID'e attach et.
 
-        print(f"  [*] Uygulama başlatılıyor (monkey)...")
-        started = adb_start_app(package)
+        method = "am start" if launch_activity else "monkey"
+        print(f"  [*] Uygulama başlatılıyor ({method})...")
+        started = adb_start_app(package, launch_activity)
         if not started:
-            print(f"  [!] monkey başlatamadı, yine de PID aranıyor...")
+            print(f"  [!] Başlatma başarısız, yine de PID aranıyor...")
 
         print(f"  [*] PID aranıyor...")
         pid = get_pid_by_package(device, package, retries=8)
@@ -456,12 +500,27 @@ def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> di
 
         print(f"  [!] Analiz başladı — {timeout}s")
 
+        # ── Erken RPC — hızlı ölen processlerin verisini yakala ──────────────
+        # Bazı malwareler emülatör tespiti sonrası 1-2s içinde ölür.
+        # Polling döngüsü 1s uyur, ilk poll 5s sonra gelir — çok geç.
+        # Burada script.load() hemen ardından bir poll yaparak ilk veriyi alıyoruz.
+        time.sleep(1)  # Java.perform tamamlanmak için kısa süre tanı
+        try:
+            raw = _rpc_safe(script, timeout_s=5)
+            engine.latest_timings             = raw.pop("_timings", {})
+            engine.latest_burst_peak          = raw.pop("_burst_peak", 0)
+            engine.latest_session_duration_ms = raw.pop("_session_duration_ms", 0)
+            engine.latest_seq_log             = raw.pop("_seq_log", [])
+            engine.latest_counters            = raw
+        except Exception:
+            pass  # process zaten öldüyse döngü de yakalayacak
+
         # ── RPC Polling döngüsü ───────────────────────────────────────────────
         # send()/on_message güvenilmez → Python her 5s'de RPC ile veri çeker.
         # Process ölünce RPC exception → döngüden çıkılır, son snapshot kalır.
         start            = time.time()
-        last_rpc_poll    = start - 6    # ilk poll ~1s'de gerçekleşsin
-        last_dismiss     = start - 20   # ilk dismiss ~5s'de gerçekleşsin
+        last_rpc_poll    = start - 4      # ilk döngü pollu ~1s'de gerçekleşsin
+        last_dismiss     = start - 20     # ilk dismiss ~5s'de gerçekleşsin
         rpc_freeze_count = 0
         MAX_RPC_FREEZES  = 3            # ardışık freeze → döngüden çık
 
@@ -518,9 +577,9 @@ def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> di
                 if isinstance(v, (int, float))
             )
             if engine.latest_counters:
-                print(f"  [!] Final RPC başarısız — son poll snapshot: {snap_total} event")
+                print(f"  [!] Final RPC başarısız — son poll verisi kullanılıyor: {snap_total} event")
             else:
-                print(f"  [!] RPC başarısız ({rpc_e}) — snapshot da yok")
+                print(f"  [!] Final RPC başarısız ({rpc_e}) — toplanmış veri de yok")
 
     except frida.ProcessNotFoundError:
         print(f"  [!] Process ölmüş — mevcut verilerle devam ediliyor")
@@ -551,14 +610,16 @@ def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> di
         adb_force_stop(package)
 
         # ── 5. CSV'ye yaz ────────────────────────────────────────────────────
-        print(f"  [DEBUG] latest_counters tip: {type(engine.latest_counters)}, "
-              f"uzunluk: {len(engine.latest_counters)}, "
-              f"toplam: {sum(v for v in engine.latest_counters.values() if isinstance(v,(int,float)))}")
         if engine.latest_counters:
             write_row(engine.latest_counters)
             print(f"  [+] CSV satırı yazıldı.")
         else:
             print(f"  [-] Sayaç verisi yok — boş satır yazılmıyor.")
+            # Hiç veri toplanamadıysa ve başka bir hata kodu set edilmediyse,
+            # bu APK'yı "skip" olarak işaretle — yoksa "ok" döner ve
+            # bir sonraki run'da tekrar denenir (ne CSV'de ne failed_apks'te olur).
+            if _status is None:
+                _status = {"status": "skip", "package": package, "reason": "no_data_collected"}
 
         # ── 6. Uninstall — HER DURUMDA çalışır ───────────────────────────────
         ok = adb_uninstall(package)
