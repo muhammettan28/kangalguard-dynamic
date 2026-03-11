@@ -70,6 +70,12 @@ const counters: Record<string, number> = {
     memory_alloc_large_count: 0,
     class_loader_parent_count: 0,
     native_method_register_count: 0,
+
+    // Accessibility, Overlay & Clipboard (4)
+    accessibility_query_count: 0,
+    overlay_window_count: 0,
+    clipboard_read_count: 0,
+    clipboard_write_count: 0,
 };
 
 // ─── Temporal Tracking ───────────────────────────────────────────────────────
@@ -117,8 +123,6 @@ function recordBurst(): void {
 // Python tarafı bu listeyi analiz ederek zincirleri tespit eder.
 // MAX_SEQ_EVENTS: bellek taşmasını önlemek için hard limit.
 
-const MAX_SEQ_EVENTS = 200;
-
 interface SeqEvent {
     tag: string;   // kısa olay etiketi (örn: "REFLECT", "EXEC", "CRYPTO")
     ms:  number;   // oturum başından itibaren ms
@@ -128,22 +132,55 @@ const seqLog: SeqEvent[] = [];
 
 // Sequence tag'leri — Python'daki analiz bu string'leri arar
 const SEQ = {
-    REFLECT:     "REFLECT",     // reflection invoke
-    DEX_LOAD:    "DEX_LOAD",    // DexClassLoader init
-    EXEC:        "EXEC",        // Runtime.exec
-    DYNAMIC_CLS: "DYNAMIC_CLS", // Class.forName
-    CRYPTO:      "CRYPTO",      // Cipher.init / KeyGenerator
-    NETWORK:     "NETWORK",     // Socket / URL / DNS
-    FILE_WRITE:  "FILE_WRITE",  // FileOutputStream
-    ROOT_CHECK:  "ROOT_CHECK",  // File.exists (root path)
-    ANTI:        "ANTI",        // system_exit / debugger / emulator
-    SMS:         "SMS",         // sendTextMessage
-    CONTACT_READ:"CONTACT_READ",// ContentResolver.query
-    NATIVE_LOAD: "NATIVE_LOAD", // System.loadLibrary
+    REFLECT:      "REFLECT",      // reflection invoke
+    DEX_LOAD:     "DEX_LOAD",     // DexClassLoader init
+    EXEC:         "EXEC",         // Runtime.exec
+    DYNAMIC_CLS:  "DYNAMIC_CLS",  // Class.forName
+    CRYPTO:       "CRYPTO",       // Cipher.init / KeyGenerator
+    NETWORK:      "NETWORK",      // Socket / URL / DNS
+    FILE_WRITE:   "FILE_WRITE",   // FileOutputStream
+    ROOT_CHECK:   "ROOT_CHECK",   // File.exists (root path)
+    ANTI:         "ANTI",         // system_exit / debugger / emulator
+    SMS:          "SMS",          // sendTextMessage
+    CONTACT_READ: "CONTACT_READ", // ContentResolver.query
+    NATIVE_LOAD:  "NATIVE_LOAD",  // System.loadLibrary
+    PERSIST:      "PERSIST",      // AlarmManager / registerReceiver / JobScheduler
+    SURVEIL:      "SURVEIL",      // getDeviceId / getSubscriberId
+    IPC:          "IPC",          // sendBroadcast / bindService
+    CLIPBOARD:    "CLIPBOARD",    // clipboard read / write
+    OVERLAY:      "OVERLAY",      // overlay window (TYPE_APPLICATION_OVERLAY)
+    ACCESSIBILITY:"ACCESSIBILITY",// AccessibilityManager query
 };
 
+// Per-tag throttle — yüksek frekanslı tag'ler (REFLECT, DYNAMIC_CLS) seqLog'u
+// doldurmasın; nadir ama kritik tag'ler (CLIPBOARD, OVERLAY) kayıp vermesin.
+const SEQ_TAG_MAX: Record<string, number> = {
+    REFLECT:      15,
+    DYNAMIC_CLS:  15,
+    NETWORK:      30,
+    CRYPTO:       20,
+    FILE_WRITE:   20,
+    ANTI:         20,
+    ROOT_CHECK:   10,
+    CONTACT_READ: 10,
+    DEX_LOAD:     20,
+    EXEC:         20,
+    SMS:          20,
+    NATIVE_LOAD:  20,
+    PERSIST:      15,
+    SURVEIL:      10,
+    IPC:          15,
+    CLIPBOARD:    20,
+    OVERLAY:      10,
+    ACCESSIBILITY:10,
+};
+const seqTagCount: Record<string, number> = {};
+
 function seqPush(tag: string): void {
-    if (seqLog.length >= MAX_SEQ_EVENTS) return; // limit aşıldı, sessizce atla
+    const max: number = SEQ_TAG_MAX[tag] !== undefined ? SEQ_TAG_MAX[tag] : 10;
+    const cur: number = seqTagCount[tag] !== undefined ? seqTagCount[tag] : 0;
+    if (cur >= max) return;
+    seqTagCount[tag] = cur + 1;
     seqLog.push({ tag, ms: Date.now() - SESSION_START });
 }
 
@@ -273,6 +310,7 @@ Java.perform(() => {
         const TelephonyManager = Java.use("android.telephony.TelephonyManager");
         TelephonyManager.getDeviceId.overload().implementation = function () {
             inc("getDeviceId_count");
+            seqPush(SEQ.SURVEIL);
             return this.getDeviceId();
         };
     });
@@ -281,6 +319,7 @@ Java.perform(() => {
         const TelephonyManager = Java.use("android.telephony.TelephonyManager");
         TelephonyManager.getSubscriberId.overload().implementation = function () {
             inc("getSubscriberId_count");
+            seqPush(SEQ.SURVEIL);
             return this.getSubscriberId();
         };
     });
@@ -467,6 +506,7 @@ Java.perform(() => {
             "android.content.Intent"
         ).implementation = function (intent: any) {
             inc("sendBroadcast_count");
+            seqPush(SEQ.IPC);
             return this.sendBroadcast(intent);
         };
     });
@@ -480,6 +520,7 @@ Java.perform(() => {
             "int"
         ).implementation = function (intent: any, conn: any, flags: number) {
             inc("bindService_count");
+            seqPush(SEQ.IPC);
             return this.bindService(intent, conn, flags);
         };
     });
@@ -635,6 +676,7 @@ Java.perform(() => {
             "int", "long", "android.app.PendingIntent"
         ).implementation = function (type: number, triggerAtMillis: number, operation: any) {
             inc("alarm_manager_set_count");
+            seqPush(SEQ.PERSIST);
             console.log(`[PERSIST] AlarmManager: ${triggerAtMillis}ms`);
             return this.set(type, triggerAtMillis, operation);
         };
@@ -643,6 +685,7 @@ Java.perform(() => {
             "android.app.AlarmManager$OnAlarmListener", "android.os.Handler"
         ).implementation = function (type: number, triggerAtMillis: number, tag: string, listener: any, handler: any) {
             inc("alarm_manager_set_count");
+            seqPush(SEQ.PERSIST);
             console.log(`[PERSIST] AlarmManager (listener): ${triggerAtMillis}ms`);
             return this.set(type, triggerAtMillis, tag, listener, handler);
         };
@@ -652,6 +695,7 @@ Java.perform(() => {
         const JobScheduler = Java.use("android.app.job.JobScheduler");
         JobScheduler.schedule.implementation = function (jobInfo: any) {
             inc("job_scheduler_count");
+            seqPush(SEQ.PERSIST);
             return this.schedule(jobInfo);
         };
     });
@@ -663,6 +707,7 @@ Java.perform(() => {
             "android.content.IntentFilter"
         ).implementation = function (receiver: any, filter: any) {
             inc("register_receiver_count");
+            seqPush(SEQ.PERSIST);
             return this.registerReceiver(receiver, filter);
         };
     });
@@ -730,7 +775,67 @@ Java.perform(() => {
     // burada ClassLoader üzerinden .so yüklemesini proxy olarak kullanıyoruz
     // (native_lib_load_count ile örtüşüyor, ayrı sinyal olarak korunuyor)
 
-    console.log("=== 50 Feature Hook Hazır ===");
+    // ── 9. Clipboard ─────────────────────────────────────────────────────────
+
+    tryHook("ClipboardManager.getPrimaryClip (read)", () => {
+        const ClipboardManager = Java.use("android.content.ClipboardManager");
+        ClipboardManager.getPrimaryClip.implementation = function () {
+            inc("clipboard_read_count");
+            seqPush(SEQ.CLIPBOARD);
+            return this.getPrimaryClip();
+        };
+    });
+
+    tryHook("ClipboardManager.setPrimaryClip (write)", () => {
+        const ClipboardManager = Java.use("android.content.ClipboardManager");
+        ClipboardManager.setPrimaryClip.implementation = function (clip: any) {
+            inc("clipboard_write_count");
+            seqPush(SEQ.CLIPBOARD);
+            console.log("[CLIP] setPrimaryClip — clipboard hijack?");
+            return this.setPrimaryClip(clip);
+        };
+    });
+
+    // ── 10. Accessibility ────────────────────────────────────────────────────
+
+    tryHook("AccessibilityManager.isEnabled", () => {
+        const AccessibilityManager = Java.use("android.view.accessibility.AccessibilityManager");
+        AccessibilityManager.isEnabled.implementation = function () {
+            inc("accessibility_query_count");
+            seqPush(SEQ.ACCESSIBILITY);
+            return this.isEnabled();
+        };
+    });
+
+    tryHook("AccessibilityManager.getEnabledAccessibilityServiceList", () => {
+        const AccessibilityManager = Java.use("android.view.accessibility.AccessibilityManager");
+        AccessibilityManager.getEnabledAccessibilityServiceList.implementation = function (feedbackType: number) {
+            inc("accessibility_query_count");
+            seqPush(SEQ.ACCESSIBILITY);
+            return this.getEnabledAccessibilityServiceList(feedbackType);
+        };
+    });
+
+    // ── 11. Overlay Window ───────────────────────────────────────────────────
+
+    tryHook("WindowManagerImpl.addView (overlay)", () => {
+        const WindowManagerImpl = Java.use("android.view.WindowManagerImpl");
+        // TYPE_APPLICATION_OVERLAY=2038, TYPE_SYSTEM_OVERLAY=2006, TYPE_SYSTEM_ALERT=2003
+        const OVERLAY_TYPES = new Set<number>([2038, 2006, 2003]);
+        WindowManagerImpl.addView.overload(
+            "android.view.View",
+            "android.view.ViewGroup$LayoutParams"
+        ).implementation = function (view: any, params: any) {
+            if (OVERLAY_TYPES.has(params.type.value as number)) {
+                inc("overlay_window_count");
+                seqPush(SEQ.OVERLAY);
+                console.log(`[OVERLAY] addView type=${params.type.value}`);
+            }
+            return this.addView(view, params);
+        };
+    });
+
+    console.log("=== 54 Feature Hook Hazır ===");
 });
 
 // ── Otomatik Flush — Java.perform DIŞINDA ────────────────────────────────────

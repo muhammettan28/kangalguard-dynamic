@@ -1,7 +1,16 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(head -5 \"/c/Users/muham/Desktop/Dev/kangalguard-dynamic/arşiv/kangal_dataset.csv\" | python3 -c \"import sys,csv; r=csv.reader\\(sys.stdin\\); print\\(next\\(r\\)\\)\")",
+      "Bash(py -c \"import csv; f=open\\('C:/Users/muham/Desktop/Dev/kangalguard-dynamic/arşiv/kangal_dataset.csv', encoding='utf-8'\\); r=csv.reader\\(f\\); print\\(next\\(r\\)\\); f.close\\(\\)\")",
+      "Bash(python3 -c \"import csv; f=open\\('/c/Users/muham/Desktop/Dev/kangalguard-dynamic/arşiv/kangal_dataset.csv', encoding='utf-8'\\); r=csv.reader\\(f\\); h=next\\(r\\); print\\(len\\(h\\), h[:10]\\); f.close\\(\\)\")",
+      "Bash(where python:*)",
+      "Bash(where python3:*)",
+      "Bash(ls /c/Python*/python.exe)",
+      "Read(//c/Users/muham/AppData/Local/Programs/**)",
+      "Bash(cd \"C:\\\\Users\\\\muham\\\\Desktop\\\\Dev\\\\kangalguard-dynamic\" && npx tsc --noEmit agent.ts 2>&1 | head -30)",
+      "Bash(cd \"C:\\\\Users\\\\muham\\\\Desktop\\\\Dev\\\\kangalguard-dynamic\" && node_modules/.bin/tsc --noEmit agent.ts 2>&1 || true)"
     ]
   }
 }
