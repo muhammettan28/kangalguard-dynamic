@@ -396,5 +396,8 @@ fee0b6ba1143f638a1eba0cea9e0dc7ed154c4ad6b419cd5e931013d1b1bbea0.apk,com.ksz_dev
 01516F8BC8F9792A4D086E9693645D97496AF884C13538961A2699F294E23AD6.apk,sharedesk.net.optixapp.lebirdie,benign,install_failed,2026-03-12 14:10:23
 01525B47E522C100DC4F2E826CF86AA676C626ABCCD43A28A1F3CE73537CCFCA.apk,com.achilles.myachilles,benign,install_failed,2026-03-12 14:11:57
 0153863CE48354F715F252C514E62D3705C670E511EA74B01ABAF63D7745B3A5.apk,com.milen.grounpringtonesetter,benign,install_failed,2026-03-12 14:14:01
-075244ff0b2388df8e2f08c36599008e0868921c1893c558b32411c83d1e9993.apk,com.jwisqb.nxqhmdut,malware,no_data_collected,2026-03-12 21:18:01
-076088e456aa602b1ed24b23f7947e7bbdb4ff69508f0a4ee7c5a36dadde3e13.apk,com.mbodlf.xgwevnwj,malware,TransportError,2026-03-12 21:18:21
+075244ff0b2388df8e2f08c36599008e0868921c1893c558b32411c83d1e9993.apk,com.jwisqb.nxqhmdut,malware,no_data_collected,2026-03-12 21:18:0100e785694d8905629a4eeb75ec99b5c7209e7cd0e6528460b611f1fa52c09021.apk,,malware,no_package_name,2026-03-13 15:14:27
+00e785694d8905629a4eeb75ec99b5c7209e7cd0e6528460b611f1fa52c09021.apk,,malware,no_package_name,2026-03-13 15:15:29
+02c0faad7dd71938a6748483300879a2e7400ca03684eb59e21762ced04e8ca4.apk,,malware,no_package_name,2026-03-13 15:39:25
+03a9a8eea88e0df8818c85254d2111be0abf11826bba49a3304bb955b0a90c6f.apk,com.GameCoaster.ProtectDungeon.st,malware,TransportError,2026-03-13 16:02:00
+03dd32e15285a09de065169bd566cd31517baca65df782c17e15fb3a25a2f7b7.apk,com.gameloft.chinashop,malware,no_data_collected,2026-03-13 16:03:36
