@@ -10,7 +10,8 @@
       "Bash(ls /c/Python*/python.exe)",
       "Read(//c/Users/muham/AppData/Local/Programs/**)",
       "Bash(cd \"C:\\\\Users\\\\muham\\\\Desktop\\\\Dev\\\\kangalguard-dynamic\" && npx tsc --noEmit agent.ts 2>&1 | head -30)",
-      "Bash(cd \"C:\\\\Users\\\\muham\\\\Desktop\\\\Dev\\\\kangalguard-dynamic\" && node_modules/.bin/tsc --noEmit agent.ts 2>&1 || true)"
+      "Bash(cd \"C:\\\\Users\\\\muham\\\\Desktop\\\\Dev\\\\kangalguard-dynamic\" && node_modules/.bin/tsc --noEmit agent.ts 2>&1 || true)",
+      "Bash(pip install:*)"
     ]
   }
 }

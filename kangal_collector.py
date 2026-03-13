@@ -12,7 +12,7 @@ from datetime import datetime
 PACKAGE_NAME  = "owasp.mstg.uncrackable1"
 LABEL         = "malware"         
 ANALYSIS_TIME = 75                # Kaç saniye analiz yapılsın (0 = sonsuz)
-CSV_FILE      = "kangal_dataset.csv"
+CSV_FILE      = "kangal_malware.csv"
 AGENT_TS      = os.path.join(os.path.dirname(os.path.abspath(__file__)), "agent.ts")
 
 

@@ -18,12 +18,14 @@ import time
 import subprocess
 import argparse
 import csv
+import json
 import traceback
 import threading
 from pathlib import Path
 from datetime import datetime
 
 import frida
+from filelock import FileLock
 
 # ─── KangalGuard engine — tüm feature hesaplama burada ──────────────────────
 from kangal_collector import (
@@ -38,7 +40,7 @@ import kangal_collector as engine
 # ─── Sabitler ────────────────────────────────────────────────────────────────
 
 DEFAULT_TIMEOUT    = 45     # saniye
-DEFAULT_CSV        = "kangal_dataset.csv"
+DEFAULT_CSV        = "kangal_malware.csv"
 ADB_INSTALL_WAIT   = 15      # kurulum sonrası bekleme (saniye)
 ADB_UNINSTALL_WAIT = 5      # kaldırma sonrası bekleme (saniye)
 FRIDA_ATTACH_WAIT  = 10      # attach sonrası bekleme (saniye)
@@ -51,6 +53,13 @@ SNAPSHOT_TIMEOUT   = 90               # snapshot load için max bekleme (saniye)
 SNAPSHOT_SETTLE    = 3                # snapshot yüklenince stabilize bekleme (saniye)
 
 FAILED_LOG_FILE    = os.path.join("logs", "failed_apks.csv")  # skip/error APK logu
+
+DEVICE_SERIAL      = ""   # adb device serial — --device argümanıyla set edilir
+
+LOCK_FILE          = os.path.join("logs", "kangal.lock")       # cross-process advisory lock
+IN_PROGRESS_FILE   = os.path.join("logs", "in_progress.json")  # hangi APK'lar işleniyor
+
+_csv_lock = FileLock(LOCK_FILE, timeout=120)   # 2 dk bekle, sonra hata
 
 # TransportError/ProcessNotRespondingError: bunlar Frida server çöktüğünde
 # ya da app Frida'yı öldürdüğünde çıkar. İsimle yakalıyoruz çünkü
@@ -108,8 +117,8 @@ def get_package_name(apk_path: str) -> str | None:
 def adb_install(apk_path: str) -> bool:
     """APK'yı cihaza kur. Başarılıysa True döner."""
     try:
-        result = subprocess.run(
-            ["adb", "install", "-r", "-t", apk_path],
+        result = adb_s(
+            ["install", "-r", "-t", apk_path],
             capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=60
         )
         if "Success" in result.stdout or "success" in result.stdout.lower():
@@ -126,17 +135,16 @@ def adb_uninstall(package_name: str) -> bool:
     # Bazı malwareler device admin alır → normal uninstall'ı reddeder.
     # Snapshot restore zaten temizler ama devam eden run için revoke deneriz.
     try:
-        subprocess.run(
-            ["adb", "shell", "dpm", "remove-active-admin",
-             f"{package_name}/.AdminReceiver"],
+        adb_s(
+            ["shell", "dpm", "remove-active-admin", f"{package_name}/.AdminReceiver"],
             capture_output=True, timeout=10
         )
     except Exception:
         pass
 
     try:
-        result = subprocess.run(
-            ["adb", "uninstall", package_name],
+        result = adb_s(
+            ["uninstall", package_name],
             capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=60
         )
         out = result.stdout.strip()
@@ -154,10 +162,7 @@ def adb_uninstall(package_name: str) -> bool:
 def adb_force_stop(package_name: str) -> None:
     """Uygulamayı zorla durdur (analiz sonrası temizlik)."""
     try:
-        subprocess.run(
-            ["adb", "shell", "am", "force-stop", package_name],
-            capture_output=True, timeout=60
-        )
+        adb_s(["shell", "am", "force-stop", package_name], capture_output=True, timeout=60)
     except Exception:
         pass
 
@@ -169,15 +174,9 @@ def dismiss_dialogs() -> None:
     Her APK başında ve analiz döngüsü içinde periyodik olarak çağrılır.
     """
     try:
-        subprocess.run(
-            ["adb", "shell", "input", "keyevent", "4"],   # KEYCODE_BACK
-            capture_output=True, timeout=5
-        )
+        adb_s(["shell", "input", "keyevent", "4"], capture_output=True, timeout=5)   # KEYCODE_BACK
         time.sleep(0.3)
-        subprocess.run(
-            ["adb", "shell", "input", "keyevent", "66"],  # KEYCODE_ENTER → OK/Close
-            capture_output=True, timeout=5
-        )
+        adb_s(["shell", "input", "keyevent", "66"], capture_output=True, timeout=5)  # KEYCODE_ENTER → OK/Close
     except Exception:
         pass
 
@@ -250,8 +249,8 @@ def adb_start_app(package: str, activity: str | None = None) -> bool:
     """
     if activity:
         try:
-            result = subprocess.run(
-                ["adb", "shell", "am", "start", "-n", f"{package}/{activity}"],
+            result = adb_s(
+                ["shell", "am", "start", "-n", f"{package}/{activity}"],
                 capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=60
             )
             out = result.stdout + result.stderr
@@ -262,8 +261,8 @@ def adb_start_app(package: str, activity: str | None = None) -> bool:
 
     # Fallback: monkey
     try:
-        result = subprocess.run(
-            ["adb", "shell", "monkey", "-p", package,
+        result = adb_s(
+            ["shell", "monkey", "-p", package,
              "-c", "android.intent.category.LAUNCHER", "1"],
             capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=60
         )
@@ -280,15 +279,10 @@ def restart_frida_server() -> bool:
     """
     print(f"  [*] Frida server yeniden başlatılıyor ({FRIDA_SERVER_PATH})...")
     try:
-        subprocess.run(
-            ["adb", "shell", "su", "0", "pkill", "-f", "frida-server"],
-            capture_output=True, timeout=10
-        )
+        adb_s(["shell", "su", "0", "pkill", "-f", "frida-server"], capture_output=True, timeout=10)
         time.sleep(2)
-        subprocess.Popen(
-            ["adb", "shell", "su", "0", FRIDA_SERVER_PATH],
-            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
-        )
+        adb_s_popen(["shell", "su", "0", FRIDA_SERVER_PATH],
+                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         time.sleep(FRIDA_SERVER_RESTART_WAIT)
         print(f"  [+] Frida server yeniden başlatıldı ({FRIDA_SERVER_RESTART_WAIT}s beklendi)")
         return True
@@ -316,8 +310,8 @@ def restore_clean_snapshot() -> bool:
     """
     try:
         print(f"  [*] Snapshot yükleniyor ({SNAPSHOT_NAME})...")
-        r = subprocess.run(
-            ["adb", "emu", "avd", "snapshot", "load", SNAPSHOT_NAME],
+        r = adb_s(
+            ["emu", "avd", "snapshot", "load", SNAPSHOT_NAME],
             capture_output=True, text=True, encoding='utf-8', errors='replace',
             timeout=SNAPSHOT_TIMEOUT
         )
@@ -327,10 +321,7 @@ def restore_clean_snapshot() -> bool:
             return False
 
         # Emülatörün yeniden bağlanmasını bekle
-        subprocess.run(
-            ["adb", "wait-for-device"],
-            capture_output=True, timeout=SNAPSHOT_TIMEOUT
-        )
+        adb_s(["wait-for-device"], capture_output=True, timeout=SNAPSHOT_TIMEOUT)
         time.sleep(SNAPSHOT_SETTLE)
 
         # Frida-server'ı temiz başlat (snapshot'ta ne durumda olursa olsun)
@@ -360,8 +351,8 @@ def restore_clean_snapshot() -> bool:
 def _get_device_state() -> str:
     """'online', 'offline', 'unknown' döner."""
     try:
-        r = subprocess.run(
-            ["adb", "get-state"],
+        r = adb_s(
+            ["get-state"],
             capture_output=True, text=True, encoding='utf-8', errors='replace',
             timeout=5
         )
@@ -375,6 +366,16 @@ def _get_device_state() -> str:
         return "offline"
 
 
+def adb_s(cmd_args: list, **kwargs) -> subprocess.CompletedProcess:
+    """subprocess.run wrapper: tüm adb çağrılarına -s DEVICE_SERIAL ekler."""
+    return subprocess.run(["adb", "-s", DEVICE_SERIAL] + cmd_args, **kwargs)
+
+
+def adb_s_popen(cmd_args: list, **kwargs) -> subprocess.Popen:
+    """subprocess.Popen wrapper: tüm adb çağrılarına -s DEVICE_SERIAL ekler."""
+    return subprocess.Popen(["adb", "-s", DEVICE_SERIAL] + cmd_args, **kwargs)
+
+
 def check_and_ensure_frida_server() -> "frida.core.Device":
     """
     Attach öncesi frida-server sağlığını test eder.
@@ -385,13 +386,13 @@ def check_and_ensure_frida_server() -> "frida.core.Device":
     attach denemesinden ÖNCE temizlenir — InvalidArgumentError azalır.
     """
     try:
-        device = frida.get_usb_device(timeout=10)
+        device = frida.get_device(DEVICE_SERIAL, timeout=10)
         device.enumerate_processes()   # hafif sağlık probu
         return device
     except Exception:
         print(f"  [!] Frida server sağlık kontrolü başarısız — yeniden başlatılıyor...")
         restart_frida_server()
-        return frida.get_usb_device(timeout=30)
+        return frida.get_device(DEVICE_SERIAL, timeout=30)
 
 
 def get_pid_by_package(device, package: str, retries: int = 8) -> int | None:
@@ -402,8 +403,8 @@ def get_pid_by_package(device, package: str, retries: int = 8) -> int | None:
     """
     for attempt in range(retries):
         try:
-            result = subprocess.run(
-                ["adb", "shell", "pidof", package],
+            result = adb_s(
+                ["shell", "pidof", package],
                 capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=60
             )
             pid_str = result.stdout.strip().split()[0]
@@ -471,7 +472,7 @@ def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> di
     _status = None  # finally bloğunda kullanılır
 
     try:
-        device = frida.get_usb_device(timeout=60)
+        device = frida.get_device(DEVICE_SERIAL, timeout=60)
         bundle = get_compiled_bundle()
 
         # ── spawn() yerine: am start + PID bul + attach ──────────────────────
@@ -611,7 +612,8 @@ def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> di
 
         # ── 5. CSV'ye yaz ────────────────────────────────────────────────────
         if engine.latest_counters:
-            write_row(engine.latest_counters)
+            with _csv_lock:
+                write_row(engine.latest_counters)
             print(f"  [+] CSV satırı yazıldı.")
         else:
             print(f"  [-] Sayaç verisi yok — boş satır yazılmıyor.")
@@ -633,6 +635,42 @@ def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> di
         return _status
     return {"status": "ok", "package": package, "reason": ""}
 
+# ─── APK Claiming — duplicate processing önleme ──────────────────────────────
+
+def _read_in_progress() -> dict:
+    """in_progress.json'ı oku. Lock altında çağrılmalı."""
+    if not Path(IN_PROGRESS_FILE).exists():
+        return {}
+    try:
+        with open(IN_PROGRESS_FILE, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
+def _write_in_progress(data: dict) -> None:
+    """in_progress.json'a yaz. Lock altında çağrılmalı."""
+    with open(IN_PROGRESS_FILE, 'w', encoding='utf-8') as f:
+        json.dump(data, f, indent=2)
+
+
+def _claim_apk(apk_name: str) -> bool:
+    """APK'yı in_progress.json'a ekle. Zaten varsa False döner. Lock altında çağrılmalı."""
+    in_progress = _read_in_progress()
+    if apk_name in in_progress:
+        return False
+    in_progress[apk_name] = datetime.now().isoformat()
+    _write_in_progress(in_progress)
+    return True
+
+
+def _unclaim_apk(apk_name: str) -> None:
+    """APK'yı in_progress.json'dan çıkar. Lock altında çağrılmalı."""
+    in_progress = _read_in_progress()
+    in_progress.pop(apk_name, None)
+    _write_in_progress(in_progress)
+
+
 # ─── Batch Döngüsü — Dışarıda ────────────────────────────────────────────────
 
 def batch_analyze(apk_dir: str, label: str, timeout: int, csv_file: str,
@@ -640,6 +678,8 @@ def batch_analyze(apk_dir: str, label: str, timeout: int, csv_file: str,
     """
     Bir klasördeki tüm APK'ları sırayla analyze_apk()'a gönderir.
     Döngü burada — analyze_apk tek APK'yı bilir.
+    Paralel çalışmayı destekler: _csv_lock ile CSV/failed_apks yazmaları
+    serialize edilir, in_progress.json ile duplicate processing önlenir.
     """
     apk_dir  = Path(apk_dir)
     apk_list = sorted(apk_dir.glob("*.apk"))
@@ -651,13 +691,14 @@ def batch_analyze(apk_dir: str, label: str, timeout: int, csv_file: str,
     if limit:
         apk_list = apk_list[:limit]
 
-    # Resume: zaten işlenmiş APK'ları atla
+    # Hızlı ön-filtre için pre-loaded setler (lock dışında, stale olabilir)
     done_packages = _load_done_packages(csv_file)
     failed_apks   = _load_failed_apks()
 
     # Engine CSV'yi başlat
-    engine.CSV_FILE = csv_file
-    init_csv()
+    with _csv_lock:
+        engine.CSV_FILE = csv_file
+        init_csv()
 
     total   = len(apk_list)
     results = {"ok": 0, "skip": 0, "error": 0}
@@ -671,43 +712,73 @@ def batch_analyze(apk_dir: str, label: str, timeout: int, csv_file: str,
     print(f"  APK     : {total}")
     print(f"  Timeout : {timeout}s / APK")
     print(f"  CSV     : {csv_file}")
+    print(f"  Cihaz   : {DEVICE_SERIAL}")
     print(f"  Atlanacak (zaten işlenmiş): {len(done_packages)}")
     print(f"  Atlanacak (daha önce hatalı): {len(failed_apks)}")
     print(f"  Log     : {os.path.abspath(FAILED_LOG_FILE)}")
     print(f"{'='*60}\n")
 
     for i, apk_path in enumerate(apk_list, 1):
+        apk_name = apk_path.name
 
-        # Daha önce hata veren APK'ları atla
-        if apk_path.name in failed_apks:
-            print(f"[{i}/{total}] SKIP (daha önce hatalı): {apk_path.name}")
+        # Hızlı ön-kontrol (pre-loaded, stale olabilir — gerçek gate lock altında)
+        if apk_name in failed_apks:
+            print(f"[{i}/{total}] SKIP (daha önce hatalı): {apk_name}")
             results["skip"] += 1
             continue
 
-        # Resume: başarıyla işlenmiş APK'ları atla
+        # Package name aapt ile lock dışında al (yavaş olabilir)
         pkg_candidate = get_package_name(str(apk_path))
         if pkg_candidate and pkg_candidate in done_packages:
-            print(f"[{i}/{total}] SKIP (zaten işlenmiş): {apk_path.name}")
+            print(f"[{i}/{total}] SKIP (zaten işlenmiş): {apk_name}")
             results["skip"] += 1
             continue
 
+        # Lock altında fresh kontrol + claiming
+        claimed = False
+        with _csv_lock:
+            fresh_done   = _load_done_packages(csv_file)
+            fresh_failed = _load_failed_apks()
+            if apk_name in fresh_failed:
+                print(f"[{i}/{total}] SKIP (daha önce hatalı): {apk_name}")
+                results["skip"] += 1
+                continue
+            if pkg_candidate and pkg_candidate in fresh_done:
+                print(f"[{i}/{total}] SKIP (zaten işlenmiş): {apk_name}")
+                results["skip"] += 1
+                continue
+            if not _claim_apk(apk_name):
+                print(f"[{i}/{total}] SKIP (diğer worker işliyor): {apk_name}")
+                results["skip"] += 1
+                continue
+            claimed = True
+
+        # APK claim edildi — lock dışında işle (~2-3 dakika)
         print(f"\n[{i}/{total}] İşleniyor...")
+        try:
+            # Her APK öncesi emülatörü temiz snapshot'a döndür.
+            # Frida server crash, stale session, birikmiş kurulumlar → sıfırlanır.
+            restore_clean_snapshot()
 
-        # Her APK öncesi emülatörü temiz snapshot'a döndür.
-        # Frida server crash, stale session, birikmiş kurulumlar → sıfırlanır.
-        restore_clean_snapshot()
+            result = analyze_apk(str(apk_path), label, timeout)
+            results[result["status"]] += 1
 
-        result = analyze_apk(str(apk_path), label, timeout)
-        results[result["status"]] += 1
+            # skip veya error → failed log'a kaydet
+            if result["status"] in ("skip", "error"):
+                _log_failed_apk(
+                    apk_name = apk_name,
+                    package  = result.get("package"),
+                    label    = label,
+                    reason   = result.get("reason", "unknown"),
+                )
 
-        # skip veya error → failed log'a kaydet
-        if result["status"] in ("skip", "error"):
-            _log_failed_apk(
-                apk_name = apk_path.name,
-                package  = result.get("package"),
-                label    = label,
-                reason   = result.get("reason", "unknown"),
-            )
+            if result["status"] == "ok" and pkg_candidate:
+                done_packages.add(pkg_candidate)   # pre-loaded seti güncelle
+
+        finally:
+            if claimed:
+                with _csv_lock:
+                    _unclaim_apk(apk_name)
 
         # İlerleme özeti
         elapsed  = time.time() - start_t
@@ -774,18 +845,19 @@ def _log_failed_apk(apk_name: str, package: str | None, label: str, reason: str)
     Sütunlar: apk_name, package_name, label, reason, timestamp
     """
     os.makedirs("logs", exist_ok=True)
-    write_header = not Path(FAILED_LOG_FILE).exists() or Path(FAILED_LOG_FILE).stat().st_size == 0
-    with open(FAILED_LOG_FILE, 'a', newline='', encoding='utf-8') as f:
-        writer = csv.writer(f)
-        if write_header:
-            writer.writerow(["apk_name", "package_name", "label", "reason", "timestamp"])
-        writer.writerow([
-            apk_name,
-            package or "",
-            label,
-            reason,
-            datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        ])
+    with _csv_lock:
+        write_header = not Path(FAILED_LOG_FILE).exists() or Path(FAILED_LOG_FILE).stat().st_size == 0
+        with open(FAILED_LOG_FILE, 'a', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            if write_header:
+                writer.writerow(["apk_name", "package_name", "label", "reason", "timestamp"])
+            writer.writerow([
+                apk_name,
+                package or "",
+                label,
+                reason,
+                datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            ])
 
 # ─── Tee — stdout + stderr'i hem terminale hem log dosyasına yaz ─────────────
 
@@ -839,15 +911,10 @@ def setup_snapshot() -> None:
     # 1. frida-server'ı başlat
     print(f"[*] Frida-server başlatılıyor ({FRIDA_SERVER_PATH})...")
     try:
-        subprocess.run(
-            ["adb", "shell", "su", "0", "pkill", "-f", "frida-server"],
-            capture_output=True, timeout=10
-        )
+        adb_s(["shell", "su", "0", "pkill", "-f", "frida-server"], capture_output=True, timeout=10)
         time.sleep(1)
-        subprocess.Popen(
-            ["adb", "shell", "su", "0", FRIDA_SERVER_PATH],
-            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
-        )
+        adb_s_popen(["shell", "su", "0", FRIDA_SERVER_PATH],
+                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         time.sleep(FRIDA_SERVER_RESTART_WAIT)
     except Exception as e:
         print(f"[!] Frida-server başlatılamadı: {e}")
@@ -856,7 +923,7 @@ def setup_snapshot() -> None:
     # Frida-server gerçekten çalışıyor mu doğrula
     print(f"[*] Frida-server doğrulanıyor...")
     try:
-        dev = frida.get_usb_device(timeout=10)
+        dev = frida.get_device(DEVICE_SERIAL, timeout=10)
         dev.enumerate_processes()
         print(f"[+] Frida-server çalışıyor ve bağlantı başarılı.")
     except Exception as e:
@@ -872,8 +939,8 @@ def setup_snapshot() -> None:
     # 2. Snapshot kaydet
     print(f"[*] Snapshot kaydediliyor ({SNAPSHOT_NAME})...")
     try:
-        r = subprocess.run(
-            ["adb", "emu", "avd", "snapshot", "save", SNAPSHOT_NAME],
+        r = adb_s(
+            ["emu", "avd", "snapshot", "save", SNAPSHOT_NAME],
             capture_output=True, text=True, encoding='utf-8', errors='replace',
             timeout=30
         )
@@ -892,9 +959,13 @@ def setup_snapshot() -> None:
 
 
 def main():
+    global DEVICE_SERIAL
+
     parser = argparse.ArgumentParser(
         description="KangalGuard Batch Analyzer — tek APK arayüzü, döngü dışarıda"
     )
+    parser.add_argument("--device",  required=True,
+                        help="ADB device serial (adb devices ile bak). Örn: 192.168.0.101:5555")
     parser.add_argument("--setup",   action="store_true",
                         help="Tek seferlik kurulum: frida-server başlat + snapshot kaydet")
     parser.add_argument("--dir",     help="APK klasörü (örn: ./benign)")
@@ -908,6 +979,10 @@ def main():
                         help="Max kaç APK işlensin (test için)")
 
     args = parser.parse_args()
+    DEVICE_SERIAL = args.device
+
+    # logs/ dizinini oluştur (lock dosyası ve in_progress.json için)
+    os.makedirs("logs", exist_ok=True)
 
     # ── Kurulum modu ─────────────────────────────────────────────────────────
     if args.setup:
@@ -919,7 +994,6 @@ def main():
         parser.error("--dir ve --label gerekli (ya da --setup ile kurulum yap)")
 
     # ── Log dosyası kur ───────────────────────────────────────────────────────
-    os.makedirs("logs", exist_ok=True)
     log_name = f"run_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{args.label}.log"
     log_path = os.path.join("logs", log_name)
     log_file = open(log_path, "w", encoding="utf-8", buffering=1)
