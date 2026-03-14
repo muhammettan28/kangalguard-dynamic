@@ -9,3 +9,4 @@ frida-server
 *.log
 /data/
 /arşiv
+logs/in_progress.json
