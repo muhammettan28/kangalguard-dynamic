@@ -114,6 +114,27 @@ def get_package_name(apk_path: str) -> str | None:
     return None
 
 
+def wait_for_package_manager(timeout_s: int = 30) -> bool:
+    """
+    PackageManagerService hazır olana kadar bekler.
+    Snapshot restore sonrası system_server boot completion'ı için.
+    True: hazır, False: timeout.
+    """
+    deadline = time.time() + timeout_s
+    while time.time() < deadline:
+        try:
+            r = adb_s(
+                ["shell", "cmd", "package", "list", "packages"],
+                capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=5
+            )
+            if r.returncode == 0 and "package:" in r.stdout:
+                return True
+        except Exception:
+            pass
+        time.sleep(1)
+    return False
+
+
 def adb_install(apk_path: str) -> bool:
     """APK'yı cihaza kur. Başarılıysa True döner."""
     try:
@@ -123,7 +144,19 @@ def adb_install(apk_path: str) -> bool:
         )
         if "Success" in result.stdout or "success" in result.stdout.lower():
             return True
-        print(f"  [-] adb install başarısız: {result.stdout.strip()} {result.stderr.strip()}")
+        err = result.stdout.strip() + result.stderr.strip()
+        # PackageManager servisi henüz hazır değil — 20s daha bekle ve bir kez retry yap
+        if "Can't find service: package" in err:
+            print(f"  [!] PackageManager hazır değil — 20s bekleniyor...")
+            if wait_for_package_manager(20):
+                result2 = adb_s(
+                    ["install", "-r", "-t", apk_path],
+                    capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=60
+                )
+                if "Success" in result2.stdout or "success" in result2.stdout.lower():
+                    return True
+                err = result2.stdout.strip() + result2.stderr.strip()
+        print(f"  [-] adb install başarısız: {err}")
         return False
     except Exception as e:
         print(f"  [-] adb install hata: {e}")
@@ -326,6 +359,14 @@ def restore_clean_snapshot() -> bool:
 
         # Frida-server'ı temiz başlat (snapshot'ta ne durumda olursa olsun)
         restart_frida_server()
+
+        # PackageManagerService hazır olana kadar bekle.
+        # adb wait-for-device sadece ADB daemon'ını kontrol eder; system_server
+        # (PackageManagerService) daha geç başlayabilir — özellikle ağır malware
+        # APK'larından sonra restore daha uzun sürebilir.
+        if not wait_for_package_manager(30):
+            print(f"  [!] PackageManager 30s içinde hazır olmadı — emülatör durumu şüpheli")
+
         print(f"  [+] Temiz state hazır")
         return True
 
