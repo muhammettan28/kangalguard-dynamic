@@ -11,3 +11,4 @@ frida-server
 /arşiv
 logs/in_progress.json
 logs/in_progress.json
+.claude/settings.local.json
