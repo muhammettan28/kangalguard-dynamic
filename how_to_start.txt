@@ -1,0 +1,24 @@
+
+cd Belgeler/GitHub/kangalguard-dynamic & conda activate frida
+
+adb push frida-server /data/local/tmp/
+adb root
+adb shell "chmod 755 /data/local/tmp/frida-server"
+
+python batch_analyzer.py --setup
+python batch_analyzer.py --dir ./data/benign --label benign 
+python batch_analyzer.py --dir ./data/malware --label malware                                      
+
+python batch_analyzer.py --device 192.168.73.129:5555 --setup
+python batch_analyzer.py --device 192.168.73.131:5555 --setup
+python batch_analyzer.py --device 192.168.73.132:5555 --setup
+python batch_analyzer.py --device 192.168.73.133:5555 --setup
+
+
+python batch_analyzer.py --device 192.168.73.129:5555 --dir ./data/malware --label malware --csv kangal_malware.csv
+python batch_analyzer.py --device 192.168.73.131:5555 --dir ./data/malware --label malware --csv kangal_malware.csv
+python batch_analyzer.py --device 192.168.73.132:5555 --dir ./data/malware --label malware --csv kangal_malware.csv
+python batch_analyzer.py --device 192.168.73.133:5555 --dir ./data/malware --label malware --csv kangal_malware.csv   
+
+ 
+while ($true) { Get-Content logs/in_progress.json; Start-Sleep 5; Clear-Host }
