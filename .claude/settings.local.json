@@ -11,7 +11,23 @@
       "Read(//c/Users/muham/AppData/Local/Programs/**)",
       "Bash(cd \"C:\\\\Users\\\\muham\\\\Desktop\\\\Dev\\\\kangalguard-dynamic\" && npx tsc --noEmit agent.ts 2>&1 | head -30)",
       "Bash(cd \"C:\\\\Users\\\\muham\\\\Desktop\\\\Dev\\\\kangalguard-dynamic\" && node_modules/.bin/tsc --noEmit agent.ts 2>&1 || true)",
-      "Bash(pip install:*)"
+      "Bash(pip install:*)",
+      "Bash(ls -t /home/tan/GitHub/kangalguard-dynamic/logs/*.log)",
+      "Bash(conda run:*)",
+      "Bash(adb:*)",
+      "Bash(npm install:*)",
+      "Bash(npm --version)",
+      "Bash(/snap/bin/npm --version)",
+      "Bash(/snap/bin/npm install:*)",
+      "Bash(snap run:*)",
+      "Read(//usr/bin/**)",
+      "Bash(bash -i -c \"npm --version\" 2>&1)",
+      "Read(//usr/local/bin/**)",
+      "Read(//home/tan/**)",
+      "Bash(snap list:*)",
+      "Bash(snap info:*)",
+      "Read(//tmp/**)",
+      "Bash(xz -d frida-server-x86.xz)"
     ]
   }
 }

@@ -24,6 +24,7 @@ import threading
 from pathlib import Path
 from datetime import datetime
 
+import gc
 import frida
 from filelock import FileLock
 
@@ -513,7 +514,6 @@ def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> di
     _status = None  # finally bloğunda kullanılır
 
     try:
-        device = frida.get_device(DEVICE_SERIAL, timeout=60)
         bundle = get_compiled_bundle()
 
         # ── spawn() yerine: am start + PID bul + attach ──────────────────────
@@ -820,6 +820,8 @@ def batch_analyze(apk_dir: str, label: str, timeout: int, csv_file: str,
             if claimed:
                 with _csv_lock:
                     _unclaim_apk(apk_name)
+
+        gc.collect()
 
         # İlerleme özeti
         elapsed  = time.time() - start_t
