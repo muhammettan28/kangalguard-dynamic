@@ -1,4 +1,3 @@
-
 cd GitHub/kangalguard-dynamic & conda activate frida
 
 adb push frida-server /data/local/tmp/
@@ -6,7 +5,7 @@ adb root
 adb shell "chmod 755 /data/local/tmp/frida-server"
 
 python batch_analyzer.py --setup
-                   
+             
 
  
 while ($true) { Get-Content logs/in_progress.json; Start-Sleep 5; Clear-Host }
