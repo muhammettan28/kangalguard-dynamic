@@ -437,7 +437,7 @@ def check_and_ensure_frida_server() -> "frida.core.Device":
         return frida.get_device(DEVICE_SERIAL, timeout=30)
 
 
-def get_pid_by_package(device, package: str, retries: int = 8) -> int | None:
+def get_pid_by_package(package: str, retries: int = 8) -> int | None:
     """
     Çalışan uygulamanın PID'ini bul.
     frida enumerate_processes() güvenilmez olduğu için
@@ -527,7 +527,7 @@ def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> di
             print(f"  [!] Başlatma başarısız, yine de PID aranıyor...")
 
         print(f"  [*] PID aranıyor...")
-        pid = get_pid_by_package(device, package, retries=8)
+        pid = get_pid_by_package(package, retries=8)
         if pid is None:
             print(f"  [-] PID bulunamadı → SKIP")
             _status = {"status": "skip", "package": package, "reason": "pid_not_found"}
