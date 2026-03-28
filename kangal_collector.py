@@ -618,7 +618,7 @@ def init_csv():
         with open(CSV_FILE, 'w', newline='', encoding='utf-8') as f:
             csv.writer(f).writerow(ALL_COLUMNS)
         print(f"[*] CSV oluşturuldu: {CSV_FILE}")
-        print(f"[*] Toplam sütun: {len(ALL_COLUMNS)}  (3 meta + 50 ham + 30 türetilmiş + 21 temporal + 20 sequence)")
+        print(f"[*] Toplam sütun: {len(ALL_COLUMNS)}  (3 meta + 54 ham + 36 türetilmiş + 22 temporal + 28 sequence)")
     else:
         print(f"[*] Mevcut CSV'ye ekleniyor: {CSV_FILE}")
 
@@ -698,6 +698,15 @@ def write_row(counters: dict):
 
     with open(CSV_FILE, 'a', newline='', encoding='utf-8') as f:
         csv.writer(f).writerow(row)
+
+    if latest_seq_log:
+        with open(CSV_FILE.replace('.csv', '_seqlogs.jsonl'), 'a', encoding='utf-8') as f:
+            f.write(json.dumps({
+                "package_name": PACKAGE_NAME,
+                "label": LABEL,
+                "session_duration_ms": latest_session_duration_ms,
+                "seq_log": latest_seq_log
+            }) + '\n')
 
     # ── Terminal raporu ───────────────────────────────────────────────────────
     print(f"\n{'='*58}")
