@@ -510,6 +510,9 @@ def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> di
     engine.password_attempts          = []
     engine.PACKAGE_NAME               = package
     engine.LABEL                      = label
+    engine._seq_last_tag              = None
+    engine._seq_last_count            = 0
+    engine._tag_session_count         = {}
 
     _status = None  # finally bloğunda kullanılır
 
@@ -736,9 +739,10 @@ def batch_analyze(apk_dir: str, label: str, timeout: int, csv_file: str,
     done_packages = _load_done_packages(csv_file)
     failed_apks   = _load_failed_apks()
 
-    # Engine CSV'yi başlat
+    # Engine CSV ve JSONL dosyalarını başlat
     with _csv_lock:
-        engine.CSV_FILE = csv_file
+        engine.CSV_FILE     = csv_file
+        engine.SEQ_LOG_FILE = csv_file.replace('.csv', '_seqlogs.jsonl')
         init_csv()
 
     total   = len(apk_list)

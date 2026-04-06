@@ -13,6 +13,7 @@ PACKAGE_NAME  = "owasp.mstg.uncrackable1"
 LABEL         = "malware"         
 ANALYSIS_TIME = 75                # Kaç saniye analiz yapılsın (0 = sonsuz)
 CSV_FILE      = "kangal_malware.csv"
+SEQ_LOG_FILE  = CSV_FILE.replace('.csv', '_seqlogs.jsonl')
 AGENT_TS      = os.path.join(os.path.dirname(os.path.abspath(__file__)), "agent.ts")
 
 
@@ -49,6 +50,33 @@ RAW_FEATURE_COLUMNS = [
     # Accessibility, Overlay & Clipboard
     "accessibility_query_count", "overlay_window_count",
     "clipboard_read_count", "clipboard_write_count",
+
+    # ── Yeni Ham Sayaçlar (v4, 25 adet) ─────────────────────────────────────
+    "http_get_count",           # HttpURLConnection GET
+    "http_post_count",          # HttpURLConnection POST
+    "websocket_count",          # okhttp3.WebSocket
+    "ssl_bypass_count",         # boş TrustManager
+    "aes_encrypt_count",        # Cipher("AES") ENCRYPT_MODE
+    "rsa_count",                # Cipher("RSA")
+    "hash_md5_count",           # MessageDigest("MD5")
+    "hash_sha_count",           # MessageDigest("SHA*")
+    "base64_enc_count",         # Base64.encode
+    "base64_dec_count",         # Base64.decode
+    "location_gps_count",       # requestLocationUpdates("gps")
+    "location_net_count",       # requestLocationUpdates("network")
+    "camera_open_count",        # CameraManager.openCamera
+    "mic_record_count",         # AudioRecord.startRecording
+    "sms_read_count",           # ContentResolver("content://sms")
+    "call_log_count",           # ContentResolver("call_log")
+    "file_delete_count",        # File.delete()
+    "pkg_install_count",        # PackageInstaller.Session.commit()
+    "pkg_enum_count",           # getInstalledPackages()
+    "notif_listen_count",       # NotificationListenerService
+    "screen_capture_count",     # MediaProjectionManager
+    "input_inject_count",       # dispatchGesture()
+    "acc_action_count",         # performAction()
+    "acc_window_count",         # getWindows()
+    "foreground_service_count", # startForegroundService()
 ]
 
 # ─── Türetilmiş Feature Sütunları (Python'da hesaplanan 36 feature) ──────────
@@ -181,7 +209,7 @@ SEQUENCE_FEATURE_COLUMNS = [
     "seq_first_clipboard_network_ms",# CLIPBOARD→NETWORK ilk ne zaman
 ]
 
-# ─── Tüm CSV sütunları: 3 meta + 54 ham + 36 türetilmiş + 22 temporal + 28 sequence = 143 sütun
+# ─── Tüm CSV sütunları: 3 meta + 79 ham + 36 türetilmiş + 22 temporal + 28 sequence = 168 sütun
 
 ALL_COLUMNS = (
     ["package_name", "label", "timestamp"]
@@ -201,6 +229,59 @@ latest_counters: dict = {}
 password_attempts: list = []
 session_ref = None
 script_ref  = None
+
+# Seq log — per-tag session limitleri ve burst tespiti
+_TAG_SESSION_LIMIT: dict = {
+    'ACC_SERVICE_BIND':  1,
+    'ACC_ACTION':        20,
+    'ACC_WINDOW_ACCESS': 10,
+    'ANALYTICS_LOG':     10,
+    'NET_HTTP_GET':      30,
+    'NET_HTTP_POST':     30,
+    'CRYPTO_AES':        20,
+    'CRYPTO_BASE64_ENC': 20,
+    'CRYPTO_BASE64_DEC': 20,
+}
+_DEFAULT_SESSION_LIMIT: int = 15
+_tag_session_count: dict = {}
+_seq_last_tag: str | None = None
+_seq_last_count: int = 0
+
+
+def seq_append(tag: str, ms: int) -> None:
+    """Dedup + session limit + burst mantığıyla seq event ekle."""
+    global _seq_last_tag, _seq_last_count
+
+    limit = _TAG_SESSION_LIMIT.get(tag, _DEFAULT_SESSION_LIMIT)
+    count = _tag_session_count.get(tag, 0)
+    if count >= limit:
+        return
+    _tag_session_count[tag] = count + 1
+
+    if _seq_last_tag == tag:
+        _seq_last_count += 1
+        if _seq_last_count >= 5:
+            if 'burst' not in latest_seq_log[-1]:
+                latest_seq_log[-1]['burst'] = 4
+            latest_seq_log[-1]['burst'] += 1
+            latest_seq_log[-1]['ms'] = ms
+            return
+    else:
+        _seq_last_tag   = tag
+        _seq_last_count = 1
+
+    latest_seq_log.append({'tag': tag, 'ms': ms})
+
+
+def reset_session() -> None:
+    """Her APK analizi başında çağrılır — tüm seq state'ini sıfırlar."""
+    global latest_seq_log, latest_session_duration_ms
+    global _seq_last_tag, _seq_last_count, _tag_session_count
+    latest_seq_log             = []
+    latest_session_duration_ms = 0
+    _seq_last_tag              = None
+    _seq_last_count            = 0
+    _tag_session_count         = {}
 
 # ─── Sequence Feature Hesaplama ──────────────────────────────────────────────
 
@@ -618,7 +699,7 @@ def init_csv():
         with open(CSV_FILE, 'w', newline='', encoding='utf-8') as f:
             csv.writer(f).writerow(ALL_COLUMNS)
         print(f"[*] CSV oluşturuldu: {CSV_FILE}")
-        print(f"[*] Toplam sütun: {len(ALL_COLUMNS)}  (3 meta + 54 ham + 36 türetilmiş + 22 temporal + 28 sequence)")
+        print(f"[*] Toplam sütun: {len(ALL_COLUMNS)}  (3 meta + 79 ham + 36 türetilmiş + 22 temporal + 28 sequence)")
     else:
         print(f"[*] Mevcut CSV'ye ekleniyor: {CSV_FILE}")
 
@@ -699,68 +780,16 @@ def write_row(counters: dict):
     with open(CSV_FILE, 'a', newline='', encoding='utf-8') as f:
         csv.writer(f).writerow(row)
 
-    if latest_seq_log:
-        with open(CSV_FILE.replace('.csv', '_seqlogs.jsonl'), 'a', encoding='utf-8') as f:
+    # Minimum uzunluk filtresi: seq_len < 10 olan kayıtları JSONL'a yazma
+    if len(latest_seq_log) >= 10:
+        with open(SEQ_LOG_FILE, 'a', encoding='utf-8') as f:
             f.write(json.dumps({
-                "package_name": PACKAGE_NAME,
-                "label": LABEL,
+                "package_name"       : PACKAGE_NAME,
+                "label"              : LABEL,
                 "session_duration_ms": latest_session_duration_ms,
-                "seq_log": latest_seq_log
+                "seq_len"            : len(latest_seq_log),
+                "seq_log"            : latest_seq_log
             }) + '\n')
-
-    # ── Terminal raporu ───────────────────────────────────────────────────────
-    print(f"\n{'='*58}")
-    print(f"[+] CSV YAZILDI — {datetime.now().strftime('%H:%M:%S')}")
-    print(f"    {PACKAGE_NAME}  |  {LABEL.upper()}")
-    print(f"{'─'*58}")
-
-    nonzero_raw = {k: v for k, v in counters.items() if v > 0}
-    if nonzero_raw:
-        print("  Ham Feature'lar (aktif):")
-        for k, v in nonzero_raw.items():
-            print(f"    {k:<42} {v}")
-    else:
-        print("  (Ham feature tetiklenmedi)")
-
-    print(f"{'─'*58}")
-    print("  Türetilmiş Skorlar:")
-    score_keys = [k for k in DERIVED_FEATURE_COLUMNS if "score" in k or "ratio" in k]
-    for k in score_keys:
-        v = derived[k]
-        if v > 0:
-            print(f"    {k:<42} {v}")
-
-    active_patterns = [k for k in DERIVED_FEATURE_COLUMNS if k.startswith("has_") and derived[k] == 1]
-    print("  Aktif Boolean Patternler:")
-    if active_patterns:
-        for k in active_patterns:
-            print(f"    ⚠️  {k}")
-    else:
-        print("    (Tehlikeli pattern tespit edilmedi)")
-
-    # Temporal özet
-    print(f"{'─'*58}")
-    print("  Temporal Bilgiler:")
-    timing_keys = [k for k in TEMPORAL_FEATURE_COLUMNS if k.endswith("_ms") and not k.startswith("session")]
-    for k in timing_keys:
-        v = temporal[k]
-        if v >= 0:
-            print(f"    {k:<42} {v} ms")
-    print(f"    {'burst_peak_count':<42} {temporal['burst_peak_count']}")
-    print(f"    {'session_duration_ms':<42} {temporal['session_duration_ms']} ms")
-    active_temporal_flags = [k for k in ["early_network_flag","early_anti_analysis_flag",
-                                          "crypto_before_network","rapid_burst_flag"]
-                             if temporal.get(k) == 1]
-    if active_temporal_flags:
-        print("  Aktif Temporal Flagler:")
-        for k in active_temporal_flags:
-            print(f"    🕐 {k}")
-
-    if password_attempts:
-        print(f"{'─'*58}")
-        print(f"  Şifre denemeleri: {password_attempts}")
-
-    print(f"{'='*58}\n")
 
 # ─── Mesaj Handler ───────────────────────────────────────────────────────────
 

@@ -12,3 +12,5 @@ frida-server
 logs/in_progress.json
 logs/in_progress.json
 .claude/settings.local.json
+/logs
+/03-04-2026/

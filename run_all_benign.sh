@@ -1,0 +1,151 @@
+#!/bin/bash
+# run_all.sh
+# Tek komutla calistirin — geri kalan her seyi kendisi halleder:
+#   - Emulatorler kapali/crash ise otomatik baslatir
+#   - 3 analiz processini paralel calistirir
+#   - Her saatte bir RAM temizleme icin otomatik restart atar
+#   - Tum APK'lar islenince durur
+
+GMTOOL="/home/tan/genymotion/gmtool"
+
+LABEL="${1:-benign}"
+DIR="${2:-./data/benign}"
+CSV="${3:-kangal_benign.csv}"
+RESTART_INTERVAL=3600   # saniye (1 saat)
+
+declare -A EMULATORS=(
+    ["127.0.0.1:6555"]="40cbb896-7c86-43a7-ac91-74b870645f8c"
+    ["127.0.0.1:6562"]="47866601-0852-4af6-8050-509dd72c244e"
+    ["127.0.0.1:6569"]="acfa9d61-aed5-4d93-b871-cfab128bf9c3"
+)
+
+mkdir -p logs
+
+log() {
+    echo "[$(date '+%H:%M:%S')] $*"
+}
+
+# ─── Emulatörleri durdur ─────────────────────────────────────────────────────
+stop_emulators() {
+    log "Emulatorler durduruluyor..."
+    for ip in "${!EMULATORS[@]}"; do
+        adb disconnect "$ip" 2>/dev/null
+        $GMTOOL admin stop "${EMULATORS[$ip]}" 2>/dev/null
+    done
+    sleep 8
+}
+
+# ─── Emulatörleri baslat ve hazir olana kadar bekle ──────────────────────────
+start_emulators() {
+    log "Emulatorler baslatiliyor..."
+    for ip in "${!EMULATORS[@]}"; do
+        $GMTOOL admin start "${EMULATORS[$ip]}"
+    done
+
+    log "Ayaga kalkmalari icin 25s bekleniyor..."
+    sleep 25
+
+    for ip in "${!EMULATORS[@]}"; do
+        adb connect "$ip" 2>/dev/null
+    done
+
+    # Hazir olana kadar bekle (max 90s)
+    local deadline=$((SECONDS + 90))
+    while [ $SECONDS -lt $deadline ]; do
+        local all_ready=true
+        for ip in "${!EMULATORS[@]}"; do
+            [ "$(adb -s "$ip" get-state 2>/dev/null)" != "device" ] && all_ready=false
+        done
+        $all_ready && { log "Tum emulatorler hazir."; return 0; }
+        sleep 5
+    done
+
+    log "UYARI: Bazi emulatorler 90s icinde hazir olmadi. Devam ediliyor..."
+}
+
+# ─── Emulator durumunu kontrol et, gerekirse baslat ──────────────────────────
+ensure_emulators_running() {
+    local needs_start=false
+    for ip in "${!EMULATORS[@]}"; do
+        [ "$(adb -s "$ip" get-state 2>/dev/null)" != "device" ] && needs_start=true && break
+    done
+
+    if $needs_start; then
+        log "Bazi emulatorler hazir degil, baslatiliyor..."
+        stop_emulators
+        start_emulators
+    else
+        log "Tum emulatorler zaten hazir."
+    fi
+}
+
+# ─── 3 analiz processini baslat ──────────────────────────────────────────────
+start_processes() {
+    PIDS=()
+    for ip in "${!EMULATORS[@]}"; do
+        LOG="logs/run_${ip//:/_}.log"
+        python batch_analyzer.py --device "$ip" --dir "$DIR" --label "$LABEL" --csv "$CSV" >> "$LOG" 2>&1 &
+        PIDS+=($!)
+        log "  $ip -> PID $! -> $LOG"
+    done
+}
+
+# ─── Tum processleri durdur ───────────────────────────────────────────────────
+kill_processes() {
+    [ ${#PIDS[@]} -eq 0 ] && return
+    log "Analiz processleri durduruluyor..."
+    for PID in "${PIDS[@]}"; do
+        kill "$PID" 2>/dev/null
+    done
+    wait "${PIDS[@]}" 2>/dev/null
+    PIDS=()
+}
+
+# ─── Tum processler bitti mi? ─────────────────────────────────────────────────
+all_done() {
+    for PID in "${PIDS[@]}"; do
+        kill -0 "$PID" 2>/dev/null && return 1
+    done
+    return 0
+}
+
+# ════════════════════════════════════════════════════════════════════════════════
+echo "============================================"
+echo "KangalGuard run_all.sh"
+echo "label=$LABEL  dir=$DIR  csv=$CSV"
+echo "Restart interval: ${RESTART_INTERVAL}s (1 saat)"
+echo "============================================"
+
+# İlk başlatma: emulatorler kapali/crash ise baslat, zaten calısıyorsa dokunma
+ensure_emulators_running
+
+# Ana döngü — her cycle basinda her zaman stop+start yapar
+CYCLE=1
+while true; do
+    log "=== Cycle $CYCLE baslıyor ==="
+
+    start_processes
+    echo ""
+    log "Loglar: logs/run_127.0.0.1_65{55,62,69}.log"
+    echo ""
+
+    # 1 saat boyunca bekle; 15s'de bir kontrol et
+    ELAPSED=0
+    while [ $ELAPSED -lt $RESTART_INTERVAL ]; do
+        sleep 15
+        ELAPSED=$((ELAPSED + 15))
+
+        if all_done; then
+            log "Tum APK'lar islendi. Cikiliyor."
+            exit 0
+        fi
+    done
+
+    log "1 saat doldu — RAM temizleme icin restart yapiliyor..."
+    kill_processes
+    stop_emulators
+    start_emulators
+    log "Emulatorler hazir. Kaldigi yerden devam ediliyor..."
+    echo ""
+    CYCLE=$((CYCLE + 1))
+done

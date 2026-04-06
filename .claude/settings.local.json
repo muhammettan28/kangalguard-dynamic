@@ -27,7 +27,17 @@
       "Bash(snap list:*)",
       "Bash(snap info:*)",
       "Read(//tmp/**)",
-      "Bash(xz -d frida-server-x86.xz)"
+      "Bash(xz -d frida-server-x86.xz)",
+      "Bash(python3 -c \":*)",
+      "Bash(python3:*)",
+      "Bash(chmod +x /home/tan/GitHub/kangalguard-dynamic/restart_emulators.sh)",
+      "Bash(chmod +x /home/tan/GitHub/kangalguard-dynamic/run_all.sh)",
+      "Bash(/home/tan/genymotion/gmtool admin:*)",
+      "Bash(chmod +x /home/tan/GitHub/kangalguard-dynamic/run_all_malware.sh)",
+      "Bash(npx tsc:*)",
+      "Bash(./node_modules/.bin/tsc --noEmit)",
+      "Bash(node_modules/.bin/frida-compile agent.ts -o /tmp/agent_test.js -c)",
+      "Bash(ls /usr/bin/python3*)"
     ]
   }
 }
