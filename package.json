@@ -12,7 +12,8 @@
   },
   "devDependencies": {
     "@types/frida-gum": "^19.0.0",
-    "@types/node": "^18.14.0"
+    "@types/node": "^18.14.0",
+    "typescript": "^4.9.5"
   },
   "dependencies": {
     "frida-java-bridge": "^7.0.12"

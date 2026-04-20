@@ -16,8 +16,13 @@ file_path = d.get("tool_input", {}).get("file_path", "")
 if not file_path.endswith("agent.ts"):
     sys.exit(0)
 
+tsc_bin = os.path.join(PROJECT_ROOT, "node_modules", ".bin", "tsc")
+if not os.path.isfile(tsc_bin):
+    print("agent.ts: tsc bulunamadı (node_modules/.bin/tsc), derleme atlanıyor")
+    sys.exit(0)
+
 result = subprocess.run(
-    ["npx", "tsc", "--noEmit"],
+    [tsc_bin, "--noEmit"],
     cwd=PROJECT_ROOT,
     capture_output=True,
     text=True,

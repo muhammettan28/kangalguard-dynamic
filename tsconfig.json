@@ -6,6 +6,6 @@
     "strict": true,
     "noEmit": true
   },
-  "include": ["agent/**/*.ts"]
+  "include": ["agent/**/*.ts", "agent.ts"]
 }
 

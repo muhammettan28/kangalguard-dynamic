@@ -251,10 +251,19 @@ Java.perform(() => {
         };
     });
 
-    tryHook("Field.get/set (REFLECT_FIELD_ACCESS)", () => {
+    tryHook("Field.get/set (REFLECT_FIELD_ACCESS + ANTI_EMULATOR via Build)", () => {
         const Field = Java.use("java.lang.reflect.Field");
         Field.get.implementation = function (obj: any) {
             seqPush("REFLECT_FIELD_ACCESS");
+            // android.os.SystemProperties @hide fail workaround:
+            // Build field reads via reflection = emulator/VM detection pattern
+            try {
+                if (this.getDeclaringClass().getName() === "android.os.Build") {
+                    _vmPropsRead.add(this.getName());
+                    if (_vmPropsRead.size >= 3) seqPush("ANTI_VM_PROPS");
+                    seqPush("ANTI_EMULATOR");
+                }
+            } catch (_) {}
             return this.get(obj);
         };
         Field.set.implementation = function (obj: any, value: any) {
@@ -367,6 +376,25 @@ Java.perform(() => {
         };
     });
 
+    // new Socket() + socket.connect(addr) pattern'i — Socket.$init(String,int) yakalamaz
+    tryHook("Socket.connect (NET_SOCKET_TCP)", () => {
+        const Socket = Java.use("java.net.Socket");
+        Socket.connect.overload("java.net.SocketAddress").implementation = function (addr: any) {
+            inc("socket_create_count");
+            recordTime("first_network_ms");
+            seqPush("NET_SOCKET_TCP");
+            return this.connect(addr);
+        };
+        Socket.connect.overload("java.net.SocketAddress", "int").implementation = function (
+            addr: any, timeout: number
+        ) {
+            inc("socket_create_count");
+            recordTime("first_network_ms");
+            seqPush("NET_SOCKET_TCP");
+            return this.connect(addr, timeout);
+        };
+    });
+
     tryHook("DatagramSocket.send (NET_SOCKET_UDP)", () => {
         const DatagramSocket = Java.use("java.net.DatagramSocket");
         DatagramSocket.send.implementation = function (packet: any) {
@@ -409,6 +437,36 @@ Java.perform(() => {
         };
     });
 
+    // OkHttp: modern APK'ların büyük çoğunluğu HttpURLConnection değil OkHttp kullanır.
+    // newCall().execute() / enqueue() yerine newCall() hooklamak daha güvenilir —
+    // her HTTP isteği için bir kez çağrılır, response gelmeden önce sayılır.
+    tryHook("OkHttpClient.newCall (NET_HTTP_GET/POST via OkHttp)", () => {
+        const OkHttpClient = Java.use("okhttp3.OkHttpClient");
+        OkHttpClient.newCall.implementation = function (request: any) {
+            const method: string = request.method();
+            if (method === "GET") {
+                inc("http_get_count");
+                seqPush("NET_HTTP_GET");
+            } else if (method === "POST") {
+                inc("http_post_count");
+                seqPush("NET_HTTP_POST");
+            }
+            recordTime("first_network_ms");
+            return this.newCall(request);
+        };
+    });
+
+    tryHook("OkHttpClient.newWebSocket (NET_WEBSOCKET)", () => {
+        const OkHttpClient = Java.use("okhttp3.OkHttpClient");
+        OkHttpClient.newWebSocket.implementation = function (request: any, listener: any) {
+            inc("websocket_count");
+            seqPush("NET_WEBSOCKET");
+            recordTime("first_network_ms");
+            console.log("[NET] OkHttpClient.newWebSocket");
+            return this.newWebSocket(request, listener);
+        };
+    });
+
     tryHook("URLConnection.setRequestProperty", () => {
         const URLConnection = Java.use("java.net.URLConnection");
         URLConnection.setRequestProperty.implementation = function (
@@ -421,6 +479,9 @@ Java.perform(() => {
 
     // ── CRYPTO ────────────────────────────────────────────────────────────────
 
+    // FILE_ENCRYPT_BULK tespiti için session içi AES şifreleme bayrağı
+    let _aesEncryptActive = false;
+
     tryHook("Cipher.init (CRYPTO_AES/RSA)", () => {
         const Cipher = Java.use("javax.crypto.Cipher");
         Cipher.init.overload("int", "java.security.Key").implementation = function (
@@ -430,7 +491,10 @@ Java.perform(() => {
             const algo: string = this.getAlgorithm().toUpperCase();
             if (algo.includes("AES")) {
                 inc("cipher_aes_count");
-                if (opmode === 1) inc("aes_encrypt_count"); // ENCRYPT_MODE=1
+                if (opmode === 1) { // ENCRYPT_MODE=1
+                    inc("aes_encrypt_count");
+                    _aesEncryptActive = true;
+                }
                 seqPush("CRYPTO_AES");
             } else if (algo.includes("RSA")) {
                 inc("rsa_count");
@@ -445,7 +509,10 @@ Java.perform(() => {
             const algo: string = this.getAlgorithm().toUpperCase();
             if (algo.includes("AES")) {
                 inc("cipher_aes_count");
-                if (opmode === 1) inc("aes_encrypt_count");
+                if (opmode === 1) {
+                    inc("aes_encrypt_count");
+                    _aesEncryptActive = true;
+                }
                 seqPush("CRYPTO_AES");
             } else if (algo.includes("RSA")) {
                 inc("rsa_count");
@@ -561,6 +628,31 @@ Java.perform(() => {
         };
     });
 
+    // Modern appler LocationManager değil Google Play Services FusedLocationProviderClient kullanır
+    tryHook("FusedLocationProviderClient.getLastLocation (SURV_LOCATION_NET)", () => {
+        const FusedClient = Java.use("com.google.android.gms.location.FusedLocationProviderClient");
+        FusedClient.getLastLocation.implementation = function () {
+            inc("location_net_count");
+            seqPush("SURV_LOCATION_NET");
+            console.log("[SURV] FusedLocationProviderClient.getLastLocation");
+            return this.getLastLocation();
+        };
+    });
+
+    tryHook("FusedLocationProviderClient.requestLocationUpdates (SURV_LOCATION_NET)", () => {
+        const FusedClient = Java.use("com.google.android.gms.location.FusedLocationProviderClient");
+        FusedClient.requestLocationUpdates.overload(
+            "com.google.android.gms.location.LocationRequest",
+            "com.google.android.gms.location.LocationCallback",
+            "android.os.Looper"
+        ).implementation = function (req: any, cb: any, looper: any) {
+            inc("location_net_count");
+            seqPush("SURV_LOCATION_NET");
+            console.log("[SURV] FusedLocationProviderClient.requestLocationUpdates");
+            return this.requestLocationUpdates(req, cb, looper);
+        };
+    });
+
     tryHook("LocationManager.requestLocationUpdates (SURV_LOCATION_GPS/NET)", () => {
         const LocationManager = Java.use("android.location.LocationManager");
         LocationManager.requestLocationUpdates.overload(
@@ -579,17 +671,9 @@ Java.perform(() => {
 
     tryHook("ContentResolver.query (SURV_CONTACT_READ/SMS_READ/CALL_LOG + MEDIA)", () => {
         const ContentResolver = Java.use("android.content.ContentResolver");
-        ContentResolver.query.overload(
-            "android.net.Uri",
-            "[Ljava.lang.String;",
-            "java.lang.String",
-            "[Ljava.lang.String;",
-            "java.lang.String"
-        ).implementation = function (
-            uri: any, proj: any, sel: any, selArgs: any, sort: any
-        ) {
-            inc("content_resolver_query_count");
-            const uriStr: string = uri.toString();
+
+        // URI eşleştirme ortak fonksiyon — her iki overload'dan çağrılır
+        function classifyQueryUri(uriStr: string): void {
             if (uriStr.includes("contacts") || uriStr.includes("com.android.contacts")) {
                 seqPush("SURV_CONTACT_READ");
             } else if (uriStr.includes("content://sms") || uriStr.includes("telephony/sms")) {
@@ -603,8 +687,35 @@ Java.perform(() => {
             } else if (uriStr.includes("video/media") || uriStr.includes("Video/Media")) {
                 seqPush("MEDIA_VIDEO_ACCESS");
             }
-            // Tanınmayan URI'lar için tag push edilmez
+        }
+
+        // Pre-API29 (5-arg) overload
+        ContentResolver.query.overload(
+            "android.net.Uri",
+            "[Ljava.lang.String;",
+            "java.lang.String",
+            "[Ljava.lang.String;",
+            "java.lang.String"
+        ).implementation = function (
+            uri: any, proj: any, sel: any, selArgs: any, sort: any
+        ) {
+            inc("content_resolver_query_count");
+            classifyQueryUri(uri.toString());
             return this.query(uri, proj, sel, selArgs, sort);
+        };
+
+        // API29+ (Bundle) overload — Android 10'dan itibaren modern appler bu imzayı kullanır
+        ContentResolver.query.overload(
+            "android.net.Uri",
+            "[Ljava.lang.String;",
+            "android.os.Bundle",
+            "android.os.CancellationSignal"
+        ).implementation = function (
+            uri: any, proj: any, queryArgs: any, cancellationSignal: any
+        ) {
+            inc("content_resolver_query_count");
+            classifyQueryUri(uri.toString());
+            return this.query(uri, proj, queryArgs, cancellationSignal);
         };
     });
 
@@ -646,9 +757,8 @@ Java.perform(() => {
 
     tryHook("FileOutputStream.$init (FILE_WRITE_INTERNAL/EXTERNAL)", () => {
         const FileOutputStream = Java.use("java.io.FileOutputStream");
-        FileOutputStream.$init.overload("java.lang.String").implementation = function (
-            path: string
-        ) {
+
+        function classifyWritePath(path: string): void {
             inc("file_write_count");
             recordTime("first_file_write_ms");
             const extPaths = ["/sdcard/", "/storage/emulated/"];
@@ -656,6 +766,11 @@ Java.perform(() => {
             if (extPaths.some(p => path.startsWith(p))) {
                 inc("getExternalStorageDirectory_count");
                 seqPush("FILE_WRITE_EXTERNAL");
+                // AES encrypt + harici dosya yazımı aynı session'da = ransomware imzası
+                if (_aesEncryptActive) {
+                    seqPush("FILE_ENCRYPT_BULK");
+                    console.log(`[MAL] FILE_ENCRYPT_BULK: ${path}`);
+                }
             } else if (sysPaths.some(p => path.startsWith(p))) {
                 seqPush("ROOT_PERSIST_SYSTEM");
                 console.log(`[FILE] System write attempt: ${path}`);
@@ -666,7 +781,28 @@ Java.perform(() => {
             if (sensitivePaths.some(p => path.startsWith(p))) {
                 inc("file_read_sensitive_count");
             }
+        }
+
+        // String path overload
+        FileOutputStream.$init.overload("java.lang.String").implementation = function (
+            path: string
+        ) {
+            classifyWritePath(path);
             return this.$init(path);
+        };
+
+        // File object overload — new FileOutputStream(new File(path)) pattern'i yakalar
+        FileOutputStream.$init.overload("java.io.File").implementation = function (file: any) {
+            try { classifyWritePath(file.getAbsolutePath()); } catch (_) {}
+            return this.$init(file);
+        };
+
+        // String + append overload
+        FileOutputStream.$init.overload("java.lang.String", "boolean").implementation = function (
+            path: string, append: boolean
+        ) {
+            classifyWritePath(path);
+            return this.$init(path, append);
         };
     });
 
@@ -789,6 +925,28 @@ Java.perform(() => {
         };
     });
 
+    tryHook("AlarmManager.setExact (PERSIST_ALARM_REP)", () => {
+        const AlarmManager = Java.use("android.app.AlarmManager");
+        AlarmManager.setExact.overload(
+            "int", "long", "android.app.PendingIntent"
+        ).implementation = function (type: number, triggerAtMillis: number, op: any) {
+            inc("alarm_manager_set_count");
+            seqPush("PERSIST_ALARM_REP");
+            return this.setExact(type, triggerAtMillis, op);
+        };
+    });
+
+    tryHook("AlarmManager.setExactAndAllowWhileIdle (PERSIST_ALARM_REP)", () => {
+        const AlarmManager = Java.use("android.app.AlarmManager");
+        AlarmManager.setExactAndAllowWhileIdle.overload(
+            "int", "long", "android.app.PendingIntent"
+        ).implementation = function (type: number, triggerAtMillis: number, op: any) {
+            inc("alarm_manager_set_count");
+            seqPush("PERSIST_ALARM_REP");
+            return this.setExactAndAllowWhileIdle(type, triggerAtMillis, op);
+        };
+    });
+
     tryHook("AlarmManager.setRepeating (PERSIST_ALARM_REP)", () => {
         const AlarmManager = Java.use("android.app.AlarmManager");
         AlarmManager.setRepeating.implementation = function (
@@ -800,12 +958,13 @@ Java.perform(() => {
         };
     });
 
-    tryHook("JobScheduler.schedule (PERSIST_JOB_SCHED)", () => {
-        const JobScheduler = Java.use("android.app.job.JobScheduler");
-        JobScheduler.schedule.implementation = function (jobInfo: any) {
+    // JobScheduler interface'ini hooklamak çalışmaz; JobInfo.Builder.build() public class
+    tryHook("JobInfo$Builder.build (PERSIST_JOB_SCHED)", () => {
+        const JobInfoBuilder = Java.use("android.app.job.JobInfo$Builder");
+        JobInfoBuilder.build.implementation = function () {
             inc("job_scheduler_count");
             seqPush("PERSIST_JOB_SCHED");
-            return this.schedule(jobInfo);
+            return this.build();
         };
     });
 
@@ -907,15 +1066,20 @@ Java.perform(() => {
         };
     });
 
-    tryHook("File.exists (ANTI_ROOT_CHECK + ANTI_HOOK_DETECT)", () => {
+    tryHook("File.exists (ANTI_ROOT_CHECK + ANTI_HOOK_DETECT + ANTI_EMULATOR)", () => {
         const File = Java.use("java.io.File");
         const rootPaths = [
             "/system/app/Superuser.apk", "/sbin/su", "/system/bin/su",
             "/system/xbin/su", "/data/local/xbin/su", "/data/local/bin/su",
             "/system/sd/xbin/su", "/data/local/su"
         ];
+        // contains() ile kontrol — "frida-server" gibi uzantılı yolları da yakalar
         const fridaPaths = [
             "/data/local/tmp/frida", "/data/local/tmp/re.frida"
+        ];
+        // Emülatöre özgü soket/pipe yolları
+        const emulatorPaths = [
+            "/dev/socket/qemud", "/dev/qemu_pipe", "/dev/goldfish_pipe"
         ];
         File.exists.implementation = function () {
             const path: string = this.getAbsolutePath();
@@ -926,12 +1090,37 @@ Java.perform(() => {
                 console.log(`[ANTI] Root check: ${path}`);
                 return false;
             }
-            if (fridaPaths.some(p => path.startsWith(p))) {
+            if (fridaPaths.some(p => path.includes(p))) {
                 seqPush("ANTI_HOOK_DETECT");
                 console.log(`[ANTI] Frida path check: ${path}`);
                 return false;
             }
+            if (emulatorPaths.some(p => path.includes(p))) {
+                inc("emulator_check_count");
+                recordTime("first_anti_analysis_ms");
+                seqPush("ANTI_EMULATOR");
+                console.log(`[ANTI] Emulator path check: ${path}`);
+                return false;
+            }
             return this.exists();
+        };
+    });
+
+    tryHook("RootBeer.isRooted (ROOT_HIDE)", () => {
+        const RootBeer = Java.use("com.scottyab.rootbeer.RootBeer");
+        RootBeer.isRooted.implementation = function () {
+            seqPush("ROOT_HIDE");
+            console.log("[MAL] RootBeer.isRooted — root hide detection");
+            return false;
+        };
+    });
+
+    tryHook("RootBeer.isRootedWithoutBusyBox (ROOT_HIDE)", () => {
+        const RootBeer = Java.use("com.scottyab.rootbeer.RootBeer");
+        RootBeer.isRootedWithoutBusyBox.implementation = function () {
+            seqPush("ROOT_HIDE");
+            console.log("[MAL] RootBeer.isRootedWithoutBusyBox");
+            return false;
         };
     });
 
@@ -965,6 +1154,17 @@ Java.perform(() => {
             inc("pkg_enum_count");
             seqPush("PKG_ENUMERATE");
             return this.getInstalledPackages(flags);
+        };
+    });
+
+    tryHook("PackageManager.getInstalledApplications (PKG_ENUMERATE)", () => {
+        const PackageManager = Java.use("android.app.ApplicationPackageManager");
+        PackageManager.getInstalledApplications.overload("int").implementation = function (
+            flags: number
+        ) {
+            inc("pkg_enum_count");
+            seqPush("PKG_ENUMERATE");
+            return this.getInstalledApplications(flags);
         };
     });
 
@@ -1005,6 +1205,17 @@ Java.perform(() => {
         };
     });
 
+    tryHook("ContextWrapper.sendOrderedBroadcast (IPC_SEND_BROADCAST)", () => {
+        const ContextWrapper = Java.use("android.content.ContextWrapper");
+        ContextWrapper.sendOrderedBroadcast.overload(
+            "android.content.Intent", "java.lang.String"
+        ).implementation = function (intent: any, receiverPermission: any) {
+            inc("sendBroadcast_count");
+            seqPush("IPC_SEND_BROADCAST");
+            return this.sendOrderedBroadcast(intent, receiverPermission);
+        };
+    });
+
     tryHook("ContextWrapper.bindService (IPC_BIND_SERVICE)", () => {
         const ContextWrapper = Java.use("android.content.ContextWrapper");
         ContextWrapper.bindService.overload(
@@ -1032,10 +1243,22 @@ Java.perform(() => {
         };
     });
 
-    tryHook("Intent.setAction (implicit_intent)", () => {
+    tryHook("Intent.setAction (implicit_intent + SOCIAL_SHARE + PHONE_CALL_SILENT + PERM_ADMIN_REQ)", () => {
         const Intent = Java.use("android.content.Intent");
         Intent.setAction.implementation = function (action: string) {
             inc("implicit_intent_count");
+            if (action === "android.intent.action.SEND" ||
+                action === "android.intent.action.SEND_MULTIPLE") {
+                seqPush("SOCIAL_SHARE");
+            } else if (action === "android.intent.action.CALL" ||
+                       action === "android.intent.action.CALL_PRIVILEGED") {
+                seqPush("PHONE_CALL_SILENT");
+                console.log(`[MAL] Intent ACTION_CALL`);
+            } else if (action === "android.app.action.ADD_DEVICE_ADMIN" ||
+                       action === "android.intent.action.ADD_DEVICE_ADMIN") {
+                seqPush("PERM_ADMIN_REQ");
+                console.log(`[MAL] Intent ADD_DEVICE_ADMIN`);
+            }
             return this.setAction(action);
         };
     });
@@ -1048,6 +1271,26 @@ Java.perform(() => {
         ).implementation = function (uri: any, values: any) {
             inc("content_resolver_insert_count");
             return this.insert(uri, values);
+        };
+    });
+
+    // ── BROADCAST RECEIVER (BCAST_SMS_INTERCEPT / BCAST_SCREEN_WAKE) ─────────
+
+    tryHook("BroadcastReceiver.onReceive (BCAST_SMS_INTERCEPT + BCAST_SCREEN_WAKE)", () => {
+        const BroadcastReceiver = Java.use("android.content.BroadcastReceiver");
+        BroadcastReceiver.onReceive.implementation = function (ctx: any, intent: any) {
+            try {
+                const action: string = intent.getAction();
+                if (action === "android.provider.Telephony.SMS_RECEIVED" ||
+                    action === "android.intent.action.DATA_SMS_RECEIVED") {
+                    seqPush("BCAST_SMS_INTERCEPT");
+                    console.log("[MAL] SMS broadcast intercepted");
+                } else if (action === "android.intent.action.SCREEN_ON") {
+                    seqPush("BCAST_SCREEN_WAKE");
+                    console.log("[MAL] SCREEN_ON broadcast received");
+                }
+            } catch (_) {}
+            return this.onReceive(ctx, intent);
         };
     });
 
@@ -1074,7 +1317,7 @@ Java.perform(() => {
 
     // ── OVERLAY WINDOW ────────────────────────────────────────────────────────
 
-    tryHook("WindowManagerImpl.addView (OVERLAY_WINDOW)", () => {
+    tryHook("WindowManagerImpl.addView (OVERLAY_WINDOW pre-API26)", () => {
         const WindowManagerImpl = Java.use("android.view.WindowManagerImpl");
         const OVERLAY_TYPES = new Set<number>([2038, 2006, 2003]);
         WindowManagerImpl.addView.overload(
@@ -1084,21 +1327,51 @@ Java.perform(() => {
             if (OVERLAY_TYPES.has(params.type.value as number)) {
                 inc("overlay_window_count");
                 seqPush("OVERLAY_WINDOW");
-                console.log(`[OVERLAY] addView type=${params.type.value}`);
+                console.log(`[OVERLAY] WindowManagerImpl.addView type=${params.type.value}`);
             }
             return this.addView(view, params);
         };
     });
 
+    // Android 8+ (API 26): WindowManagerImpl.addView → WindowManagerGlobal.addView'e delegate edilir
+    tryHook("WindowManagerGlobal.addView (OVERLAY_WINDOW API26+)", () => {
+        const WindowManagerGlobal = Java.use("android.view.WindowManagerGlobal");
+        const OVERLAY_TYPES = new Set<number>([2038, 2006, 2003]);
+        WindowManagerGlobal.addView.overload(
+            "android.view.View",
+            "android.view.ViewGroup$LayoutParams",
+            "android.view.Display",
+            "android.view.Window"
+        ).implementation = function (view: any, params: any, display: any, parentWindow: any) {
+            if (OVERLAY_TYPES.has(params.type.value as number)) {
+                inc("overlay_window_count");
+                seqPush("OVERLAY_WINDOW");
+                console.log(`[OVERLAY] WindowManagerGlobal.addView type=${params.type.value}`);
+            }
+            return this.addView(view, params, display, parentWindow);
+        };
+    });
+
     // ── ACCESSIBILITY (flood önleme kuralları ile) ────────────────────────────
 
-    tryHook("AccessibilityManager.isEnabled (ACC_SERVICE_BIND)", () => {
+    // isEnabled() her app tarafından çağrılır (kontrol amaçlı), malware sinyali değil.
+    // onServiceConnected() sadece AccessibilityService subclass'ı aktifleşince çağrılır.
+    tryHook("AccessibilityManager.isEnabled (accessibility_query_count only)", () => {
         const AccessibilityManager = Java.use("android.view.accessibility.AccessibilityManager");
         AccessibilityManager.isEnabled.implementation = function () {
             inc("accessibility_query_count");
-            // ACC_SERVICE_BIND sadece 1 kez (SEQ_TAG_MAX ile sınırlı)
-            seqPush("ACC_SERVICE_BIND");
+            // ACC_SERVICE_BIND push edilmez — yanlış pozitif üretirdi
             return this.isEnabled();
+        };
+    });
+
+    tryHook("AccessibilityService.onServiceConnected (ACC_SERVICE_BIND)", () => {
+        const AccessibilityService = Java.use("android.accessibilityservice.AccessibilityService");
+        AccessibilityService.onServiceConnected.implementation = function () {
+            // Sadece 1 kez loglanır (SEQ_TAG_MAX['ACC_SERVICE_BIND'] = 1)
+            seqPush("ACC_SERVICE_BIND");
+            console.log("[ACC] AccessibilityService.onServiceConnected");
+            return this.onServiceConnected();
         };
     });
 
@@ -1157,6 +1430,33 @@ Java.perform(() => {
         };
     });
 
+    // ── MALWARE-EXCLUSIVE: Key Logging ────────────────────────────────────────
+
+    tryHook("InputMethodService.onKeyDown (KEYLOG)", () => {
+        const InputMethodService = Java.use("android.inputmethodservice.InputMethodService");
+        InputMethodService.onKeyDown.implementation = function (keyCode: number, event: any) {
+            seqPush("KEYLOG");
+            console.log(`[MAL] InputMethodService.onKeyDown keyCode=${keyCode}`);
+            return this.onKeyDown(keyCode, event);
+        };
+    });
+
+    tryHook("InputMethodService.onKeyUp (KEYLOG)", () => {
+        const InputMethodService = Java.use("android.inputmethodservice.InputMethodService");
+        InputMethodService.onKeyUp.implementation = function (keyCode: number, event: any) {
+            seqPush("KEYLOG");
+            return this.onKeyUp(keyCode, event);
+        };
+    });
+
+    tryHook("KeyEvent.getUnicodeChar (KEYLOG)", () => {
+        const KeyEvent = Java.use("android.view.KeyEvent");
+        KeyEvent.getUnicodeChar.overload().implementation = function () {
+            seqPush("KEYLOG");
+            return this.getUnicodeChar();
+        };
+    });
+
     // ── MALWARE-EXCLUSIVE: PKG Install ────────────────────────────────────────
 
     tryHook("PackageInstaller.Session.commit (PKG_INSTALL)", () => {
@@ -1198,6 +1498,19 @@ Java.perform(() => {
         };
     });
 
+    // API 31+ (Android 12): TelephonyManager.listen() deprecated, registerTelephonyCallback() ile değiştirildi
+    tryHook("TelephonyManager.registerTelephonyCallback (PHONE_STATE_LISTEN)", () => {
+        const TelephonyManager = Java.use("android.telephony.TelephonyManager");
+        TelephonyManager.registerTelephonyCallback.overload(
+            "java.util.concurrent.Executor",
+            "android.telephony.TelephonyCallback"
+        ).implementation = function (executor: any, callback: any) {
+            seqPush("PHONE_STATE_LISTEN");
+            console.log("[MAL] TelephonyManager.registerTelephonyCallback");
+            return this.registerTelephonyCallback(executor, callback);
+        };
+    });
+
     // ── MALWARE-EXCLUSIVE: Device Admin ───────────────────────────────────────
 
     tryHook("DevicePolicyManager.addUserRestriction (PERM_ADMIN_REQ)", () => {
@@ -1229,6 +1542,24 @@ Java.perform(() => {
         };
     });
 
+    tryHook("AccountManager.peekAuthToken (ACCOUNT_TOKEN_STEAL)", () => {
+        const AccountManager = Java.use("android.accounts.AccountManager");
+        AccountManager.peekAuthToken.implementation = function (account: any, authTokenType: string) {
+            seqPush("ACCOUNT_TOKEN_STEAL");
+            console.log(`[MAL] AccountManager.peekAuthToken: ${authTokenType}`);
+            return this.peekAuthToken(account, authTokenType);
+        };
+    });
+
+    tryHook("AccountManager.getPassword (ACCOUNT_TOKEN_STEAL)", () => {
+        const AccountManager = Java.use("android.accounts.AccountManager");
+        AccountManager.getPassword.implementation = function (account: any) {
+            seqPush("ACCOUNT_TOKEN_STEAL");
+            console.log("[MAL] AccountManager.getPassword");
+            return this.getPassword(account);
+        };
+    });
+
     // ── MALWARE-EXCLUSIVE: KeyStore Exfil ─────────────────────────────────────
 
     tryHook("KeyStore.load (KEYSTORE_EXFIL)", () => {
@@ -1239,6 +1570,24 @@ Java.perform(() => {
             seqPush("KEYSTORE_EXFIL");
             console.log("[MAL] KeyStore.load");
             return this.load(stream, password);
+        };
+    });
+
+    tryHook("KeyStore.getEntry (KEYSTORE_EXFIL)", () => {
+        const KeyStore = Java.use("java.security.KeyStore");
+        KeyStore.getEntry.implementation = function (alias: string, param: any) {
+            seqPush("KEYSTORE_EXFIL");
+            console.log(`[MAL] KeyStore.getEntry: ${alias}`);
+            return this.getEntry(alias, param);
+        };
+    });
+
+    tryHook("KeyStore.getKey (KEYSTORE_EXFIL)", () => {
+        const KeyStore = Java.use("java.security.KeyStore");
+        KeyStore.getKey.implementation = function (alias: string, password: any) {
+            seqPush("KEYSTORE_EXFIL");
+            console.log(`[MAL] KeyStore.getKey: ${alias}`);
+            return this.getKey(alias, password);
         };
     });
 
@@ -1468,6 +1817,12 @@ Java.perform(() => {
             seqPush("NOTIF_POST_LEGIT");
             return this.notify(id, notification);
         };
+        // String tag overload — NotificationManager.notify(String, int, Notification)
+        NotificationManager.notify.overload("java.lang.String", "int", "android.app.Notification")
+            .implementation = function (tag: string, id: number, notification: any) {
+            seqPush("NOTIF_POST_LEGIT");
+            return this.notify(tag, id, notification);
+        };
     });
 
     // ── BENIGN-EXCLUSIVE: Social Share ───────────────────────────────────────
@@ -1543,6 +1898,46 @@ Java.perform(() => {
 
     console.log("=== KangalGuard v4: 87 Tag Hook Hazır ===");
 });
+
+// ── NATIVE: mmap + mprotect (MEM_EXEC_MMAP) ──────────────────────────────────
+// PROT_EXEC = 0x4 — çalıştırılabilir bellek ayırma = shellcode imzası
+
+try {
+    const mmapPtr = (Module as any).findExportByName("libc.so", "mmap");
+    if (mmapPtr) {
+        Interceptor.attach(mmapPtr, {
+            onEnter(args) {
+                (this as any)._prot = args[2].toInt32();
+            },
+            onLeave(_retval) {
+                if ((this as any)._prot & 0x4) {
+                    seqPush("MEM_EXEC_MMAP");
+                    console.log("[MAL] mmap PROT_EXEC");
+                }
+            }
+        });
+        console.log("[+] mmap PROT_EXEC interceptor");
+    }
+} catch (e) {
+    console.log(`[-] FAIL: mmap interceptor -> ${e}`);
+}
+
+try {
+    const mprotectPtr = (Module as any).findExportByName("libc.so", "mprotect");
+    if (mprotectPtr) {
+        Interceptor.attach(mprotectPtr, {
+            onEnter(args) {
+                if (args[2].toInt32() & 0x4) {
+                    seqPush("MEM_EXEC_MMAP");
+                    console.log("[MAL] mprotect PROT_EXEC");
+                }
+            }
+        });
+        console.log("[+] mprotect PROT_EXEC interceptor");
+    }
+} catch (e) {
+    console.log(`[-] FAIL: mprotect interceptor -> ${e}`);
+}
 
 // ── Otomatik Flush ────────────────────────────────────────────────────────────
 setInterval(flushCounters, 20000);

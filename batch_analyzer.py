@@ -40,7 +40,7 @@ import kangal_collector as engine
 
 # ─── Sabitler ────────────────────────────────────────────────────────────────
 
-DEFAULT_TIMEOUT    = 45     # saniye
+DEFAULT_TIMEOUT    = 120    # saniye (45→120: deferred C2, dropper behavior için)
 DEFAULT_CSV        = "kangal_malware.csv"
 ADB_INSTALL_WAIT   = 15      # kurulum sonrası bekleme (saniye)
 ADB_UNINSTALL_WAIT = 5      # kaldırma sonrası bekleme (saniye)
@@ -457,6 +457,83 @@ def get_pid_by_package(package: str, retries: int = 8) -> int | None:
         time.sleep(1)
     return None
 
+# ─── Simülasyon Yardımcıları ─────────────────────────────────────────────────
+
+def grant_sensitive_permissions(package: str) -> None:
+    """
+    APK kurulumundan hemen sonra çağrılır.
+    BCAST_SMS_INTERCEPT, SURV_CAMERA, SURV_MIC_RECORD gibi tag'lerin
+    tetiklenebilmesi için izin gerektiren APK'lara izinleri önceden ver.
+    """
+    perms = [
+        "android.permission.READ_CALL_LOG",
+        "android.permission.READ_CONTACTS",
+        "android.permission.READ_SMS",
+        "android.permission.RECEIVE_SMS",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.READ_PHONE_STATE",
+    ]
+    for p in perms:
+        try:
+            adb_s(["shell", "pm", "grant", package, p],
+                  capture_output=True, timeout=5)
+        except Exception:
+            pass
+
+    # SCREEN_CAPTURE için appops izni (MediaProjection permission dialog'unu atlar)
+    try:
+        adb_s(["shell", "appops", "set", package, "PROJECT_MEDIA", "allow"],
+              capture_output=True, timeout=5)
+    except Exception:
+        pass
+
+    # NOTIF_LISTEN için (OTP bildirimlerini okuma)
+    try:
+        adb_s(["shell", "appops", "set", package, "RECEIVE_NOTIFICATIONS", "allow"],
+              capture_output=True, timeout=5)
+    except Exception:
+        pass
+
+
+def simulate_events(package: str) -> None:
+    """
+    Analiz penceresi içinde 15. ve 45. saniyelerde çağrılır.
+    BCAST_SMS_INTERCEPT ve BCAST_SCREEN_WAKE gibi simülasyon gerektiren
+    tag'lerin tetiklenmesi için broadcast gönderir.
+    """
+    # SMS broadcast — BCAST_SMS_INTERCEPT için
+    try:
+        adb_s([
+            "shell", "am", "broadcast",
+            "-a", "android.provider.Telephony.SMS_RECEIVED",
+            "--es", "pdus", "0000"
+        ], capture_output=True, timeout=10)
+    except Exception:
+        pass
+
+    # Screen toggle — BCAST_SCREEN_WAKE için (ekran kapat → 2s bekle → aç)
+    try:
+        adb_s(["shell", "input", "keyevent", "KEYCODE_POWER"],
+              capture_output=True, timeout=5)
+        time.sleep(2)
+        adb_s(["shell", "input", "keyevent", "KEYCODE_POWER"],
+              capture_output=True, timeout=5)
+    except Exception:
+        pass
+
+    # Test bildirimi gönder — NOTIF_LISTEN için
+    try:
+        adb_s([
+            "shell", "cmd", "notification", "post",
+            "-S", "bigtext", "--title", "Test", "KangalTest", "test_tag", "Test msg"
+        ], capture_output=True, timeout=5)
+    except Exception:
+        pass
+
+
 # ─── Tek APK Analizi — Temiz Arayüz ─────────────────────────────────────────
 
 def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> dict:
@@ -497,9 +574,13 @@ def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> di
     time.sleep(ADB_INSTALL_WAIT)
     print(f"  [+] Kurulum OK")
 
+    # İzinleri önceden ver — CAMERA, SMS, MIC, NOTIF_LISTEN, SCREEN_CAPTURE için
+    grant_sensitive_permissions(package)
+
     # ── 3. Frida analizi ──────────────────────────────────────────────────────
     session = None
     script  = None
+    _monkey_proc = None
 
     # Engine'deki global state'i bu APK için sıfırla
     engine.latest_counters            = {}
@@ -543,6 +624,20 @@ def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> di
         script.on("message", on_message)
         script.load()
 
+        # Monkey: UI etkileşimi olmadan tetiklenemeyen tag'ler için
+        # (ACC_ACTION, OVERLAY_WINDOW, CLIPBOARD_ACCESS, SOCIAL_SHARE, MEDIA_PLAY vb.)
+        # --throttle 800ms: çok hızlı flood etme; 500 event × 0.8s ≈ 400s > timeout
+        _monkey_proc = adb_s_popen(
+            ["shell", "monkey", "-p", package,
+             "--throttle", "800",
+             "--ignore-crashes", "--ignore-timeouts",
+             "--ignore-security-exceptions",
+             "500"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        print(f"  [+] Monkey başlatıldı (500 event, 800ms throttle)")
+
         print(f"  [!] Analiz başladı — {timeout}s")
 
         # ── Erken RPC — hızlı ölen processlerin verisini yakala ──────────────
@@ -568,9 +663,20 @@ def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> di
         last_dismiss     = start - 20     # ilk dismiss ~5s'de gerçekleşsin
         rpc_freeze_count = 0
         MAX_RPC_FREEZES  = 3            # ardışık freeze → döngüden çık
+        # BCAST_SMS_INTERCEPT + BCAST_SCREEN_WAKE için 15s ve 45s'de simülasyon
+        _simulate_at     = [15, 45]
+        _simulated       = set()
 
         while time.time() - start < timeout:
             time.sleep(1)
+
+            # SMS broadcast + screen toggle simülasyonu (15s ve 45s'de bir kez)
+            elapsed_s = int(time.time() - start)
+            for sim_t in _simulate_at:
+                if elapsed_s >= sim_t and sim_t not in _simulated:
+                    _simulated.add(sim_t)
+                    print(f"  [~] Simülasyon @{sim_t}s — SMS broadcast + screen toggle")
+                    simulate_events(package)
 
             # Periyodik dialog dismiss — ANR/crash diyaloglarını temizler
             if time.time() - last_dismiss >= 15:
@@ -646,6 +752,13 @@ def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> di
         _status = None  # hata yok, normal akış
     finally:
         # ── 4. Temizlik — HER DURUMDA çalışır ────────────────────────────────
+        # Monkey'i durdur (timeout bitmeden önce de çıkılabilir)
+        if _monkey_proc is not None:
+            try:
+                _monkey_proc.terminate()
+            except Exception:
+                pass
+
         # Timeout olmadan unload/detach sonsuz bloklanabilir (malware process'i öldürmez).
         if script:
             _call_with_timeout(script.unload, 5)

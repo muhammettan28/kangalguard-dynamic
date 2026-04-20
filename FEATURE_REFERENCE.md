@@ -940,3 +940,448 @@ x = self.input_norm(tag_e + time_e + delta_e)
 4. **Minimum filtre** — `seq_len < 10` olan kayıtları JSONL'e yazma.
 5. **Bölüm 6'daki 25 yeni CSV kolonunu** ekle.
 6. **Veri toplandıktan sonra** Bölüm 7'deki kalite kontrol kodunu çalıştır, tüm kriterler geçmeden eğitime başlama.
+
+---
+
+## 11. AKTİF DATASET ANALİZİ — SIFIR TAG SORUNLARI (2026-04-17)
+
+**Durum:** 12.334 örnek (6.211 malware + 6.123 benign), 87 tag vocabulary.
+Malware: 35/87 tag hiç tetiklenmedi. Benign: 32/87 tag hiç tetiklenmedi.
+
+```
+Malware'de sıfır (35):
+  SCREEN_CAPTURE, INPUT_INJECT, KEYLOG, PKG_INSTALL, NOTIF_LISTEN,
+  PHONE_CALL_SILENT, PERM_ADMIN_REQ, ACCOUNT_TOKEN_STEAL, MEM_EXEC_MMAP,
+  DEX_LOAD_MEMORY, FILE_ENCRYPT_BULK, ANTI_HOOK_DETECT, ANTI_VM_PROPS,
+  BCAST_SMS_INTERCEPT, BCAST_SCREEN_WAKE, ROOT_HIDE, ROOT_PERSIST_SYSTEM,
+  ADS_SDK_INIT, ANALYTICS_LOG, CRASH_REPORT, IN_APP_PURCHASE, AUTH_OAUTH,
+  AUTH_BIOMETRIC, MAPS_API, CLOUD_STORAGE, SOCIAL_SHARE, NET_WEBSOCKET,
+  SURV_CAMERA, PERSIST_JOB_SCHED, ANTI_EMULATOR, ACC_ACTION, ACC_WINDOW_ACCESS,
+  OVERLAY_WINDOW, PUSH_CHANNEL_REG, REMOTE_CONFIG_FETCH
+
+Benign'de sıfır (32):
+  Yukarıdakilerin büyük kısmı + NET_HTTP_POST, FILE_READ_SENSITIVE
+  Benign'de ek aktif: DEX_LOAD_MEMORY, ANTI_VM_PROPS, PKG_DISABLE
+```
+
+### 11a. Kategori 1 — agent.ts'te HOOK HİÇ YOK (en kritik)
+
+Bu tag'ler için Bölüm 3'te metodlar tanımlanmış ama agent.ts'e hiç eklenmemiş:
+
+```
+Tag                 Eksik Hook
+──────────────────  ──────────────────────────────────────────────────────
+KEYLOG              InputMethodService.onKeyDown() EKLENMEMŞ
+                    View.dispatchKeyEvent() EKLENMEMŞ
+                    KeyEvent.getUnicodeChar() EKLENMEMŞ
+
+MEM_EXEC_MMAP       mmap()+mprotect(PROT_EXEC) — Java hook ile yakalanamaz
+                    Frida Interceptor.attach() ile native libhook gerekli
+                    Java.perform() scope dışında, ayrı native interceptor şart
+
+FILE_ENCRYPT_BULK   Cipher.doFinal() + FileOutputStream birlikte + /sdcard/
+                    Composite pattern — tek API hook yeterli değil
+                    Agent'ta stateful tracker eklenmesi gerekiyor:
+                    cipher.doFinal çağrısını + aynı session'da dış path yazımını
+                    birlikte saydığında seqPush("FILE_ENCRYPT_BULK")
+
+ANTI_EMULATOR       Build.FINGERPRINT/MODEL/MANUFACTURER okuma hooklanmamış
+                    Aşağıdaki eklenecek:
+                      Build.FINGERPRINT alanına erişim
+                      /dev/socket/qemud, /dev/qemu_pipe File.exists() kontrolü
+                      (mevcut ANTI_ROOT_CHECK hooks'una eklenebilir)
+
+BCAST_SMS_INTERCEPT BroadcastReceiver.onReceive() + SMS_RECEIVED intent filtresi
+                    HOOKLANMAMŞ — aşağıya bak (Kategori 3 ile birlikte çözülür)
+
+BCAST_SCREEN_WAKE   BroadcastReceiver.onReceive() + SCREEN_ON intent filtresi
+                    HOOKLANMAMŞ — aşağıya bak (Kategori 3 ile birlikte çözülür)
+
+ROOT_HIDE           RootBeer/RootCloak API hook'ları EKLENMEMŞ
+                    Minimum: com.scottyab.rootbeer.RootBeer.isRooted() hookla
+
+NET_WEBSOCKET       okhttp3.WebSocket, javax.websocket EKLENMEMŞ
+                    Mevcut kod websocket_count sayacını var ama hook yok
+                    Eklenecek: okhttp3.RealWebSocket.$init veya
+                    okhttp3.OkHttpClient.newWebSocket()
+
+SOCIAL_SHARE        EKLENMEMŞ — kod yorumunda "mevcut setAction hook ile
+                    izleniyor" yazıyor ama setAction hook SOCIAL_SHARE
+                    seqPush'u yapmıyor, sadece implicit_intent_count sayıyor.
+                    Düzeltme: Intent.setAction'da action=="android.intent.action.SEND"
+                    kontrolü ekle → seqPush("SOCIAL_SHARE")
+```
+
+### 11b. Kategori 2 — Yanlış/Kırık Hook Implementasyonu
+
+```
+Tag               Sorun
+──────────────────────────────────────────────────────────────────────────
+ANTI_VM_PROPS     android.os.SystemProperties @hide API — Java.use() çoğu
+                  cihazda sınıfı bulamaz ve sessizce fail olur.
+                  Düzeltme: tryHook içinde olduğu için sessiz başarısızlık.
+                  Alternatif: android.os.Build alanlarını hook'la:
+                    Build sınıfı public, Build.FINGERPRINT, Build.MODEL,
+                    Build.MANUFACTURER okumalarını Runtime.exec veya
+                    Field reflection ile yakala.
+
+ANTI_HOOK_DETECT  FileInputStream("/proc/self/maps") ile kısmen çalışıyor
+                  ama File("/data/local/tmp/frida*").exists() yolu eksik —
+                  mevcut File.exists hook'u fridaPaths'i kontrol ediyor,
+                  ANCAK fridaPaths array'i sadece tam path içeriyor:
+                  "/data/local/tmp/frida" ve "/data/local/tmp/re.frida"
+                  Malware "/data/local/tmp/frida-server" gibi uzantılı path
+                  check yapabilir → startsWith yerine contains kullan.
+
+OVERLAY_WINDOW    WindowManagerImpl Android 8'de doğru sınıf DEĞİL.
+                  Android 8.0 (API 26) için gerçek sınıf:
+                  android.view.WindowManagerGlobal (singleton)
+                  Mevcut hook WindowManagerImpl'i hookluyor ama çoğu cihazda
+                  bu sınıf yüklenmiyor — WindowManagerGlobal.addView hookla.
+
+ACC_ACTION        AccessibilityNodeInfo.performAction hook var ama bu metod
+                  genellikle system process tarafından çağrılır, app process'de
+                  değil. Accessibility callback'ler system_server'da çalışır.
+                  App kendi UI üzerinde performAction yaparsa yakalanır ama
+                  accessibility abuse (hedef app üzerinde) yakalanmaz.
+                  Düzeltme: AccessibilityService.dispatchGesture zaten var.
+                  AccessibilityService subclass'ları için onAccessibilityEvent'i
+                  kaldır, ama performAction'ı caller tarafında hook'la değil,
+                  node'u çağıran service'de hook'la.
+
+PERSIST_JOB_SCHED android.app.job.JobScheduler interface — Java.use() interface
+                  üzerinde çalışmaz. Gerçek implementasyon class'ı lazım:
+                  android.app.job.JobSchedulerImpl (hidden) veya
+                  Context.getSystemService ile alınan wrapper.
+                  Düzeltme: JobScheduler yerine JobInfo.$init() hookla
+                  (JobInfo her schedule'da oluşturuluyor).
+```
+
+### 11c. Kategori 3 — Simülasyon Süresi / Ortam Sorunu
+
+Bu tag'ler için hook doğru ama event simulasyon sırasında asla gerçekleşmiyor:
+
+```
+Tag                 Neden tetiklenmiyor / Çözüm
+──────────────────────────────────────────────────────────────────────────
+BCAST_SMS_INTERCEPT adb monkey SMS göndermez. APK SMS broadcast dinliyor
+                    ama broadcast hiç gelmez.
+                    ÇÖZÜM: adb shell am broadcast -a android.provider.Telephony.SMS_RECEIVED
+                    komutunu analysis window içinde çalıştır (15s ve 45s'de).
+                    batch_analyzer.py'a ekle: simulate_sms_broadcast()
+
+BCAST_SCREEN_WAKE   Emülatör ekranı sürekli açık, SCREEN_ON broadcast gelmez.
+                    ÇÖZÜM: adb shell input keyevent KEYCODE_POWER (ekranı kapat)
+                    + 2s bekle + adb shell input keyevent KEYCODE_POWER (aç)
+                    batch_analyzer.py'a ekle: simulate_screen_toggle()
+
+SCREEN_CAPTURE      MediaProjectionManager.createScreenCaptureIntent() için önce
+                    onActivityResult callback gerekiyor (kullanıcı izni).
+                    adb monkey bunu tetikleyemiyor.
+                    ÇÖZÜM: adb shell appops set <pkg> PROJECT_MEDIA allow
+                    komutuyla izni önceden ver, sonra monkey devam etsin.
+
+INPUT_INJECT        AccessibilityService aktif + enabled olması gerekiyor.
+                    ÇÖZÜM: adb shell settings put secure enabled_accessibility_services
+                    <pkg>/<service> ile servisi etkinleştir, snapshot'a gömülü
+                    olması ideal (setup aşamasında).
+
+NOTIF_LISTEN        NotificationListenerService permission + bildirim gelmesi gerekiyor.
+                    ÇÖZÜM: adb shell appops set <pkg> RECEIVE_NOTIFICATIONS allow
+                    + adb shell cmd notification post ile test bildirimi gönder.
+
+PHONE_CALL_SILENT   TelecomManager.placeCall() PHONE izni + CALL_PRIVILEGED gerekiyor,
+                    emülatörde SIM yok = çağrı başarısız = hook tetiklenmiyor.
+                    ÇÖZÜM: Hook'u placeCall() başlangıcında tetikle (sonucu bekleme).
+                    Şu an kod doğru — sorun hook değil, telefon izninin verilmemesi.
+                    adb shell pm grant <pkg> android.permission.CALL_PRIVILEGED ekle.
+
+PKG_INSTALL         PackageInstaller.Session.commit() çalışıyor ama dropper
+                    malware payload APK'yı /sdcard/'a yaz → commit → yükle akışı
+                    75s içinde tamamlanmıyor. Timeout artırımı gerekiyor.
+
+SURV_CAMERA         Genymotion kamera emülasyonu bazı uygulamalarda başarısız.
+                    CameraManager.openCamera async — callback gelmeden hook
+                    tetiklenmez. Hook açılış anında doğru tetikleniyor ama
+                    kamera servisi emülatörde fail ederse uygulama kodu
+                    openCamera'ya hiç ulaşmıyor olabilir.
+                    ÇÖZÜM: Genymotion'da kamera emülasyonunu etkinleştir.
+```
+
+### 11d. Kategori 4 — Third-Party SDK Varlık Sorunu
+
+Bu tag'ler için hook doğru ama APK dataseti bu SDK'ları içermiyor:
+
+```
+Tag               SDK / Açıklama
+──────────────────────────────────────────────────────────────────────────
+ADS_SDK_INIT      MobileAds (AdMob), MoPub — sadece reklam destekli apps
+                  Malware APK'larında bu SDK olmaz → malware'de sıfır normal
+                  Benign APK setinde reklam destekli uygulamalar eksik
+                  ÇÖZÜM: Google Play benign uygulamalarından top-free apps ekle
+
+CRASH_REPORT      Firebase Crashlytics, Sentry — production apps zorunlu
+                  KronoDroid/AndroZoo'dan gelen eski APK'larda yok
+                  ÇÖZÜM: Daha yeni benign APK seti (2022+) kullan
+
+IN_APP_PURCHASE   BillingClient — sadece paid/freemium apps
+                  ÇÖZÜM: Google Play top-grossing apps'den örnek al
+
+AUTH_OAUTH        GoogleSignIn — giriş gerektiren apps
+MAPS_API          Google Maps SDK — coğrafi özellik içeren apps
+CLOUD_STORAGE     Firebase Storage — medya içeren apps
+PUSH_CHANNEL_REG  FirebaseMessaging — push notification kullanan apps
+REMOTE_CONFIG_FETCH FirebaseRemoteConfig — A/B test yapan apps
+AUTH_BIOMETRIC    Biometric API — banking/fintech apps + donanım gereksinimi
+
+ÇÖZÜM (genel): Benign APK setini kategori bazında seç:
+  - Banking/fintech: AUTH_BIOMETRIC, AUTH_OAUTH, IN_APP_PURCHASE
+  - Navigation/travel: MAPS_API, SURV_LOCATION_GPS
+  - Social/media: ADS_SDK_INIT, ANALYTICS_LOG, PUSH_CHANNEL_REG
+  - Productivity: CRASH_REPORT, CLOUD_STORAGE
+```
+
+### 11e. Öncelik Sırası — Garantili vs APK'ya Bağımlı
+
+**⚠️ Önemli Ayrım:**
+- **GARANTİLİ**: Hook düzeltmesi yapılır yapılmaz mevcut APK setiyle tetiklenir.
+  APK içeriğinden bağımsız — davranış zaten var, sadece hook yoktu.
+- **KOŞULLU**: Hook doğru olsa bile APK'nın o davranışı sergilemesi gerekiyor.
+  Bu grup için APK seti değişimi şart, hook tek başına yetmez.
+
+```
+Öncelik  Tag                          Tür          Açıklama
+───────  ───────────────────────────  ───────────  ──────────────────────────────
+1        SOCIAL_SHARE (11a)           GARANTİLİ   6123 benign app'in büyük çoğunluğu
+                                                   Intent.ACTION_SEND kullanır.
+                                                   Tek if satırı — kesin tetiklenir.
+
+2        OVERLAY_WINDOW (11b)         GARANTİLİ   WindowManagerGlobal fix sonrası
+                                                   overlay kullanan her app yakalanır.
+                                                   Yanlış class hook'uydu, fix kafi.
+
+3        PERSIST_JOB_SCHED (11b)      GARANTİLİ   JobInfo.$init() public class,
+                                                   interface hook değil. Fix sonrası
+                                                   JobScheduler kullanan tüm applar
+                                                   yakalanır.
+
+4        NET_WEBSOCKET (11a)          GARANTİLİ   okhttp3.OkHttpClient.newWebSocket()
+                                                   hook eklenir eklenmez aktif. OkHttp
+                                                   çok yaygın kütüphane.
+
+5        ANTI_EMULATOR (11a)          GARANTİLİ   Build sınıfı public, Java.use()
+                                                   kesin çalışır. Emülatörde
+                                                   Build.FINGERPRINT="generic/..." —
+                                                   malware bu kontrolü yapıyorsa
+                                                   %100 yakalanır.
+
+6        BCAST_SMS_INTERCEPT (11c)    KOŞULLU     Simülasyon eklenir + APK'da
+         BCAST_SCREEN_WAKE (11c)                  BroadcastReceiver varsa tetiklenir.
+                                                   Simülasyon olmadan hiç tetiklenmez.
+
+7        ANTI_VM_PROPS (11b)          KOŞULLU     Build alternative hook çalışır ama
+                                                   malware ≥3 farklı Build field okuyorsa.
+                                                   Dataset'te bu davranışı gösteren
+                                                   APK varsa tetiklenir.
+
+8        ANTI_HOOK_DETECT (11b)       KOŞULLU     frida path contains() fix sonrası
+                                                   Frida-aware malware yakalar ama
+                                                   dataset'te bu tür APK olması lazım.
+
+9        FILE_ENCRYPT_BULK (11a)      KOŞULLU     Ransomware APK olmadan tetiklenmez.
+         SCREEN_CAPTURE                            Banking trojan APK olmadan tetiklenmez.
+         INPUT_INJECT                              Accessibility abuse APK lazım.
+         KEYLOG                                    IME malware APK lazım.
+         MEM_EXEC_MMAP                             Native shellcode APK lazım.
+                                                   → APK seti değişimi şart, hook fix
+                                                   tek başına yetmez.
+
+─        ADS_SDK_INIT, ANALYTICS_LOG, KOŞULLU     Benign APK seti 2015-2018 dönemi
+         IN_APP_PURCHASE, AUTH_OAUTH,              (KronoDroid), AdMob/Firebase bu
+         MAPS_API, CLOUD_STORAGE,                  dönemde yaygınlaşmamış.
+         PUSH_CHANNEL_REG                          → Yeni benign APK seti olmadan
+                                                   hook fix fayda sağlamaz.
+```
+
+**Mevcut APK setiyle (12.334 örnek) tüm düzeltmeler sonrası gerçekçi beklenti:**
+
+```
+Güven Seviyesi       Tag Sayısı  Açıklama
+───────────────────  ──────────  ──────────────────────────────────────────
+Kesin                5           Hook fix = aktivasyon, APK içeriğinden bağımsız
+                                 (1-5 arası düzeltmeler)
+
+Yüksek ihtimal       5-8         Simülasyon + fix ile, 6K+ APK'da bu davranış
+(%70-85)                         büyük ihtimalle mevcuttur
+                                 BCAST_SMS_INTERCEPT, BCAST_SCREEN_WAKE,
+                                 ANTI_VM_PROPS, ANTI_HOOK_DETECT,
+                                 ACC_ACTION, PERM_ADMIN_REQ
+
+Orta ihtimal         2-4         Hook var/düzeltilir ama tetiklenme koşulları
+(%40-60)                         çok spesifik — APK'da olabilir de olmayabilir de
+                                 NOTIF_LISTEN, PKG_INSTALL,
+                                 ACCOUNT_TOKEN_STEAL, DEX_LOAD_MEMORY
+
+APK seti olmadan     12+         Bu davranışı sergileyen APK yoksa hook fayda
+imkânsız                         sağlamaz: SCREEN_CAPTURE, INPUT_INJECT,
+                                 KEYLOG, FILE_ENCRYPT_BULK, MEM_EXEC_MMAP,
+                                 ADS_SDK_INIT, IN_APP_PURCHASE, MAPS_API,
+                                 AUTH_OAUTH, CLOUD_STORAGE, PUSH_CHANNEL_REG...
+───────────────────  ──────────  ──────────────────────────────────────────
+TOPLAM (mevcut APK)  +10-13      57 aktif → ~67-70 aktif tag beklentisi
+TOPLAM (+yeni APK)   +20-25      57 aktif → ~77-82 aktif tag beklentisi
+```**
+
+### 11f. batch_analyzer.py'a Eklenecek Simülasyon Komutları
+
+```python
+def simulate_events(device_serial: str, pkg: str):
+    """Analysis window içinde 15s ve 45s'de çalıştır."""
+    # SMS broadcast — BCAST_SMS_INTERCEPT için
+    subprocess.run([
+        "adb", "-s", device_serial, "shell",
+        "am", "broadcast", "-a", "android.provider.Telephony.SMS_RECEIVED",
+        "--es", "pdus", "0000"
+    ])
+    # Screen toggle — BCAST_SCREEN_WAKE için
+    subprocess.run(["adb", "-s", device_serial, "shell",
+                    "input", "keyevent", "KEYCODE_POWER"])
+    time.sleep(2)
+    subprocess.run(["adb", "-s", device_serial, "shell",
+                    "input", "keyevent", "KEYCODE_POWER"])
+
+def grant_sensitive_permissions(device_serial: str, pkg: str):
+    """APK kurulumundan hemen sonra çalıştır."""
+    perms = [
+        "android.permission.READ_CALL_LOG",
+        "android.permission.READ_CONTACTS",
+        "android.permission.READ_SMS",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+    ]
+    for p in perms:
+        subprocess.run(["adb", "-s", device_serial, "shell",
+                        "pm", "grant", pkg, p],
+                       capture_output=True)
+```
+
+---
+
+## 12. SİMÜLASYON SÜRESİ VE ETKİLEŞİM SORUNU
+
+### 12a. Mevcut Durum (Sorunlu)
+
+```
+DEFAULT_TIMEOUT = 45s   ← batch_analyzer.py satır 43
+Monkey kullanımı: sadece 1 event — uygulamayı açmak için
+Analiz boyunca: SIFIR kullanıcı etkileşimi
+```
+
+**Sonuç:** Sequence sadece startup davranışlarını yakalar. Button press,
+navigation, form fill, scroll gerektiren her behavior hiç tetiklenmiyor.
+`ACC_ACTION`, `ACC_WINDOW_ACCESS`, `OVERLAY_WINDOW`, `CLIPBOARD_ACCESS`,
+`NOTIF_POST_LEGIT`, `SOCIAL_SHARE`, `IN_APP_PURCHASE` gibi tag'ler
+kullanıcı etkileşimi olmadan görünmez.
+
+### 12b. Düzeltme — Sürekli Monkey Enjeksiyonu
+
+`analyze_apk()` içinde Frida attach + script.load() sonrasına ekle:
+
+```python
+import subprocess
+
+# Frida yüklendikten sonra arka planda monkey başlat
+# --throttle 800: 800ms arayla event → çok hızlı flood etme
+# --ignore-crashes --ignore-timeouts: monkey ölmesin
+# 500 event × 0.8s = ~400s — timeout ne olursa olsun yeterli
+_monkey_proc = subprocess.Popen(
+    ["adb", "-s", DEVICE_SERIAL, "shell",
+     "monkey", "-p", package,
+     "--throttle", "800",
+     "--ignore-crashes", "--ignore-timeouts",
+     "--ignore-security-exceptions",
+     "500"],
+    stdout=subprocess.DEVNULL,
+    stderr=subprocess.DEVNULL,
+)
+
+# analyze_apk finally bloğuna ekle — monkey'i temizle:
+try:
+    _monkey_proc.terminate()
+except Exception:
+    pass
+```
+
+**Monkey event tipi neden önemli:** Default monkey rastgele tap/swipe/key
+event gönderir. Bu:
+- Ekranda görünen butonları tıklar → uygulama ekranları arasında geçiş
+- Form alanlarını tetikler → `CLIPBOARD_ACCESS`, `INPUT_INJECT` daha görünür
+- Scroll → `ACC_ACTION`, `ACC_WINDOW_ACCESS` tetiklenme ihtimali artar
+- Back/Home tuşları → uygulama lifecycle event'leri → `PERSIST_*` tag'leri
+
+### 12c. Timeout Artışı
+
+```
+Mevcut:   DEFAULT_TIMEOUT = 45s
+Önerilen: DEFAULT_TIMEOUT = 120s
+```
+
+**Gerekçe:**
+- 45s: Sadece startup davranışları (anti-analysis, initial network, crypto init)
+- 90s: Borderline — bazı C2 check-in'ler kaçıyor
+- 120s: Gecikmeli C2 iletişimi, dropper payload download, deferred behavior
+- 150s+: Getiri azalıyor, toplam collection süresi gereksiz uzuyor
+
+**Per-APK maliyet:**
+
+```
+Timeout   Toplam süre/APK    12K APK koleksiyonu
+────────  ─────────────────  ───────────────────
+45s       ~2.5-3 dk          ~500-600 saat
+120s      ~4-4.5 dk          ~800-900 saat
+```
+
+Yeni veri toplamak için (ek ~2K APK) fark: ~25-30 saat — kabul edilebilir.
+
+### 12d. Etkileşim Olmadan Tetiklenemeyen Tag'ler (Monkey ile İyileşecekler)
+
+```
+Tag                 Neden etkileşim şart
+──────────────────  ──────────────────────────────────────────────────
+ACC_ACTION          AccessibilityService.performAction — uygulama başka
+                    bir uygulamanın UI'ına erişmek için kullanıcı hareketi
+                    bekliyor olabilir
+
+ACC_WINDOW_ACCESS   getWindows/getRootInActiveWindow — window stack'in
+                    değişmesi için activity geçişi gerekiyor
+
+OVERLAY_WINDOW      Overlay genellikle başka bir uygulama ön plana geçince
+                    açılıyor — monkey home/back ile activity geçişi yapar
+
+CLIPBOARD_ACCESS    Kullanıcı bir şeyi kopyalayana kadar clipboard boş,
+                    malware clipboard'ı izliyor ama tetikleyecek event yok
+                    (monkey text event'leri clipboard doldurabilir)
+
+SOCIAL_SHARE        Share butonuna tıklamak gerekiyor — monkey rastgele
+                    tıklarsa bu butona da basabilir
+
+NOTIF_POST_LEGIT    Bazı uygulamalar bildirim için kullanıcı aksiyonu bekliyor
+
+IN_APP_PURCHASE     Satın alma butonuna tıklamak gerekiyor
+
+MEDIA_PLAY          Play butonuna tıklamak gerekiyor
+
+AUTH_BIOMETRIC      Login ekranına gitmek gerekiyor
+```
+
+### 12e. Özet — Yapılacak Değişiklikler
+
+```
+Dosya               Değişiklik
+──────────────────  ──────────────────────────────────────────────────
+batch_analyzer.py   DEFAULT_TIMEOUT: 45 → 120
+batch_analyzer.py   analyze_apk() içine monkey Popen + finally cleanup
+batch_analyzer.py   simulate_events() ekle (SMS broadcast + screen toggle)
+batch_analyzer.py   grant_sensitive_permissions() ekle (install sonrası)
+agent.ts            Bölüm 11a/11b eksik hookları ekle
+```
