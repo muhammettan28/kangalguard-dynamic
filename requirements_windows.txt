@@ -1,0 +1,20 @@
+# KangalGuard — Windows conda env için gereksinimler
+# Python 3.11 ile oluşturuldu (conda create -n frida python=3.11)
+#
+# Kurulum:
+#   conda create -n frida python=3.11
+#   conda activate frida
+#   pip install -r requirements_windows.txt
+#
+# Not: androguard opsiyonel (aapt yoksa package name fallback için).
+#      aapt kuruluysa gerekmez.
+
+frida==17.8.2
+frida-tools==14.6.1
+filelock==3.25.2
+colorama==0.4.6
+prompt_toolkit==3.0.52
+Pygments==2.19.2
+wcwidth==0.6.0
+websockets==13.1
+packaging==25.0
