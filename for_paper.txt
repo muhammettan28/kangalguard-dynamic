@@ -80,3 +80,56 @@ Eski dataset kullanmanın tehlikesi gösterilmiş	Prior work limitation
 Modern malware davranış evrimi nicel belgelenmiş	Empirical finding
 "Neden 87 tag?" sorusu yanıtlanmış	Design motivation
 Q1 seviyesine taşıyan detay bu tür bulgular. Kesinlikle ekle.
+
+
+
+
+Yani benign extraction henüz bitmemiş olmasına rağmen kapsama fena değil: 56/87, malware ise 59/87. Ama modern/permission-heavy davranışlar benign tarafta doğal olarak daha az tetiklenmiş görünüyor.
+
+
+
+
+
+3:19 PM
+güzel bu kodun eski versiyonunda çok fazla hook ve tetiklenmeyen tag varken bile transformer + lstm de yüzde 90 f1 score almıştım, şimdi yüzde 95 i geçer diye umuyorum
+3:20 PM
+
+Bence umut makul. Şu anki tablo eskisine göre daha “öğrenilebilir” görünüyor: benign 56/87, malware 59/87 aktif tag kapsıyor ve malware tarafında SURV_DEVICE_ID, FILE_WRITE_INTERNAL, FILE_DELETE, NET_*, CRYPTO_*, PERSIST_* gibi ayrıştırıcı sinyaller bayağı net açılmış durumda.
+
+Ama %95+ için iki şeye dikkat ederdim:
+
+Modelin sadece sequence uzunluğunu öğrenmemesi
+Malware ortalama seq_len çok daha yüksek. Transformer/LSTM bunu kullanıp yüksek skor verebilir ama genelleme kırılgan olur. seq_len normalize, truncate/pad stratejisi ve ablation önemli.
+
+Class imbalance
+Malware yaklaşık 6.35x fazla. Weighted loss, balanced sampler veya eşitlenmiş validation split kullanmazsan F1 yanıltıcı olabilir. Özellikle benign recall’a ayrıca bakmak lazım.
+
+Benim beklentim: düzgün stratified split, class weight ve leakage yoksa macro-F1 0.90+ rahat, weighted-F1 0.95+ mümkün. Ama makale için en ikna edici sonuç bence sadece tek skor değil; old hooks vs 87-tag seq, seq-only vs count+temporal+seq, ve with/without length features ablation tablosu olur.
+
+
+
+
+
+3:20 PM
+peki bu seq len normalizasyonu ve ablation tablosu da verirsem q1 bir makale şansım olabilir mi ?
+3:21 PM
+
+
+Evet, şansın olabilir. Ama Q1 için “%95 F1 aldım” tek başına yetmez; onu neden güvenilir, neden yeni, neden genellenebilir hale getirdiğini göstermen gerekiyor. Seq length normalizasyonu ve ablation tablosu bu yüzden çok değerli.
+
+Bence Q1 iddiasını güçlendirecek çekirdek paket şu olur:
+
+Leakage kontrolü: package/family/time bazlı split; aynı app varyantlarının train-test’e sızmadığını göster.
+Imbalance kontrolü: macro-F1, per-class precision/recall, balanced accuracy, MCC ver.
+Seq length bias kontrolü: raw seq, normalized/truncated seq, length-only baseline karşılaştır.
+Ablation:
+counts only, temporal only, sequence only, counts + temporal, sequence + temporal, all features.
+Model karşılaştırması: RF/XGBoost/SVM gibi klasik modeller, LSTM, Transformer, Transformer+LSTM.
+Dataset age/evolution analizi: 87 tag vocabulary ile eski KronoDroid malware’de 59/87, benign’de 56/87 gibi “coverage” argümanı.
+Explainability: top tags, attention/SHAP/permutation importance; özellikle SURV_DEVICE_ID, DEX_LOAD_FILE, PERSIST_*, CRYPTO_*, NET_*.
+External validation: mümkünse farklı dataset veya ayrı zaman dilimiyle test.
+Q1 için en güçlü hikaye şu olur:
+
+“Yüksek skor sadece daha fazla hook’tan gelmiyor; sequence davranışı normalize edildiğinde, length bias kaldırıldığında ve leakage engellendiğinde bile model güçlü kalıyor. Ayrıca 87-tag vocabulary Android malware evrimini ölçülebilir hale getiriyor.”
+
+Yani evet: seq len normalizasyonu + ablation tablosu + sağlam split protokolü ile çalışma “iyi sonuç aldım” seviyesinden “metodolojik olarak savunulabilir katkı” seviyesine çıkar. Q1 ihtimali de tam burada doğuyor.
