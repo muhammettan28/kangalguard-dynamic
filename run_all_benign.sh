@@ -9,14 +9,13 @@
 GMTOOL="/home/tan/genymotion/gmtool"
 
 LABEL="${1:-benign}"
-DIR="${2:-./data/benign}"
-CSV="${3:-kangal_benign.csv}"
+DIR="${2:-/run/media/tan/12A2E4ECA2E4D56F/data/benign}"
+CSV="${3:-androzoo_benign.csv}"
 RESTART_INTERVAL=3600   # saniye (1 saat)
 
 declare -A EMULATORS=(
-    ["127.0.0.1:6555"]="40cbb896-7c86-43a7-ac91-74b870645f8c"
-    ["127.0.0.1:6562"]="47866601-0852-4af6-8050-509dd72c244e"
-    ["127.0.0.1:6569"]="acfa9d61-aed5-4d93-b871-cfab128bf9c3"
+    ["127.0.0.1:6555"]="3445ef57-6e05-4f87-a87c-99d9601eccff"
+    ["127.0.0.1:6562"]="2ab66396-b404-497e-af03-016990d03f30"
 )
 
 mkdir -p logs

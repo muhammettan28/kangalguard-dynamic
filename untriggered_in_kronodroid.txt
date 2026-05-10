@@ -1,0 +1,95 @@
+Untriggered tags in current KronoDroid/KANGAL seq-log dataset
+==============================================================
+
+Source files checked:
+- kangal_malware_seqlogs.jsonl
+- krono_benign_seqlogs.jsonl
+
+Vocabulary size: 87 tags + PAD
+Active tags in data: 62 / 87
+Untriggered tags: 25 / 87
+
+Full list
+---------
+SCREEN_CAPTURE
+INPUT_INJECT
+PKG_INSTALL
+NOTIF_LISTEN
+ACCOUNT_TOKEN_STEAL
+MEM_EXEC_MMAP
+ANTI_HOOK_DETECT
+BCAST_SMS_INTERCEPT
+BCAST_SCREEN_WAKE
+ROOT_HIDE
+ROOT_PERSIST_SYSTEM
+ADS_SDK_INIT
+CRASH_REPORT
+IN_APP_PURCHASE
+AUTH_OAUTH
+AUTH_BIOMETRIC
+MAPS_API
+CLOUD_STORAGE
+NET_WEBSOCKET
+SURV_CAMERA
+ACC_SERVICE_BIND
+ACC_ACTION
+ACC_WINDOW_ACCESS
+OVERLAY_WINDOW
+PUSH_CHANNEL_REG
+
+Grouped
+-------
+malware_exclusive (11):
+SCREEN_CAPTURE
+INPUT_INJECT
+PKG_INSTALL
+NOTIF_LISTEN
+ACCOUNT_TOKEN_STEAL
+MEM_EXEC_MMAP
+ANTI_HOOK_DETECT
+BCAST_SMS_INTERCEPT
+BCAST_SCREEN_WAKE
+ROOT_HIDE
+ROOT_PERSIST_SYSTEM
+
+benign_exclusive (7):
+ADS_SDK_INIT
+CRASH_REPORT
+IN_APP_PURCHASE
+AUTH_OAUTH
+AUTH_BIOMETRIC
+MAPS_API
+CLOUD_STORAGE
+
+network (1):
+NET_WEBSOCKET
+
+surveillance (1):
+SURV_CAMERA
+
+accessibility (3):
+ACC_SERVICE_BIND
+ACC_ACTION
+ACC_WINDOW_ACCESS
+
+ui_abuse (1):
+OVERLAY_WINDOW
+
+c2_channel (1):
+PUSH_CHANNEL_REG
+
+Notes for CICMalDroid experiments
+---------------------------------
+Likely useful malware families/classes to test against these missing tags:
+- Banking trojans: ACC_SERVICE_BIND, ACC_ACTION, ACC_WINDOW_ACCESS, OVERLAY_WINDOW,
+  NOTIF_LISTEN, ACCOUNT_TOKEN_STEAL, INPUT_INJECT
+- SMS malware: BCAST_SMS_INTERCEPT, NOTIF_LISTEN, PHONE_STATE_LISTEN-like flows
+- Ransomware: FILE_ENCRYPT_BULK, SCREEN_CAPTURE, OVERLAY_WINDOW, PKG_DISABLE-like flows
+- Adware/scareware: ADS_SDK_INIT, OVERLAY_WINDOW, PUSH_CHANNEL_REG, NET_WEBSOCKET
+
+Keep benign counter-examples too:
+- Accessibility tools
+- Screen recorder/camera apps
+- Notification utilities
+- OAuth/biometric/login-heavy apps
+- Cloud/maps/in-app-purchase apps
