@@ -37,7 +37,8 @@
       "Bash(npx tsc:*)",
       "Bash(./node_modules/.bin/tsc --noEmit)",
       "Bash(node_modules/.bin/frida-compile agent.ts -o /tmp/agent_test.js -c)",
-      "Bash(ls /usr/bin/python3*)"
+      "Bash(ls /usr/bin/python3*)",
+      "Bash(/home/tan/anaconda3/envs/kangal/bin/python -)"
     ]
   }
 }

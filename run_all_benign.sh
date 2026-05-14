@@ -14,8 +14,9 @@ CSV="${3:-androzoo_benign.csv}"
 RESTART_INTERVAL=3600   # saniye (1 saat)
 
 declare -A EMULATORS=(
-    ["127.0.0.1:6555"]="3445ef57-6e05-4f87-a87c-99d9601eccff"
-    ["127.0.0.1:6562"]="2ab66396-b404-497e-af03-016990d03f30"
+    ["127.0.0.1:6555"]="429f18b1-1462-48df-bbfa-e138551e9e91"
+    ["127.0.0.1:6562"]="a9ab3551-102b-4434-a600-3662b76860f8"
+    ["127.0.0.1:6569"]="af248d3b-a227-45fd-956b-267df6107e53"
 )
 
 mkdir -p logs
