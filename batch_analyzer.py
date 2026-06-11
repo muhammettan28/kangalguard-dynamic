@@ -21,6 +21,7 @@ import csv
 import json
 import traceback
 import threading
+import signal
 from pathlib import Path
 from datetime import datetime
 
@@ -52,6 +53,7 @@ FRIDA_SERVER_RESTART_WAIT = 6   # restart sonrası bekleme (saniye)
 SNAPSHOT_NAME      = "kangal_clean"   # adb emu avd snapshot save kangal_clean ile oluşturulur
 SNAPSHOT_TIMEOUT   = 90               # snapshot load için max bekleme (saniye) — 30s çok kısa
 SNAPSHOT_SETTLE    = 3                # snapshot yüklenince stabilize bekleme (saniye)
+SNAPSHOT_ENABLED   = os.environ.get("KANGAL_USE_SNAPSHOT", "0") == "1"
 
 FAILED_LOG_FILE    = os.path.join("logs", "failed_apks.csv")  # skip/error APK logu
 
@@ -59,13 +61,24 @@ DEVICE_SERIAL      = ""   # adb device serial — --device argümanıyla set edi
 
 LOCK_FILE          = os.path.join("logs", "kangal.lock")       # cross-process advisory lock
 IN_PROGRESS_FILE   = os.path.join("logs", "in_progress.json")  # hangi APK'lar işleniyor
+CLAIM_STALE_AFTER  = 30 * 60  # SIGTERM/crash sonrası kalan claim'leri 30 dk sonra temizle
 
 _csv_lock = FileLock(LOCK_FILE, timeout=120)   # 2 dk bekle, sonra hata
 
 # TransportError/ProcessNotRespondingError: bunlar Frida server çöktüğünde
 # ya da app Frida'yı öldürdüğünde çıkar. İsimle yakalıyoruz çünkü
 # frida modülünde doğrudan erişilebilir sınıf olmayabilir.
-_TRANSPORT_ERROR_NAMES = {"TransportError", "ProcessNotRespondingError", "InvalidArgumentError"}
+_TRANSPORT_ERROR_NAMES = {
+    "TransportError",
+    "ProcessNotRespondingError",
+    "InvalidArgumentError",
+    "ServerNotRunningError",
+}
+
+
+def _request_shutdown(signum, _frame) -> None:
+    """SIGTERM'i Python exception'a çevir; aktif APK claim'i finally ile temizlensin."""
+    raise SystemExit(128 + signum)
 
 # ─── Compiled agent bundle (bir kez derlenir, tüm APK'larda kullanılır) ─────
 
@@ -136,7 +149,7 @@ def wait_for_package_manager(timeout_s: int = 30) -> bool:
     return False
 
 
-def adb_install(apk_path: str) -> bool:
+def adb_install(apk_path: str, package_name: str | None = None) -> bool:
     """APK'yı cihaza kur. Başarılıysa True döner."""
     try:
         result = adb_s(
@@ -157,17 +170,58 @@ def adb_install(apk_path: str) -> bool:
                 if "Success" in result2.stdout or "success" in result2.stdout.lower():
                     return True
                 err = result2.stdout.strip() + result2.stderr.strip()
+        if package_name and _install_failure_may_be_stale_package(err):
+            print(f"  [!] Eski kurulum kalıntısı olabilir — {package_name} temizlenip retry yapılacak")
+            adb_uninstall(package_name, abort_on_failure=False)
+            result3 = adb_s(
+                ["install", "-r", "-t", apk_path],
+                capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=60
+            )
+            if "Success" in result3.stdout or "success" in result3.stdout.lower():
+                return True
+            err = result3.stdout.strip() + result3.stderr.strip()
+        if _looks_like_dead_device(err):
+            print(f"  [!] adb install cihaz hatası: {err}")
+            _abort_dead_device()
         print(f"  [-] adb install başarısız: {err}")
         return False
     except Exception as e:
+        if _looks_like_dead_device(str(e)):
+            print(f"  [!] adb install cihaz hatası: {e}")
+            _abort_dead_device()
         print(f"  [-] adb install hata: {e}")
         return False
 
 
-def adb_uninstall(package_name: str) -> bool:
+def _install_failure_may_be_stale_package(text: str) -> bool:
+    text = text.lower()
+    return (
+        "install_failed_update_incompatible" in text
+        or "install_failed_already_exists" in text
+        or "install_failed_version_downgrade" in text
+        or "existing package" in text
+        or "signatures do not match" in text
+        or "has no signatures that match" in text
+    )
+
+
+def _package_visible_to_user(package_name: str) -> bool:
+    try:
+        result = adb_s(
+            ["shell", "cmd", "package", "list", "packages", "--user", "0", package_name],
+            capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=10
+        )
+        return f"package:{package_name}" in result.stdout.splitlines()
+    except Exception:
+        return False
+
+
+def adb_uninstall(package_name: str, abort_on_failure: bool = True) -> bool:
     """APK'yı cihazdan kaldır. Device admin yetkisi varsa önce revoke eder."""
     # Bazı malwareler device admin alır → normal uninstall'ı reddeder.
-    # Snapshot restore zaten temizler ama devam eden run için revoke deneriz.
+    # Snapshot açıksa restore de temizler; Genymotion modunda uninstall kritik.
+    adb_force_stop(package_name)
+
     try:
         adb_s(
             ["shell", "dpm", "remove-active-admin", f"{package_name}/.AdminReceiver"],
@@ -176,21 +230,50 @@ def adb_uninstall(package_name: str) -> bool:
     except Exception:
         pass
 
+    commands = [
+        ["uninstall", package_name],
+        ["shell", "pm", "uninstall", "--user", "0", package_name],
+        ["shell", "cmd", "package", "uninstall", "--user", "0", package_name],
+    ]
+
+    errors = []
+    for cmd in commands:
+        try:
+            result = adb_s(
+                cmd,
+                capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=60
+            )
+            out = (result.stdout.strip() + result.stderr.strip()).strip()
+            if "Success" in out or (result.returncode == 0 and not _package_visible_to_user(package_name)):
+                return True
+            if "not installed" in out or "Unknown package" in out:
+                return True
+            if _looks_like_dead_device(out):
+                print(f"  [!] adb uninstall cihaz hatası: {out}")
+                _abort_dead_device()
+            errors.append(" ".join(cmd) + f" -> {out or 'no output'}")
+        except Exception as e:
+            if _looks_like_dead_device(str(e)):
+                print(f"  [!] adb uninstall cihaz hatası: {e}")
+                _abort_dead_device()
+            errors.append(" ".join(cmd) + f" -> {e}")
+
     try:
-        result = adb_s(
-            ["uninstall", package_name],
-            capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=60
-        )
-        out = result.stdout.strip()
-        if "Success" in out:
-            return True
-        if "not installed" in out or "DELETE_FAILED_INTERNAL_ERROR" in out:
-            return True
-        print(f"  [!] Uninstall başarısız ({out}) — snapshot restore temizleyecek")
-        return False
-    except Exception as e:
-        print(f"  [-] Uninstall hata: {e}")
-        return False
+        adb_s(["shell", "pm", "clear", package_name], capture_output=True, timeout=20)
+    except Exception:
+        pass
+
+    if not _package_visible_to_user(package_name):
+        return True
+
+    joined = " | ".join(errors)
+    if SNAPSHOT_ENABLED:
+        print(f"  [!] Uninstall başarısız ({joined}) — snapshot restore temizleyecek")
+    else:
+        print(f"  [!] Uninstall başarısız ({joined}) — Genymotion modu, emülatör restart gerekecek")
+        if abort_on_failure:
+            _abort_dead_device()
+    return False
 
 
 def adb_force_stop(package_name: str) -> None:
@@ -342,6 +425,14 @@ def restore_clean_snapshot() -> bool:
     Raises:
         SystemExit — device offline kalıyorsa batch'i durdur, emülatörü manuel kontrol et
     """
+    if not SNAPSHOT_ENABLED:
+        print("  [*] Snapshot kapalı (Genymotion modu) — Frida runtime temizleniyor...")
+        restart_frida_server()
+        if not wait_for_package_manager(30):
+            print(f"  [!] PackageManager 30s içinde hazır olmadı — emülatör durumu şüpheli")
+        print(f"  [+] Runtime state hazır")
+        return False
+
     try:
         print(f"  [*] Snapshot yükleniyor ({SNAPSHOT_NAME})...")
         r = adb_s(
@@ -349,10 +440,20 @@ def restore_clean_snapshot() -> bool:
             capture_output=True, text=True, encoding='utf-8', errors='replace',
             timeout=SNAPSHOT_TIMEOUT
         )
+        snapshot_ok = True
+        if r.returncode != 0:
+            err = (r.stdout.strip() + r.stderr.strip()).strip()
+            state = _get_device_state()
+            if state != "online":
+                print(f"  [!] Snapshot load başarısız ({err or 'adb error'}) — emülatör state: {state}")
+                _abort_dead_device()
+            print(f"  [!] Snapshot load başarısız ({err or 'adb error'}) — runtime temizlenerek devam")
+            snapshot_ok = False
+
         # AVD emülatörü başarıda "OK" döner, başarısızlıkta "KO"
-        if "KO" in r.stdout:
-            print(f"  [!] Snapshot bulunamadı ({r.stdout.strip()}) — atlanıyor")
-            return False
+        elif "KO" in r.stdout:
+            print(f"  [!] Snapshot bulunamadı ({r.stdout.strip()}) — runtime temizlenerek devam")
+            snapshot_ok = False
 
         # Emülatörün yeniden bağlanmasını bekle
         adb_s(["wait-for-device"], capture_output=True, timeout=SNAPSHOT_TIMEOUT)
@@ -368,20 +469,19 @@ def restore_clean_snapshot() -> bool:
         if not wait_for_package_manager(30):
             print(f"  [!] PackageManager 30s içinde hazır olmadı — emülatör durumu şüpheli")
 
-        print(f"  [+] Temiz state hazır")
-        return True
+        if snapshot_ok:
+            print(f"  [+] Temiz state hazır")
+        else:
+            print(f"  [+] Runtime state hazır (snapshot uygulanmadı)")
+        return snapshot_ok
 
     except subprocess.TimeoutExpired:
         # Snapshot veya wait-for-device timeout → emülatör offline/crash olmuş olabilir
         print(f"  [!] Snapshot timeout — emülatör durumu kontrol ediliyor...")
         state = _get_device_state()
-        if state == "offline":
-            print(f"\n{'!'*60}")
-            print(f"  EMÜLATÖR OFFLINE — batch durduruluyor!")
-            print(f"  Emülatörü manuel olarak yeniden başlat,")
-            print(f"  ardından --setup yapıp tekrar çalıştır.")
-            print(f"{'!'*60}\n")
-            sys.exit(1)
+        if state != "online":
+            print(f"  [!] Snapshot timeout (emülatör state: {state})")
+            _abort_dead_device()
         print(f"  [!] Snapshot timeout (emülatör state: {state}) — eski yöntemle devam")
         return False
 
@@ -399,13 +499,33 @@ def _get_device_state() -> str:
             timeout=5
         )
         out = r.stdout.strip().lower()
+        err = r.stderr.strip().lower()
         if "device" in out:
             return "online"
-        if "offline" in out:
+        if "offline" in out or "offline" in err:
+            return "offline"
+        if r.returncode != 0 or "not found" in err or "no devices" in err:
             return "offline"
         return "unknown"
     except Exception:
         return "offline"
+
+
+def _abort_dead_device() -> None:
+    """Worker'ı durdurur; dış run_all script'i emülatörü yeniden başlatır."""
+    print(f"\n{'!'*60}")
+    print(f"  EMÜLATÖR ERİŞİLEMEZ — worker durduruluyor!")
+    print(f"  Tekli çalıştırıyorsan adb connect / gmtool durumunu kontrol et.")
+    print(f"  run_all_malware.sh ile çalışıyorsa dış script toparlamayı deneyecek.")
+    print(f"{'!'*60}\n")
+    sys.exit(2)
+
+
+def _looks_like_dead_device(text: str) -> bool:
+    text = text.lower()
+    return (
+        "device" in text and "not found" in text
+    ) or "device offline" in text or "no devices" in text
 
 
 def adb_s(cmd_args: list, **kwargs) -> subprocess.CompletedProcess:
@@ -567,8 +687,13 @@ def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> di
     # ── 2. Install ────────────────────────────────────────────────────────────
     # Önceki APK'dan kalma diyalogları temizle (snapshot restore başarısız olursa birikir)
     dismiss_dialogs()
+    if _package_visible_to_user(package):
+        print(f"  [*] Önceki kurulum kalıntısı temizleniyor: {package}")
+        if not adb_uninstall(package, abort_on_failure=not SNAPSHOT_ENABLED):
+            return {"status": "skip", "package": package, "reason": "infra_uninstall_failed"}
+
     print(f"  [*] Kuruluyor...")
-    if not adb_install(apk_path):
+    if not adb_install(apk_path, package):
         return {"status": "skip", "package": package, "reason": "install_failed"}
 
     time.sleep(ADB_INSTALL_WAIT)
@@ -740,11 +865,11 @@ def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> di
     except Exception as e:
         err_name = type(e).__name__
         if err_name in _TRANSPORT_ERROR_NAMES:
-            # Frida server çöktü ya da app Frida'yı öldürdü.
-            # Bir sonraki APK için server'ı yeniden başlat.
+            # Frida server çöktü ya da app Frida'yı öldürdü. Bunu APK hatası
+            # veya emülatör ölümü sayma; Frida'yı toparlayıp sonraki APK'ya geç.
             print(f"  [!] Transport hatası ({err_name}): {e}")
             restart_frida_server()
-            _status = {"status": "skip", "package": package, "reason": err_name}
+            _status = {"status": "skip", "package": package, "reason": f"infra_{err_name}"}
         else:
             print(f"  [-] Frida hata: {err_name}: {e}")
             _status = {"status": "error", "package": package, "reason": str(e)}
@@ -786,7 +911,10 @@ def analyze_apk(apk_path: str, label: str, timeout: int = DEFAULT_TIMEOUT) -> di
         if ok:
             print(f"  [+] Kaldırıldı: {package}")
         else:
-            print(f"  [!] Kaldırılamadı: {package} — bir sonraki snapshot restore temizleyecek")
+            if SNAPSHOT_ENABLED:
+                print(f"  [!] Kaldırılamadı: {package} — bir sonraki snapshot restore temizleyecek")
+            else:
+                print(f"  [!] Kaldırılamadı: {package} — Genymotion modu, worker yeniden başlatılacak")
 
     if _status:
         return _status
@@ -811,10 +939,27 @@ def _write_in_progress(data: dict) -> None:
         json.dump(data, f, indent=2)
 
 
+def _drop_stale_claims(in_progress: dict) -> dict:
+    """Crash/restart sonrası kalan eski in_progress kayıtlarını temizle."""
+    now = datetime.now()
+    fresh = {}
+    for apk_name, claimed_at in in_progress.items():
+        try:
+            age = (now - datetime.fromisoformat(claimed_at)).total_seconds()
+        except Exception:
+            age = CLAIM_STALE_AFTER + 1
+        if age <= CLAIM_STALE_AFTER:
+            fresh[apk_name] = claimed_at
+        else:
+            print(f"[stale] in_progress temizlendi: {apk_name}")
+    return fresh
+
+
 def _claim_apk(apk_name: str) -> bool:
     """APK'yı in_progress.json'a ekle. Zaten varsa False döner. Lock altında çağrılmalı."""
-    in_progress = _read_in_progress()
+    in_progress = _drop_stale_claims(_read_in_progress())
     if apk_name in in_progress:
+        _write_in_progress(in_progress)
         return False
     in_progress[apk_name] = datetime.now().isoformat()
     _write_in_progress(in_progress)
@@ -921,13 +1066,15 @@ def batch_analyze(apk_dir: str, label: str, timeout: int, csv_file: str,
             result = analyze_apk(str(apk_path), label, timeout)
             results[result["status"]] += 1
 
-            # skip veya error → failed log'a kaydet
-            if result["status"] in ("skip", "error"):
+            # skip veya error → failed log'a kaydet.
+            # infra_* Frida/emülatör altyapısıdır; APK'yı kalıcı failed sayma.
+            reason = result.get("reason", "unknown")
+            if result["status"] in ("skip", "error") and not str(reason).startswith("infra_"):
                 _log_failed_apk(
                     apk_name = apk_name,
                     package  = result.get("package"),
                     label    = label,
-                    reason   = result.get("reason", "unknown"),
+                    reason   = reason,
                 )
 
             if result["status"] == "ok" and pkg_candidate:
@@ -1120,6 +1267,8 @@ def setup_snapshot() -> None:
 
 def main():
     global DEVICE_SERIAL
+
+    signal.signal(signal.SIGTERM, _request_shutdown)
 
     parser = argparse.ArgumentParser(
         description="KangalGuard Batch Analyzer — tek APK arayüzü, döngü dışarıda"
