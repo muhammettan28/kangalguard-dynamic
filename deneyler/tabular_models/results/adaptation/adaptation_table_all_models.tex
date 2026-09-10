@@ -1,0 +1,49 @@
+\begin{table*}[htbp]
+\centering
+\caption{Adaptation strategies across all tabular and sequence models on the 2024--2026 AndroZoo temporal hold-out ($N_{\text{benign}}=N_{\text{malware}}=3{,}000$). Threshold recalibration requires no future-domain labels. Few-shot retrain/fine-tune augments/adapts from the KronoDroid checkpoint with 5\%/10\% of AndroZoo; the remaining 95\%/90\% serves as test set. Sequence upper bound uses an 80/20 single split; tabular upper bound uses 5-fold CV ($\pm$std).}
+\label{tab:adaptation_all_legacy}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lllccccc}
+\toprule
+\textbf{Family} & \textbf{Model} & \textbf{Strategy} & \textbf{Macro-F1} & \textbf{ROC-AUC} & \textbf{FPR} & \textbf{FNR} & \textbf{Benign Rec.} \\
+\midrule
+Tabular & LR & No adaptation (baseline) & 0.5869 & 0.6638 & 0.5783 & 0.2217 & 0.4217 \\
+ &  & Threshold recalib.~($t=0.70$) & 0.6169 & 0.6638 & 0.4830 & 0.2750 & 0.5170 \\
+ &  & Few-shot retrain (5\%, $n=300$) & 0.7038 & 0.8524 & 0.4004 & 0.1853 & 0.5996 \\
+ &  & Few-shot retrain (10\%, $n=600$) & 0.7239 & 0.8587 & 0.3589 & 0.1893 & 0.6411 \\
+ &  & Full retrain (upper bound, CV) & $0.8704 \pm 0.0014$ & — & — & — & — \\
+\addlinespace[1.5pt]
+Tabular & RF & No adaptation (baseline) & 0.6446 & 0.7409 & 0.5743 & 0.0957 & 0.4257 \\
+ &  & Threshold recalib.~($t=0.70$) & 0.7187 & 0.7409 & 0.3783 & 0.1787 & 0.6217 \\
+ &  & Few-shot retrain (5\%, $n=300$) & 0.8171 & 0.9137 & 0.2491 & 0.1151 & 0.7509 \\
+ &  & Few-shot retrain (10\%, $n=600$) & 0.8428 & 0.9245 & 0.1889 & 0.1252 & 0.8111 \\
+ &  & Full retrain (upper bound, CV) & $0.9201 \pm 0.0103$ & — & — & — & — \\
+\addlinespace[1.5pt]
+Tabular & ET & No adaptation (baseline) & 0.6133 & 0.7356 & 0.6207 & 0.1003 & 0.3793 \\
+ &  & Threshold recalib.~($t=0.70$) & 0.7170 & 0.7356 & 0.4070 & 0.1497 & 0.5930 \\
+ &  & Few-shot retrain (5\%, $n=300$) & 0.8075 & 0.9117 & 0.2723 & 0.1102 & 0.7277 \\
+ &  & Few-shot retrain (10\%, $n=600$) & 0.8332 & 0.9201 & 0.2081 & 0.1248 & 0.7919 \\
+ &  & Full retrain (upper bound, CV) & $0.9125 \pm 0.0054$ & — & — & — & — \\
+\addlinespace[1.5pt]
+Tabular & MLP & No adaptation (baseline) & 0.6104 & 0.8104 & 0.6223 & 0.1047 & 0.3777 \\
+ &  & Threshold recalib.~($t=0.70$) & 0.6333 & 0.8104 & 0.5650 & 0.1343 & 0.4350 \\
+ &  & Few-shot retrain (5\%, $n=300$) & 0.6166 & 0.8191 & 0.6151 & 0.1011 & 0.3849 \\
+ &  & Few-shot retrain (10\%, $n=600$) & 0.7791 & 0.8771 & 0.2993 & 0.1396 & 0.7007 \\
+ &  & Full retrain (upper bound, CV) & $0.8847 \pm 0.0098$ & — & — & — & — \\
+\addlinespace[1.5pt]
+Tabular & XGB & No adaptation (baseline) & 0.7010 & 0.7399 & 0.4403 & 0.1447 & 0.5597 \\
+ &  & Threshold recalib.~($t=0.70$) & 0.7008 & 0.7399 & 0.3683 & 0.2270 & 0.6317 \\
+ &  & Few-shot retrain (5\%, $n=300$) & 0.8472 & 0.9218 & 0.1551 & 0.1505 & 0.8449 \\
+ &  & Few-shot retrain (10\%, $n=600$) & 0.8775 & 0.9369 & 0.1030 & 0.1419 & 0.8970 \\
+ &  & Full retrain (upper bound, CV) & $0.9223 \pm 0.0107$ & — & — & — & — \\
+\addlinespace[1.5pt]
+\midrule
+Sequence & BiLSTM & No adaptation (baseline) & 0.7988 & 0.8371 & 0.2080 & 0.1943 & 0.7920 \\
+ &  & Threshold recalib.~($t=0.70$) & 0.7981 & 0.8371 & 0.1793 & 0.2243 & 0.8207 \\
+\addlinespace[1.5pt]
+Sequence & Transf. & No adaptation (baseline) & 0.7746 & 0.8525 & 0.1460 & 0.3020 & 0.8540 \\
+ &  & Threshold recalib.~($t=0.70$) & 0.7722 & 0.8525 & 0.1300 & 0.3213 & 0.8700 \\
+\addlinespace[1.5pt]
+\bottomrule
+\end{tabular}}
+\end{table*}

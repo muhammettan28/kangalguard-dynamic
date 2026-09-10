@@ -1,0 +1,26 @@
+\begin{table}[htbp]
+\centering
+\caption{Adaptation strategies evaluated on the XGBoost tabular probe against the 2024--2026 AndroZoo hold-out ($N=6{,}000$, balanced). The top block reports the unadapted baseline. Drift-feature exclusion requires no future-domain labels, while threshold recalibration is reported as a post-hoc operating-point sweep with no parameter refitting. The few-shot block adds a labeled 5\%/10\% adaptation set (remaining 95\%/90\% serves as test). The upper bound is the 5-fold CV macro-F1 on the full hold-out. FPR\,=\,false positive rate (benign misclassified as malware); FNR\,=\,false negative rate.}
+\label{tab:adaptation}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Strategy} & \textbf{Macro-F1} & \textbf{ROC-AUC} & \textbf{FPR} & \textbf{FNR} \\
+\midrule
+No adaptation (baseline) & 0.7010 & 0.7399 & 0.4403 & 0.1447 \\
+\midrule
+\multicolumn{5}{l}{\textit{Label-free post-hoc strategies}} \\
+Drift-feature excl.~($K=10$) & 0.6692 & 0.6987 & 0.4387 & 0.2147 \\
+Drift-feature excl.~($K=20$) & 0.6416 & 0.6936 & 0.4707 & 0.2363 \\
+Drift-feature excl.~($K=30$) & 0.6837 & 0.7407 & 0.4597 & 0.1587 \\
+Threshold recalib.~($t=0.70$) & 0.7008 & 0.7399 & 0.3683 & 0.2270 \\
+Threshold recalib.~($t=0.80$) & 0.6863 & 0.7399 & 0.3290 & 0.2983 \\
+\midrule
+\multicolumn{5}{l}{\textit{Supervised few-shot retrain}} \\
+5\%~($n=300$ labeled samples) & 0.8472 & 0.9218 & 0.1551 & 0.1505 \\
+10\%~($n=600$ labeled samples) & 0.8775 & 0.9369 & 0.1030 & 0.1419 \\
+\midrule
+Full retrain~(upper bound, 5-fold CV) & $0.9223 \pm 0.011$ & — & — & — \\
+\bottomrule
+\end{tabular}}
+\end{table}

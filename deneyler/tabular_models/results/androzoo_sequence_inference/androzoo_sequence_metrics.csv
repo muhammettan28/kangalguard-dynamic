@@ -1,0 +1,2 @@
+model,threshold,accuracy,macro_f1,precision,recall,roc_auc,pr_auc,tn,fp,fn,tp,fpr,fnr
+Transformer,0.5,0.776,0.7746288418739612,0.8270142180094787,0.698,0.852515611111111,0.8590538367192486,2562,438,906,2094,0.146,0.302

@@ -1,0 +1,35 @@
+{
+  "model_config": {
+    "model_name": "Transformer",
+    "max_seq_len": 256,
+    "pad_token": "<PAD>",
+    "unk_token": "<UNK>",
+    "pad_id": 0,
+    "unk_id": 1,
+    "vocab_size": 64,
+    "embed_dim": 96,
+    "hidden_dim": 128,
+    "num_layers": 2,
+    "dropout": 0.2,
+    "transformer_nhead": 4,
+    "transformer_dim_feedforward": 256,
+    "threshold": 0.5,
+    "selection_metric": "validation_roc_auc",
+    "source_domain": "KronoDroid",
+    "target_domain": "AndroZoo_2024_2026",
+    "note": "Selected using KronoDroid validation only. AndroZoo must remain inference-only for temporal evaluation."
+  },
+  "validation_metrics": {
+    "model": "Transformer",
+    "accuracy": 0.9626666666666668,
+    "macro_f1": 0.962664277180406,
+    "precision": 0.9701897018970188,
+    "recall": 0.9546666666666668,
+    "roc_auc": 0.9905493333333336,
+    "pr_auc": 0.9905895084925646,
+    "tn": 728,
+    "fp": 22,
+    "fn": 34,
+    "tp": 716
+  }
+}

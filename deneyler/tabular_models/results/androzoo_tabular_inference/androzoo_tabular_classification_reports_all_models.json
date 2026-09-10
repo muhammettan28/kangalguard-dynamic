@@ -1,0 +1,137 @@
+{
+  "LogisticRegression": {
+    "benign": {
+      "precision": 0.655440414507772,
+      "recall": 0.4216666666666667,
+      "f1-score": 0.513184584178499,
+      "support": 3000.0
+    },
+    "malware": {
+      "precision": 0.5737100737100738,
+      "recall": 0.7783333333333333,
+      "f1-score": 0.6605374823196606,
+      "support": 3000.0
+    },
+    "accuracy": 0.6,
+    "macro avg": {
+      "precision": 0.614575244108923,
+      "recall": 0.6,
+      "f1-score": 0.5868610332490798,
+      "support": 6000.0
+    },
+    "weighted avg": {
+      "precision": 0.6145752441089228,
+      "recall": 0.6,
+      "f1-score": 0.5868610332490798,
+      "support": 6000.0
+    }
+  },
+  "RandomForest": {
+    "benign": {
+      "precision": 0.8164961636828645,
+      "recall": 0.4256666666666667,
+      "f1-score": 0.5595968448729185,
+      "support": 3000.0
+    },
+    "malware": {
+      "precision": 0.6115870153291253,
+      "recall": 0.9043333333333333,
+      "f1-score": 0.7296933835395374,
+      "support": 3000.0
+    },
+    "accuracy": 0.665,
+    "macro avg": {
+      "precision": 0.7140415895059948,
+      "recall": 0.665,
+      "f1-score": 0.6446451142062279,
+      "support": 6000.0
+    },
+    "weighted avg": {
+      "precision": 0.7140415895059948,
+      "recall": 0.665,
+      "f1-score": 0.6446451142062279,
+      "support": 6000.0
+    }
+  },
+  "ExtraTrees": {
+    "benign": {
+      "precision": 0.7908269631688672,
+      "recall": 0.37933333333333336,
+      "f1-score": 0.5127280919125929,
+      "support": 3000.0
+    },
+    "malware": {
+      "precision": 0.5917561938171454,
+      "recall": 0.8996666666666666,
+      "f1-score": 0.7139267292686152,
+      "support": 3000.0
+    },
+    "accuracy": 0.6395,
+    "macro avg": {
+      "precision": 0.6912915784930063,
+      "recall": 0.6395,
+      "f1-score": 0.6133274105906041,
+      "support": 6000.0
+    },
+    "weighted avg": {
+      "precision": 0.6912915784930063,
+      "recall": 0.6395,
+      "f1-score": 0.613327410590604,
+      "support": 6000.0
+    }
+  },
+  "MLP": {
+    "benign": {
+      "precision": 0.7829993089149966,
+      "recall": 0.37766666666666665,
+      "f1-score": 0.5095570047222847,
+      "support": 3000.0
+    },
+    "malware": {
+      "precision": 0.5899406984405886,
+      "recall": 0.8953333333333333,
+      "f1-score": 0.7112405666622534,
+      "support": 3000.0
+    },
+    "accuracy": 0.6365,
+    "macro avg": {
+      "precision": 0.6864700036777927,
+      "recall": 0.6365,
+      "f1-score": 0.610398785692269,
+      "support": 6000.0
+    },
+    "weighted avg": {
+      "precision": 0.6864700036777927,
+      "recall": 0.6365,
+      "f1-score": 0.610398785692269,
+      "support": 6000.0
+    }
+  },
+  "XGBoost": {
+    "benign": {
+      "precision": 0.7946048272598202,
+      "recall": 0.5596666666666666,
+      "f1-score": 0.6567572853510659,
+      "support": 3000.0
+    },
+    "malware": {
+      "precision": 0.6601492153331618,
+      "recall": 0.8553333333333333,
+      "f1-score": 0.7451720633076812,
+      "support": 3000.0
+    },
+    "accuracy": 0.7075,
+    "macro avg": {
+      "precision": 0.727377021296491,
+      "recall": 0.7075,
+      "f1-score": 0.7009646743293736,
+      "support": 6000.0
+    },
+    "weighted avg": {
+      "precision": 0.727377021296491,
+      "recall": 0.7075,
+      "f1-score": 0.7009646743293735,
+      "support": 6000.0
+    }
+  }
+}
