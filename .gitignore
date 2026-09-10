@@ -17,3 +17,6 @@ logs/in_progress.json
 deneyler/tabular_models/ExtraTrees.joblib
 deneyler/tabular_models/RandomForest.joblib
 *.joblib
+.claude/
+.codex
+.codex/
