@@ -1,0 +1,26 @@
+\begin{table}[H]
+\centering
+\caption{Multi-seed sequence adaptation results on the AndroZoo hold-out using independent validation and untouched final-test splits. Values report mean $\pm$ standard deviation over six seeds.}
+\label{tab:sequence_adaptation_multiseed}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}llrrrr@{}}
+\toprule
+\textbf{Model} & \textbf{Strategy} & \textbf{Macro-F1} & \textbf{ROC-AUC} & \textbf{FPR} & \textbf{FNR} \\
+\midrule
+BiLSTM & No adaptation & 0.799 $\pm$ 0.000 & 0.837 $\pm$ 0.000 & 0.208 $\pm$ 0.000 & 0.195 $\pm$ 0.000 \\
+ & Threshold $t=0.70$ & 0.798 $\pm$ 0.000 & 0.837 $\pm$ 0.000 & 0.179 $\pm$ 0.000 & 0.225 $\pm$ 0.000 \\
+ & Threshold $t=0.80$ & 0.792 $\pm$ 0.000 & 0.837 $\pm$ 0.000 & 0.160 $\pm$ 0.000 & 0.254 $\pm$ 0.000 \\
+ & Few-shot 5\% ($n=300$) & 0.835 $\pm$ 0.009 & 0.888 $\pm$ 0.005 & 0.136 $\pm$ 0.023 & 0.193 $\pm$ 0.009 \\
+ & Few-shot 10\% ($n=600$) & 0.823 $\pm$ 0.024 & 0.881 $\pm$ 0.015 & 0.149 $\pm$ 0.050 & 0.203 $\pm$ 0.008 \\
+ & Full fine-tune 80/10/10 & 0.909 $\pm$ 0.010 & 0.954 $\pm$ 0.008 & 0.052 $\pm$ 0.022 & 0.129 $\pm$ 0.026 \\
+\midrule
+Transformer & No adaptation & 0.775 $\pm$ 0.000 & 0.852 $\pm$ 0.000 & 0.146 $\pm$ 0.000 & 0.302 $\pm$ 0.000 \\
+ & Threshold $t=0.70$ & 0.772 $\pm$ 0.000 & 0.852 $\pm$ 0.000 & 0.130 $\pm$ 0.000 & 0.321 $\pm$ 0.000 \\
+ & Threshold $t=0.80$ & 0.769 $\pm$ 0.000 & 0.852 $\pm$ 0.000 & 0.123 $\pm$ 0.000 & 0.334 $\pm$ 0.000 \\
+ & Few-shot 5\% ($n=300$) & 0.804 $\pm$ 0.006 & 0.870 $\pm$ 0.003 & 0.198 $\pm$ 0.018 & 0.194 $\pm$ 0.013 \\
+ & Few-shot 10\% ($n=600$) & 0.818 $\pm$ 0.004 & 0.880 $\pm$ 0.003 & 0.182 $\pm$ 0.020 & 0.182 $\pm$ 0.014 \\
+ & Full fine-tune 80/10/10 & 0.904 $\pm$ 0.006 & 0.954 $\pm$ 0.006 & 0.052 $\pm$ 0.017 & 0.139 $\pm$ 0.019 \\
+\bottomrule
+\end{tabular*}
+\end{table}
